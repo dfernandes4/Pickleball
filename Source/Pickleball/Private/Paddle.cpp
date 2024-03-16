@@ -14,10 +14,10 @@ APaddle::APaddle()
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
 	SetRootComponent(SceneComponent);
 
-	PaddleSprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("BallMesh"));
+	PaddleSprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaddleSprite"));
 	PaddleSprite->SetupAttachment(SceneComponent);
 	
-	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BallCollider"));
+	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
 	BoxCollider->SetupAttachment(PaddleSprite);
 	
 }
