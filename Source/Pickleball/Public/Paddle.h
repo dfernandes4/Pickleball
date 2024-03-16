@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "Paddle.generated.h"
 
+class UPaperSpriteComponent;
+class UBoxComponent;
+
 UCLASS()
 class PICKLEBALL_API APaddle : public AActor
 {
@@ -15,6 +18,15 @@ public:
 	// Sets default values for this actor's properties
 	APaddle();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+	USceneComponent* SceneComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+	UPaperSpriteComponent* PaddleSprite;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+	UBoxComponent* BoxCollider;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

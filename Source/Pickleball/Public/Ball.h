@@ -13,17 +13,19 @@ class PICKLEBALL_API ABall : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
+public:
+	
 	// Sets default values for this actor's properties
 	ABall();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BaseVariables)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BaseVariables)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	UCapsuleComponent* BallCollider;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BaseVariables)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	UStaticMeshComponent* BallMesh;
+	
 protected:
 	
 	// Called when the game starts or when spawned
