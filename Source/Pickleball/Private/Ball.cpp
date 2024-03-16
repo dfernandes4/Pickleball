@@ -17,6 +17,7 @@ ABall::ABall()
 	BallMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BallMesh"));
 	BallMesh->SetupAttachment(SceneComponent);
 	
+	
 	BallCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("BallCollider"));
 	BallCollider->SetupAttachment(BallMesh);
 
