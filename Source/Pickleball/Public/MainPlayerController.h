@@ -30,7 +30,7 @@ private:
 	
 	bool bIsTouchActive;
 	
-	const float SwipeThreshold;
+	const float SwipeThreshold = 75.0f;
 	float SwipeStartTime;
 	float SwipeEndTime;
 };
