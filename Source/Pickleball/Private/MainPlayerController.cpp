@@ -7,9 +7,6 @@
 
 AMainPlayerController::AMainPlayerController()
 {
-	bIsTouchActive = false;
-	float SwipeStartTime = 0.0f;
-	float SwipeEndTime = 0.0f;
 }
 
 void AMainPlayerController::SetupInputComponent()
@@ -60,6 +57,35 @@ void AMainPlayerController::ProcessTouchInput(FVector StartLocation, FVector End
 	}
 	else
 	{
+		HandleTapInput(InitialTouchLocation);
+		
+		//if players tap is in the boundary
+		
 		// Handle tap input
 	}
+}
+
+	void AMainPlayerController::HandleTapInput(FVector TapLocation) const
+	{
+		// Convert TapLocation from screen to world location
+		FVector WorldLocation, WorldDirection;
+		if (DeprojectScreenPositionToWorld(TapLocation.X, TapLocation.Y, WorldLocation, WorldDirection))
+		{
+			APaddle* PaddleActor = Cast<APaddle>(GetPawn());
+			if (PaddleActor != nullptr)
+			{
+				// Perform a line trace to find a suitable target location on the court
+				FHitResult HitResult;
+				FCollisionQueryParams TraceParams(FName(TEXT("CourtTrace")), true, GetPawn());
+				if (GetWorld()->LineTraceSingleByChannel(HitResult, WorldLocation, WorldLocation + WorldDirection * TraceDistance, ECC_Visibility, TraceParams))
+				{
+					// Check if the hit actor has the court tag
+					if (HitResult.GetActor()->ActorHasTag(TEXT("Court")))
+					{
+						// Move the paddle to the hit location, if valid
+						PaddleActor->SetActorLocation(HitResult.ImpactPoint);
+					}
+				}
+			}
+		}
 }
