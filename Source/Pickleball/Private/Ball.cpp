@@ -4,6 +4,7 @@
 #include "Ball.h"
 
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 
 // Sets default values
 ABall::ABall()
@@ -18,10 +19,22 @@ ABall::ABall()
 	BallMesh->SetupAttachment(SceneComponent);
 	
 	
-	BallCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("BallCollider"));
+	BallCollider = CreateDefaultSubobject<USphereComponent>(TEXT("BallCollider"));
 	BallCollider->SetupAttachment(BallMesh);
 
 	Speed = 100;
+}
+
+void ABall::ApplySwipeForce(const FVector& Force) const	
+{
+	BallCollider->AddForce(Force);
+}
+
+void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	FVector NormalImpulse, const FHitResult& Hit)
+{
+	// can Reflect the ball's direction and modify speed
+	//if not paddle play floor sound
 }
 
 // Called when the game starts or when spawned

@@ -18,6 +18,12 @@ public:
 	// Sets default values for this actor's properties
 	APaddle();
 
+	UFUNCTION()
+	void Swing(float SwipeLength, const FVector& SwipeDirection, float SwipeTime);
+
+	UFUNCTION()
+	void OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
 
@@ -27,8 +33,29 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	UBoxComponent* BoxCollider;
 
-	UFUNCTION()
-	void Swing(float SwipeLength, FVector SwipeDirection, float SwipeTime);
+	
+
+private:
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Swiping, meta = (AllowPrivateAccess))
+	float ForceOfPaddle;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
+	FVector CurrentSwipeDirection;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
+	float CurrentSwipeLength;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
+	bool bIsSwingActive;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
+	float CurrentSwipeTime;
+
+	
+	const float MinForce = 10.0f;
+	const float MaxForce = 200.0f;
+	
 
 protected:
 	

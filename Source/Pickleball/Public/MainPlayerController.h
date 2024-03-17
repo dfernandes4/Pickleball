@@ -28,9 +28,8 @@ private:
 	
 	FVector InitialTouchLocation;
 	
-	bool bIsTouchActive;
-	
-	const float SwipeThreshold;
-	float SwipeStartTime;
-	float SwipeEndTime;
+	const float SwipeThreshold = 75.0f;
+	float SwipeStartTime = 0.0f;
+	float SwipeEndTime = 0.0f;
+	bool bIsTouchActive = false;
 };

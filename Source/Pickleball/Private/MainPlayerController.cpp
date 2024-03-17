@@ -7,10 +7,7 @@
 
 AMainPlayerController::AMainPlayerController()
 {
-	bIsTouchActive = false;
-	const float SwipeThreshold = 75.0f;
-	float SwipeStartTime = 0.0f;
-	float SwipeEndTime = 0.0f;
+	
 }
 
 void AMainPlayerController::SetupInputComponent()
