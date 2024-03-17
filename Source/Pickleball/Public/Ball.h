@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Ball.generated.h"
 
-class UCapsuleComponent;
+class USphereComponent;
 
 UCLASS()
 class PICKLEBALL_API ABall : public AActor
@@ -17,11 +17,18 @@ public:
 	
 	// Sets default values for this actor's properties
 	ABall();
+
+	UFUNCTION()
+	void ApplySwipeForce(const FVector& Force) const;
+
+	UFUNCTION()
+	void OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
-	UCapsuleComponent* BallCollider;
+	USphereComponent* BallCollider;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	UStaticMeshComponent* BallMesh;
