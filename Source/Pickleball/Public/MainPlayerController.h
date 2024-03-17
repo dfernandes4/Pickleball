@@ -35,5 +35,5 @@ private:
 	const float SwipeThreshold = 75.0f;
 	float SwipeStartTime = 0.0f;
 	float SwipeEndTime = 0.0f;
-	float TraceDistance = 1000.0f;
+	float TraceDistance = 10000.0f;
 };
