@@ -33,10 +33,4 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = BaseVariables, meta = (AllowPrivateAccess))
 	int32 Speed;
-
-	
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 };

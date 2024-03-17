@@ -10,7 +10,7 @@ class UPaperSpriteComponent;
 class UBoxComponent;
 
 UCLASS()
-class PICKLEBALL_API APaddle : public AActor
+class PICKLEBALL_API APaddle : public APawn
 {
 	GENERATED_BODY()
 	
@@ -26,13 +26,12 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	UBoxComponent* BoxCollider;
-	
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UFUNCTION()
+	void Swing(float SwipeLength, FVector SwipeDirection, float SwipeTime);
+
+protected:
+	
+	virtual void BeginPlay() override;
 
 };
