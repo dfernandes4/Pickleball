@@ -21,6 +21,9 @@ protected:
 
 	void CheckTouchInput(ETouchIndex::Type FingerIndex, FVector Location);
 
+	
+	void HandleTapInput(FVector TapLocation) const;
+
 	// A method to determine if an input is a swipe and then perform an action
 	void ProcessTouchInput(FVector StartLocation, FVector EndLocation) const;
 
@@ -28,8 +31,9 @@ private:
 	
 	FVector InitialTouchLocation;
 	
+	bool bIsTouchActive = false;
 	const float SwipeThreshold = 75.0f;
 	float SwipeStartTime = 0.0f;
 	float SwipeEndTime = 0.0f;
-	bool bIsTouchActive = false;
+	float TraceDistance = 10000.0f;
 };
