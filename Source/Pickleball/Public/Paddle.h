@@ -19,7 +19,8 @@ public:
 	APaddle();
 
 	UFUNCTION()
-	void Swing(float SwipeLength, const FVector& SwipeDirection, float SwipeTime);
+	void StartSwing(float SwipeLength, const FVector& SwipeDirection, float SwipeTime);
+	void FinishSwing();
 
 
 	UFUNCTION()
@@ -50,7 +51,13 @@ private:
 	bool bIsSwingActive;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
+	bool bIsFacingLeft;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
 	float CurrentSwipeTime;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
+	FTimerHandle SwingTimerHandle;
 
 	
 	const float MinForce = 10.0f;
