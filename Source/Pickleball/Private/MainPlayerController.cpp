@@ -69,7 +69,7 @@ void AMainPlayerController::ProcessTouchInput(FVector StartLocation, FVector End
 		APaddle* PaddleActor = Cast<APaddle>(GetPawn()); 
 		if (PaddleActor)
 		{
-			PaddleActor->Swing(SwipeLength, SwipeDirection, SwipeTime);
+			PaddleActor->StartSwing(SwipeLength, SwipeDirection, SwipeTime);
 		}
 	}
 	else
