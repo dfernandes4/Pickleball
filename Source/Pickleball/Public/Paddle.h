@@ -21,6 +21,7 @@ public:
 	UFUNCTION()
 	void Swing(float SwipeLength, const FVector& SwipeDirection, float SwipeTime);
 
+
 	UFUNCTION()
 	void OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 	
@@ -30,9 +31,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	UPaperSpriteComponent* PaddleSprite;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components ,meta = (AllowPrivateAccess = "true"))
 	UBoxComponent* BoxCollider;
-
 	
 
 private:

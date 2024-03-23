@@ -18,18 +18,33 @@ public:
 
 	AMainPlayerController();
 	
+	virtual void Tick(float DeltaTime) override;	
 protected:
 	virtual void SetupInputComponent() override;
 
 	void CheckTouchInput(ETouchIndex::Type FingerIndex, FVector Location);
 
-	void SetSmoothMoveData(const FVector& StartLocation, const FVector& TargetLocation, float MoveDuration, float StartTime);
-	void HandleTapInput(FVector TapLocation) const;
+	void MovePaddleSmoothly(const FVector& InMoveStartLocation, const FVector& InMoveTargetLocation,float InMoveDuration, float InMoveStartTime);
+	
+	void HandleTapInput(FVector TapLocation);
 
 	// A method to determine if an input is a swipe and then perform an action
-	void ProcessTouchInput(FVector StartLocation, FVector EndLocation) const;
+	void ProcessTouchInput(FVector StartLocation, FVector EndLocation);
 
 private:
+	bool bIsPaddleMoving = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Swiping, meta = (AllowPrivateAccess))
+	FVector MoveStartLocation;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Swiping, meta = (AllowPrivateAccess))
+	FVector MoveTargetLocation;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Swiping, meta = (AllowPrivateAccess))
+	float MoveDuration; // Or any other suitable duration
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Swiping, meta = (AllowPrivateAccess))
+	float MoveStartTime;
 	
 	FVector InitialTouchLocation;
 	
@@ -38,8 +53,4 @@ private:
 	float SwipeStartTime = 0.0f;
 	float SwipeEndTime = 0.0f;
 	float TraceDistance = 10000.0f;
-	FVector SmoothMoveStartLocation;
-	FVector SmoothMoveTargetLocation;
-	float SmoothMoveDuration;
-	float SmoothMoveStartTime;
 };
