@@ -82,8 +82,15 @@ void AMainPlayerController::ProcessTouchInput(FVector StartLocation, FVector End
 					// Check if the hit actor has the court tag
 					if (HitResult.GetActor()->ActorHasTag(TEXT("Court")))
 					{
+
+						// Start interpolation to smoothly move the paddle to the target location
+						FVector StartLocation = PaddleActor->GetActorLocation();
+						FVector TargetLocation = HitResult.ImpactPoint;
+						float MoveDuration = 0.5f; // Adjust the duration of movement as needed
+						float StartTime = GetWorld()->GetTimeSeconds();
+
 						// Move the paddle to the hit location, if valid
-						PaddleActor->SetActorLocation(HitResult.ImpactPoint);
+						 PaddleActor->SetSmoothMoveData(StartLocation, TargetLocation, MoveDuration, StartTime);
 					}
 				}
 			}

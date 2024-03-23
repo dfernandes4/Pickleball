@@ -15,13 +15,15 @@ class PICKLEBALL_API AMainPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+
 	AMainPlayerController();
+	
 protected:
 	virtual void SetupInputComponent() override;
 
 	void CheckTouchInput(ETouchIndex::Type FingerIndex, FVector Location);
 
-	
+	void SetSmoothMoveData(const FVector& StartLocation, const FVector& TargetLocation, float MoveDuration, float StartTime);
 	void HandleTapInput(FVector TapLocation) const;
 
 	// A method to determine if an input is a swipe and then perform an action
@@ -36,4 +38,8 @@ private:
 	float SwipeStartTime = 0.0f;
 	float SwipeEndTime = 0.0f;
 	float TraceDistance = 10000.0f;
+	FVector SmoothMoveStartLocation;
+	FVector SmoothMoveTargetLocation;
+	float SmoothMoveDuration;
+	float SmoothMoveStartTime;
 };
