@@ -23,31 +23,28 @@ APaddle::APaddle()
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
 	BoxCollider->SetupAttachment(PaddleSprite);
 
-	BoxCollider->OnComponentHit.AddDynamic(this, &APaddle::OnBallHit);
+	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &APaddle::OnPaddleBeginOverlap);
+	BoxCollider->OnComponentEndOverlap.AddDynamic(this, &APaddle::OnPaddleEndOverlap);
 
-	ForceOfPaddle = 100.0f;
+	ForceOfPaddle = 500.0f;
+	bIsInHittingZone = false;
+	BallInScene = nullptr;
 }
 
 // Called when the game starts or when spawned
 void APaddle::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	BallInScene = Cast<ABall>(UGameplayStatics::GetActorOfClass(GetWorld(), ABall::StaticClass()));
 }
 
-void APaddle::StartSwing(float SwipeLength, const FVector& SwipeDirection, float SwipeTime)
+void APaddle::StartSwing(float ScreenYDistance, float ScreenXDistance, float SwipeTime)
 {
 	
 	// If swipe is going up
-	if((SwipeDirection.Y < 0) && !bIsSwingActive)
+	if((ScreenYDistance < 0) && !bIsSwingActive)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("SwingBeingCalled"));
 		bIsSwingActive = true;
-		
-		//Set Values
-		CurrentSwipeDirection = SwipeDirection;
-		CurrentSwipeLength = SwipeLength;
-		CurrentSwipeTime = SwipeTime;
 
 		//Flip paddle after swipe
 		FRotator NewRotation;
@@ -66,8 +63,29 @@ void APaddle::StartSwing(float SwipeLength, const FVector& SwipeDirection, float
 
 		GetWorld()->GetTimerManager().ClearTimer(SwingTimerHandle);
 		GetWorld()->GetTimerManager().SetTimer(SwingTimerHandle, this, &APaddle::FinishSwing, .5f, false);
+		
 		//play the sound effect
 		//play particle effect
+		
+		if(bIsInHittingZone)
+		{
+			if (IsValid(BallInScene))
+			{
+				const float RelativeAdjustmentToWorld = 0.075;
+				
+				//Range of X-Y-Z Should be between 10-40
+				const float ForceXDistance = FMath::Clamp(((-ScreenYDistance * RelativeAdjustmentToWorld) / (SwipeTime * 2.5)), 20.0f, 50.0f);
+				const float ForceYDistance = FMath::Clamp(ScreenXDistance * RelativeAdjustmentToWorld, -75.0f, 75.0f);
+				const float ForceZDistance = FMath::Clamp(-ScreenYDistance * RelativeAdjustmentToWorld, 30.0f, 75.0f);
+				
+				// Normalize the swipe direction to use as a direction vector in the world
+				const FVector Force = FVector(ForceXDistance, ForceYDistance, ForceZDistance);
+				
+				// Apply the force in the calculated direction with the calculated magnitude
+				BallInScene->ApplySwipeForce(Force);
+				
+			}
+		}
 		
 	}
 }
@@ -77,21 +95,14 @@ void APaddle::FinishSwing()
 	bIsSwingActive = false;
 }
 
-void APaddle::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-                        FVector NormalImpulse, const FHitResult& Hit)
+void APaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+								 int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (bIsSwingActive)
-	{
-		ABall* Ball = Cast<ABall>(OtherActor);
-		if (Ball)
-		{
-			// Adjust force based on game's physics and gameplay feel
-			const FVector Force = CurrentSwipeDirection.GetSafeNormal() * CurrentSwipeLength * ForceOfPaddle;
-			const float Magnitude = FMath::Clamp((1.0f / CurrentSwipeTime) * ForceOfPaddle, MinForce, MaxForce);
-			Ball->ApplySwipeForce(Force * Magnitude);
-		}
-	}
+	bIsInHittingZone = true;
 }
 
-
+void APaddle::OnPaddleEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	bIsInHittingZone = false;
+}
 

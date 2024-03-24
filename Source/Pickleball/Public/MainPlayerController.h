@@ -29,7 +29,7 @@ protected:
 	void HandleTapInput(FVector TapLocation);
 
 	// A method to determine if an input is a swipe and then perform an action
-	void ProcessTouchInput(FVector StartLocation, FVector EndLocation);
+	void ProcessTouchInput(const FVector& StartLocation,const FVector& EndLocation);
 
 private:
 	bool bIsPaddleMoving = false;

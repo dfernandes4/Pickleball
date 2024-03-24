@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Paddle.generated.h"
 
+class ABall;
 class UPaperSpriteComponent;
 class UBoxComponent;
 
@@ -19,12 +20,15 @@ public:
 	APaddle();
 
 	UFUNCTION()
-	void StartSwing(float SwipeLength, const FVector& SwipeDirection, float SwipeTime);
+	void StartSwing(float ScreenYDistance, float ScreenXDistance, float SwipeTime);
 	void FinishSwing();
 
 
 	UFUNCTION()
-	void OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	void OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+								int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	void OnPaddleEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
@@ -54,14 +58,19 @@ private:
 	bool bIsFacingLeft;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
+	bool bInHittingZone;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
 	float CurrentSwipeTime;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
+	bool bIsInHittingZone;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
 	FTimerHandle SwingTimerHandle;
 
-	
-	const float MinForce = 10.0f;
-	const float MaxForce = 200.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
+	ABall* BallInScene;
 	
 
 protected:

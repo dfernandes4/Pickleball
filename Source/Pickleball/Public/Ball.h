@@ -19,7 +19,7 @@ public:
 	ABall();
 
 	UFUNCTION()
-	void ApplySwipeForce(const FVector& Force) const;
+	void ApplySwipeForce(const FVector& Force);
 
 	UFUNCTION()
 	void OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);

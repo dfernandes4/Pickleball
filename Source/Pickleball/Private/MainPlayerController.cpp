@@ -56,20 +56,19 @@ void AMainPlayerController::CheckTouchInput(ETouchIndex::Type FingerIndex, FVect
 	}
 }
 
-void AMainPlayerController::ProcessTouchInput(FVector StartLocation, FVector EndLocation)
+void AMainPlayerController::ProcessTouchInput(const FVector& StartLocation,const FVector& EndLocation)
 {
-	FVector SwipeDirection = EndLocation - StartLocation;
-	float SwipeLength = SwipeDirection.Size();
+	const float ScreenYDistance = EndLocation.Y - StartLocation.Y;
+	const float ScreenXDistance = EndLocation.X - StartLocation.X;
 	
-
 	// Determine if the swipe is long enough to be considered a swipe and not a tap
-	if (SwipeLength > SwipeThreshold) 
+	if (FMath::Abs(ScreenXDistance) > SwipeThreshold || FMath::Abs(ScreenYDistance) > SwipeThreshold) 
 	{
 		const float SwipeTime = SwipeEndTime - SwipeStartTime;
 		APaddle* PaddleActor = Cast<APaddle>(GetPawn()); 
 		if (PaddleActor)
 		{
-			PaddleActor->StartSwing(SwipeLength, SwipeDirection, SwipeTime);
+			PaddleActor->StartSwing(ScreenYDistance, ScreenXDistance, SwipeTime);
 		}
 	}
 	else
