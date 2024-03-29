@@ -8,17 +8,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4831c04b-8a09-4d4a-86f1-c7f47b55290a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Content/Blueprints/BP_WhyIsThisNotWorking.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/BP_EnemyAIController.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pickleball.sln.DotSettings.user" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pickleball.uproject.DotSettings.user" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Pickleball/Private/EnemyPaddle.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Pickleball/Private/UserPaddle.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Pickleball/Public/EnemyPaddle.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Pickleball/Public/UserPaddle.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Pickleball.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Pickleball.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_Ball.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_Ball.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_MainGamemode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_MainGamemode.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_Paddle.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_Paddle.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Levels/MainLevel.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/MainLevel.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/Ball.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/Ball.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/MainPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/MainPlayerController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Pickleball/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Pickleball/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pickleball.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/Pickleball.uproject" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Pickleball.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Pickleball.Build.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/Paddle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/Paddle.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/Ball.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/Ball.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/MainPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/MainPlayerController.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/Paddle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/Paddle.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -32,46 +33,19 @@
   <component name="GitLabMergeRequestsSettings">{}</component>
   <component name="GithubPullRequestsUISettings">{}</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="cidr-memory-view://3" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Pickleball/Private/Ball.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Pickleball/Private/MainPlayerController.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Pickleball/Private/Paddle.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Pickleball/Public/Ball.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Pickleball/Public/MainPlayerController.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Pickleball/Public/Paddle.h" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiProvider">{}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -103,70 +77,81 @@
   },
   "keyToStringList": {
     "rider.external.source.directories": [
-      "C:\\Users\\chirp\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
-      "C:\\Users\\chirp\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
+      "C:\\Users\\chirp\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\chirp\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
       "C:\\Users\\chirp\\AppData\\Local\\Symbols\\src"
     ]
   }
 }]]></component>
   <component name="RunManager">
     <configuration name="PickleBall" type="Uproject" factoryName="rider.uproject">
-      <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/Pickleball.uproject" />
-      <configuration_2>
+      <configuration_1>
         <option name="CONFIGURATION" value="DebugGame Editor" />
         <option name="PLATFORM" value="Win64" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/Pickleball.uproject" />
+        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.3\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\chirp\Documents\Unreal Projects\Pickleball\Pickleball.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
+        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
+        <option name="PASS_PARENT_ENVS" value="1" />
+        <option name="USE_EXTERNAL_CONSOLE" value="0" />
+        <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
+      </configuration_1>
+      <configuration_2>
+        <option name="CONFIGURATION" value="DebugGame" />
+        <option name="PLATFORM" value="Win64" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/Pickleball.uproject" />
+        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\chirp\Documents\Unreal Projects\Pickleball\Binaries\Win64\Pickleball-Win64-DebugGame.exe" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
+        <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
+        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="0" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
       </configuration_2>
       <configuration_3>
-        <option name="CONFIGURATION" value="DebugGame" />
+        <option name="CONFIGURATION" value="Development Editor" />
         <option name="PLATFORM" value="Win64" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\chirp\Documents\Unreal Projects\Pickleball\Binaries\Win64\Pickleball-Win64-DebugGame.exe" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/Pickleball.uproject" />
+        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
+        <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.3\Engine\Binaries\Win64\UnrealEditor.exe" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\chirp\Documents\Unreal Projects\Pickleball\Pickleball.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
+        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="0" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
       </configuration_3>
       <configuration_4>
-        <option name="CONFIGURATION" value="Development Editor" />
+        <option name="CONFIGURATION" value="Development" />
         <option name="PLATFORM" value="Win64" />
-        <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.3\Engine\Binaries\Win64\UnrealEditor.exe" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\chirp\Documents\Unreal Projects\Pickleball\Pickleball.uproject&quot;" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/Pickleball.uproject" />
+        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\chirp\Documents\Unreal Projects\Pickleball\Binaries\Win64\Pickleball.exe" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
+        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="0" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
       </configuration_4>
       <configuration_5>
-        <option name="CONFIGURATION" value="Development" />
+        <option name="CONFIGURATION" value="Shipping" />
         <option name="PLATFORM" value="Win64" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\chirp\Documents\Unreal Projects\Pickleball\Binaries\Win64\Pickleball.exe" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/Pickleball.uproject" />
+        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\chirp\Documents\Unreal Projects\Pickleball\Binaries\Win64\Pickleball-Win64-Shipping.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
+        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="0" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
       </configuration_5>
-      <configuration_6>
-        <option name="CONFIGURATION" value="Shipping" />
-        <option name="PLATFORM" value="Win64" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\chirp\Documents\Unreal Projects\Pickleball\Binaries\Win64\Pickleball-Win64-Shipping.exe" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
-        <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="PASS_PARENT_ENVS" value="1" />
-        <option name="USE_EXTERNAL_CONSOLE" value="0" />
-        <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-      </configuration_6>
+      <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/Pickleball.uproject" />
+      <option name="AUTO_SELECT_PRIORITY" value="10010" />
       <method v="2">
         <option name="Build" />
       </method>
@@ -187,7 +172,14 @@
       <workItem from="1710558807431" duration="1314000" />
       <workItem from="1710628479768" duration="1665000" />
       <workItem from="1711154898849" duration="18019000" />
-      <workItem from="1711236836657" duration="20664000" />
+      <workItem from="1711236836657" duration="20733000" />
+      <workItem from="1711495887080" duration="4892000" />
+      <workItem from="1711504528172" duration="952000" />
+      <workItem from="1711510393895" duration="466000" />
+      <workItem from="1711510893104" duration="538000" />
+      <workItem from="1711514829957" duration="100000" />
+      <workItem from="1711591238049" duration="2033000" />
+      <workItem from="1711598927515" duration="1824000" />
     </task>
     <servers />
   </component>
