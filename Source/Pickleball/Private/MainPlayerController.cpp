@@ -101,7 +101,7 @@ void AMainPlayerController::HandleTapInput(FVector TapLocation)
 				{
 					// Start interpolation to smoothly move the paddle to the target location
 					MoveStartLocation = PaddleActor->GetActorLocation();
-					MoveTargetLocation = HitResult.ImpactPoint;
+					MoveTargetLocation = HitResult.ImpactPoint + ZOffset;
 					MoveDuration = 0.5f; // Adjust the duration of movement as needed
 					MoveStartTime = GetWorld()->GetTimeSeconds();
 					bIsPaddleMoving = true;
