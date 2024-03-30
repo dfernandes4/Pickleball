@@ -5,6 +5,7 @@
 
 #include "Ball.h"
 #include "Engine.h"
+#include "Blueprint/UserWidget.h" // Include the UserWidget header
 
 // Sets default values
 APlayerPaddle::APlayerPaddle()
@@ -92,3 +93,5 @@ void APlayerPaddle::OnPaddleEndOverlap(UPrimitiveComponent* OverlappedComp, AAct
 {
 	bIsInHittingZone = false;
 }
+
+

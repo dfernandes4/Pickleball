@@ -25,6 +25,8 @@ protected:
 	void CheckTouchInput(ETouchIndex::Type FingerIndex, FVector Location);
 
 	void MovePaddleSmoothly(const FVector& InMoveStartLocation, const FVector& InMoveTargetLocation,float InMoveDuration, float InMoveStartTime);
+
+	void MoveToZone(const FVector& ZoneTargetLocation);
 	
 	void HandleTapInput(FVector TapLocation);
 

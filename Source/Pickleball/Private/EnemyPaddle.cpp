@@ -17,3 +17,5 @@ void AEnemyPaddle::BeginPlay()
 	Super::BeginPlay();
 	
 }
+
+

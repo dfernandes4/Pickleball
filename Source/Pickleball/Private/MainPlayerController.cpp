@@ -111,6 +111,16 @@ void AMainPlayerController::HandleTapInput(FVector TapLocation)
 		}
 	}
 }
+void AMainPlayerController::MoveToZone(const FVector& ZoneTargetLocation)
+{
+    // Setup automatic movement towards ZoneTargetLocation
+    // This could be initiated based on game logic or events
+    MoveStartLocation = GetPawn()->GetActorLocation();
+    MoveTargetLocation = ZoneTargetLocation;
+    MoveStartTime = GetWorld()->GetTimeSeconds();
+    bIsPaddleMoving = true;
+	
+}
 
 void AMainPlayerController::MovePaddleSmoothly(const FVector& InMoveStartLocation, const FVector& InMoveTargetLocation,
 	  float InMoveDuration,  float InMoveStartTime)
@@ -134,6 +144,8 @@ void AMainPlayerController::MovePaddleSmoothly(const FVector& InMoveStartLocatio
 	{
 		PlayerPaddleActor->SetActorLocation(CurrentLocation);
 	}
+
+	
 	
 	
 }
