@@ -5,7 +5,7 @@
 
 #include "Ball.h"
 #include "Engine.h"
-#include "Blueprint/UserWidget.h" // Include the UserWidget header
+#include "PaperSpriteComponent.h"
 
 // Sets default values
 APlayerPaddle::APlayerPaddle()
@@ -18,6 +18,13 @@ APlayerPaddle::APlayerPaddle()
 	
 	bIsInHittingZone = false;
 	BallInScene = nullptr;
+
+	
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	CameraComponent->SetupAttachment(PaddleSprite);
+
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
+	CameraBoom->SetupAttachment((CameraComponent));
 }
 
 void APlayerPaddle::StartSwing(float ScreenYDistance, float ScreenXDistance, float SwipeTime)
