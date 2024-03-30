@@ -3,7 +3,6 @@
 
 #include "Ball.h"
 
-#include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 
 // Sets default values
@@ -23,11 +22,27 @@ ABall::ABall()
 	BallCollider->SetupAttachment(BallMesh);
 
 	Speed = 100;
+
+	BallMesh->SetSimulatePhysics(true);
+	
+	BallMesh->SetEnableGravity(true);
+	BallMesh->SetMassOverrideInKg(NAME_None, 0.048f, true);
+	BallCollider->SetCollisionProfileName(TEXT("Custom"));
+
+	// Alternatively, you can set specific collision responses
+	BallCollider->BodyInstance.SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	BallCollider->BodyInstance.SetObjectType(ECollisionChannel::ECC_WorldDynamic);
+	BallCollider->BodyInstance.SetResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+	
 }
 
-void ABall::ApplySwipeForce(const FVector& Force) const	
+void ABall::ApplySwipeForce(const FVector& Force)	
 {
-	BallCollider->AddForce(Force);
+	if(IsValid(BallMesh))
+	{
+		BallMesh->AddImpulse(Force);
+		UE_LOG(LogTemp, Warning, TEXT("Applying force: %s"), *Force.ToString());
+	}
 }
 
 void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,

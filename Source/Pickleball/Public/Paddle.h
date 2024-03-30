@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Paddle.generated.h"
 
+class ABall;
 class UPaperSpriteComponent;
 class UBoxComponent;
 
@@ -14,17 +15,11 @@ class PICKLEBALL_API APaddle : public APawn
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
+public:
+	
 	APaddle();
 
-	UFUNCTION()
-	void StartSwing(float SwipeLength, const FVector& SwipeDirection, float SwipeTime);
-	void FinishSwing();
-
-
-	UFUNCTION()
-	void OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
@@ -34,38 +29,5 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components ,meta = (AllowPrivateAccess = "true"))
 	UBoxComponent* BoxCollider;
-	
-
-private:
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Swiping, meta = (AllowPrivateAccess))
-	float ForceOfPaddle;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
-	FVector CurrentSwipeDirection;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
-	float CurrentSwipeLength;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
-	bool bIsSwingActive;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
-	bool bIsFacingLeft;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
-	float CurrentSwipeTime;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
-	FTimerHandle SwingTimerHandle;
-
-	
-	const float MinForce = 10.0f;
-	const float MaxForce = 200.0f;
-	
-
-protected:
-	
-	virtual void BeginPlay() override;
 
 };

@@ -3,7 +3,7 @@
 
 #include "MainPlayerController.h"
 
-#include "Paddle.h"
+#include "PlayerPaddle.h"
 
 AMainPlayerController::AMainPlayerController()
 {
@@ -56,20 +56,19 @@ void AMainPlayerController::CheckTouchInput(ETouchIndex::Type FingerIndex, FVect
 	}
 }
 
-void AMainPlayerController::ProcessTouchInput(FVector StartLocation, FVector EndLocation)
+void AMainPlayerController::ProcessTouchInput(const FVector& StartLocation,const FVector& EndLocation)
 {
-	FVector SwipeDirection = EndLocation - StartLocation;
-	float SwipeLength = SwipeDirection.Size();
+	const float ScreenYDistance = EndLocation.Y - StartLocation.Y;
+	const float ScreenXDistance = EndLocation.X - StartLocation.X;
 	
-
 	// Determine if the swipe is long enough to be considered a swipe and not a tap
-	if (SwipeLength > SwipeThreshold) 
+	if (FMath::Abs(ScreenXDistance) > SwipeThreshold || FMath::Abs(ScreenYDistance) > SwipeThreshold) 
 	{
 		const float SwipeTime = SwipeEndTime - SwipeStartTime;
-		APaddle* PaddleActor = Cast<APaddle>(GetPawn()); 
-		if (PaddleActor)
+		APlayerPaddle* PlayerPaddleActor = Cast<APlayerPaddle>(GetPawn()); 
+		if (PlayerPaddleActor)
 		{
-			PaddleActor->StartSwing(SwipeLength, SwipeDirection, SwipeTime);
+			PlayerPaddleActor->StartSwing(ScreenYDistance, ScreenXDistance, SwipeTime);
 		}
 	}
 	else
@@ -88,8 +87,8 @@ void AMainPlayerController::HandleTapInput(FVector TapLocation)
 	FVector WorldLocation, WorldDirection;
 	if (DeprojectScreenPositionToWorld(TapLocation.X, TapLocation.Y, WorldLocation, WorldDirection))
 	{
-		APaddle* PaddleActor = Cast<APaddle>(GetPawn());
-		if (PaddleActor != nullptr)
+		APlayerPaddle* PlayerPaddleActor = Cast<APlayerPaddle>(GetPawn());
+		if (PlayerPaddleActor != nullptr)
 		{
 			// Perform a line trace to find a suitable target location on the court
 			FHitResult HitResult;
@@ -100,8 +99,8 @@ void AMainPlayerController::HandleTapInput(FVector TapLocation)
 				if (HitResult.GetActor()->ActorHasTag(TEXT("Court")))
 				{
 					// Start interpolation to smoothly move the paddle to the target location
-					MoveStartLocation = PaddleActor->GetActorLocation();
-					MoveTargetLocation = HitResult.ImpactPoint + ZOffset;
+					MoveStartLocation = PlayerPaddleActor->GetActorLocation();
+					MoveTargetLocation = HitResult.ImpactPoint;
 					MoveDuration = 0.5f; // Adjust the duration of movement as needed
 					MoveStartTime = GetWorld()->GetTimeSeconds();
 					bIsPaddleMoving = true;
@@ -130,10 +129,10 @@ void AMainPlayerController::MovePaddleSmoothly(const FVector& InMoveStartLocatio
 	FVector CurrentLocation = FMath::Lerp(InMoveStartLocation, InMoveTargetLocation, Alpha);
 
 	// Move the paddle to the new location
-	APaddle* PaddleActor = Cast<APaddle>(GetPawn());
-	if (PaddleActor != nullptr)
+	APlayerPaddle* PlayerPaddleActor = Cast<APlayerPaddle>(GetPawn());
+	if (PlayerPaddleActor != nullptr)
 	{
-		PaddleActor->SetActorLocation(CurrentLocation);
+		PlayerPaddleActor->SetActorLocation(CurrentLocation);
 	}
 	
 	
