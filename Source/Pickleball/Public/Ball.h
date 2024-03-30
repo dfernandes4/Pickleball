@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Ball.generated.h"
 
+class AEnemyPaddle;
+class APlayerPaddle;
 class ABallPositionSymbol;
 class USphereComponent;
 
@@ -29,7 +31,7 @@ public:
 	void PredictProjectileLandingPoint(const FVector& StartLocation, const FVector& LaunchVelocity);
 
 	UFUNCTION()
-	const FVector& FindHittingLocation(const float BeginningOfCourtAfterKitchen, const float EndOfCourt) const;
+	FVector FindHittingLocation(const float BeginningOfCourtAfterKitchen, const float EndOfCourt) const;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
@@ -50,4 +52,13 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = BaseVariables, meta = (AllowPrivateAccess))
 	ABallPositionSymbol* BallPositionSymbol;
+
+private:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components, meta = (AllowPrivateAccess))
+	APlayerPaddle* PlayerPaddle;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components, meta = (AllowPrivateAccess))
+	AEnemyPaddle* EnemyPaddle;
+	
 };

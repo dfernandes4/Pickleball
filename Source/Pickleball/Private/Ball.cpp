@@ -7,6 +7,7 @@
 #include "EnemyAIController.h"
 #include "EnemyPaddle.h"
 #include "MainPlayerController.h"
+#include "PickleBallGameState.h"
 #include "PlayerPaddle.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -43,6 +44,15 @@ ABall::ABall()
 	
 }
 
+void ABall::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// Get PlayerPaddle from GameStateClass
+	PlayerPaddle = Cast<APickleBallGameState>(GetWorld()->GetGameState())->PlayerPaddle;
+	EnemyPaddle = Cast<APickleBallGameState>(GetWorld()->GetGameState())->EnemyPaddle;
+}
+
 void ABall::ApplySwipeForce(const FVector& Force)	
 {
 	if(IsValid(BallMesh))
@@ -58,13 +68,10 @@ void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPr
 	
 	if(OtherActor->IsA(APlayerPaddle::StaticClass()))
 	{
-		//Set to Responding state
-		TObjectPtr<AEnemyPaddle> EnemyPaddle {Cast<AEnemyPaddle>(OtherActor)};
-		if(IsValid(EnemyPaddle.Get()))
+		if(IsValid(EnemyPaddle))
 		{
-			//Add in the location to hit at
-			const float BeginningOfCourtAfterKitchen = 236;
-			const float EndOfCourt = 730;
+			constexpr float BeginningOfCourtAfterKitchen = 236;
+			constexpr float EndOfCourt = 730;
 			
 			const FVector HittingLocation = FindHittingLocation(BeginningOfCourtAfterKitchen, EndOfCourt);
 			Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(HittingLocation);
@@ -74,10 +81,10 @@ void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPr
 	{
 		BallPositionSymbol->SetActorHiddenInGame(false);
 
-		if(IsValid(APlayerPaddle.Get()))
+		if(IsValid(PlayerPaddle))
 		{
-			const float BeginningOfCourtAfterKitchen = -236;
-			const float EndOfCourt = -730;
+			constexpr float BeginningOfCourtAfterKitchen = -236;
+			constexpr float EndOfCourt = -730;
 
 			const FVector HittingLocation = FindHittingLocation(BeginningOfCourtAfterKitchen, EndOfCourt);
 			Cast<AMainPlayerController>(PlayerPaddle->GetController())->MoveToZone(HittingLocation);
@@ -115,7 +122,7 @@ void ABall::PredictProjectileLandingPoint(const FVector& StartLocation, const FV
 	}
 }
 
-const FVector& ABall::FindHittingLocation(const float BeginningOfCourtAfterKitchen, const float EndOfCourt) const
+FVector ABall::FindHittingLocation(const float BeginningOfCourtAfterKitchen, const float EndOfCourt) const
 {
 	constexpr float MIN = -80.0f;
 	constexpr float MAX = 80.0f;
@@ -129,15 +136,8 @@ const FVector& ABall::FindHittingLocation(const float BeginningOfCourtAfterKitch
 	const FVector BallLandingPosition = BallPositionSymbol->GetActorLocation();
 	const float HittingLocationX = FMath::Clamp(BallLandingPosition.X + XOffset, BeginningOfCourtAfterKitchen, EndOfCourt);
 	const float HittingLocationY = FMath::Clamp(BallLandingPosition.Y + YOffset, LeftSideOfCourt, RightSideOfCourt);
-	const FVector HittingLocation = FVector(HittingLocationX, HittingLocationY, 1);
+	FVector HittingLocation = FVector(HittingLocationX, HittingLocationY, 1);
 	
 	return HittingLocation;
-}
-
-// Called when the game starts or when spawned
-void ABall::BeginPlay()
-{
-	Super::BeginPlay();
-	
 }
 

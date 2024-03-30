@@ -29,8 +29,9 @@ void AEnemyAIController::BeginPlay()
 		Blackboard->InitializeBlackboard(*BehaviorTree.Get()->BlackboardAsset.Get());
 		Blackboard->SetValueAsVector(StartLocationKey, GetPawn()->GetActorLocation());
 		
-		Blackboard->SetValueAsEnum(AIStateKey, static_cast<uint8>(EAIState::Responding));
+		Blackboard->SetValueAsEnum(AIStateKey, static_cast<uint8>(EAIState::Idle));
 		Blackboard->SetValueAsBool(IsInHittingZoneKey, false);
+		Blackboard->SetValueAsVector(StartLocationKey, GetPawn()->GetActorLocation());
 	}
 }
 
