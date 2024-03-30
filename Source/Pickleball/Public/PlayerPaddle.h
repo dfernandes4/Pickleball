@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Paddle.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "PlayerPaddle.generated.h"
+
+class UCameraComponent;
 
 UCLASS()
 class PICKLEBALL_API APlayerPaddle : public APaddle
@@ -38,6 +41,13 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
 	FTimerHandle SwingTimerHandle;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess))
+	UCameraComponent* CameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess))
+	USpringArmComponent* CameraBoom;
+	
 
 #pragma endregion Swiping
 	
