@@ -18,15 +18,16 @@ public:
 
 	AMainPlayerController();
 	
-	virtual void Tick(float DeltaTime) override;	
+	virtual void Tick(float DeltaTime) override;
+
+	void MoveToZone(const FVector& ZoneTargetLocation);
+	
 protected:
 	virtual void SetupInputComponent() override;
 
 	void CheckTouchInput(ETouchIndex::Type FingerIndex, FVector Location);
 
 	void MovePaddleSmoothly(const FVector& InMoveStartLocation, const FVector& InMoveTargetLocation, float InMoveStartTime);
-
-	void MoveToZone(const FVector& ZoneTargetLocation);
 	
 	void HandleTapInput(FVector TapLocation);
 

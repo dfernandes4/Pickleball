@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Ball.generated.h"
 
+class ABallPositionSymbol;
 class USphereComponent;
 
 UCLASS()
@@ -23,6 +24,12 @@ public:
 
 	UFUNCTION()
 	void OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	UFUNCTION()
+	void PredictProjectileLandingPoint(const FVector& StartLocation, const FVector& LaunchVelocity);
+
+	UFUNCTION()
+	const FVector& FindHittingLocation(const float BeginningOfCourtAfterKitchen, const float EndOfCourt) const;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
@@ -40,4 +47,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = BaseVariables, meta = (AllowPrivateAccess))
 	int32 Speed;
+
+	UPROPERTY(VisibleAnywhere, Category = BaseVariables, meta = (AllowPrivateAccess))
+	ABallPositionSymbol* BallPositionSymbol;
 };
