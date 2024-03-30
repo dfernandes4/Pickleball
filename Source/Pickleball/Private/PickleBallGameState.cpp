@@ -9,6 +9,8 @@
 
 APickleBallGameState::APickleBallGameState()
 {
+	PlayerPaddle = nullptr;
+	EnemyPaddle = nullptr;
 }
 
 void APickleBallGameState::BeginPlay()
