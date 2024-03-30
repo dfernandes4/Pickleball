@@ -19,17 +19,6 @@ public:
 	void StartSwing(float ScreenYDistance, float ScreenXDistance, float SwipeTime);
 	UFUNCTION()
 	void FinishSwing();
-
-
-	UFUNCTION()
-	void OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-								int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	UFUNCTION()
-	void OnPaddleEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 	
 private:
 
@@ -48,13 +37,7 @@ private:
 	bool bIsFacingLeft;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
-	bool bIsInHittingZone;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
 	FTimerHandle SwingTimerHandle;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
-	ABall* BallInScene;
 
 #pragma endregion Swiping
 	

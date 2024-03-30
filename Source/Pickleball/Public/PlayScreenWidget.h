@@ -29,11 +29,5 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "PlayingHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UTextBlock> ScoreText;
-
-	
-
-	
-
-	
 	
 };

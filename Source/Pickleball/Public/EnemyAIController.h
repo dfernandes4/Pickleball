@@ -18,6 +18,8 @@ public:
 	
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void BeginPlay() override;
+	void SetRespondingState(const FVector& LocationToHitAt) const;
+	void SetIdleState() const;
 
 private:
 	
@@ -31,5 +33,18 @@ private:
 	TObjectPtr<UBlackboardComponent> BlackboardComponent;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+
+#pragma region BlackboardKeys
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "BlackboardKeys", meta = (AllowPrivateAccess = "true"))
+	FName AIStateKey;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "BlackboardKeys", meta = (AllowPrivateAccess = "true"))
+	FName LocationToHitAtKey;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "BlackboardKeys", meta = (AllowPrivateAccess = "true"))
+	FName StartLocationKey;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "BlackboardKeys", meta = (AllowPrivateAccess = "true"))
+	FName IsInHittingZoneKey;
 	
+	#pragma endregion BlackboardKeys
 };

@@ -3,8 +3,12 @@
 
 #include "Ball.h"
 
+#include "EnemyAIController.h"
+#include "EnemyPaddle.h"
+#include "PlayerPaddle.h"
 #include "Components/SphereComponent.h"
 
+class AEnemyAIController;
 // Sets default values
 ABall::ABall()
 {
@@ -48,6 +52,21 @@ void ABall::ApplySwipeForce(const FVector& Force)
 void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
+	if(OtherActor->IsA(APlayerPaddle::StaticClass()))
+	{
+		//Set to Responding state
+		TObjectPtr<AEnemyPaddle> EnemyPaddle {Cast<AEnemyPaddle>(OtherActor)};
+		if(IsValid(EnemyPaddle.Get()))
+		{
+			//Add in the location to hit at
+			//Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState();
+		}
+	}
+	else if(OtherActor->IsA(AEnemyPaddle::StaticClass()))
+	{
+		// Display the X on players side
+	}
+	
 	// can Reflect the ball's direction and modify speed
 	//if not paddle play floor sound
 }

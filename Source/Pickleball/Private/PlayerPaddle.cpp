@@ -20,12 +20,6 @@ APlayerPaddle::APlayerPaddle()
 	BallInScene = nullptr;
 }
 
-void APlayerPaddle::BeginPlay()
-{
-	Super::BeginPlay();
-	BallInScene = Cast<ABall>(UGameplayStatics::GetActorOfClass(GetWorld(), ABall::StaticClass()));
-}
-
 void APlayerPaddle::StartSwing(float ScreenYDistance, float ScreenXDistance, float SwipeTime)
 {
 	
@@ -83,6 +77,7 @@ void APlayerPaddle::FinishSwing()
 	bIsSwingActive = false;
 }
 
+<<<<<<< Updated upstream
 void APlayerPaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 								 int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -95,3 +90,5 @@ void APlayerPaddle::OnPaddleEndOverlap(UPrimitiveComponent* OverlappedComp, AAct
 }
 
 
+=======
+>>>>>>> Stashed changes

@@ -2,6 +2,7 @@
 
 
 #include "EnemyPaddle.h"
+#include "Ball.h"
 
 
 // Sets default values
@@ -11,11 +12,15 @@ AEnemyPaddle::AEnemyPaddle()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-// Called when the game starts or when spawned
-void AEnemyPaddle::BeginPlay()
+void AEnemyPaddle::HitBall() const
 {
-	Super::BeginPlay();
+	//Might change values, ENEMY CANNOT MISS!
+	FVector RandomForce;
+	RandomForce.X = FMath::RandRange(35.f, 40.f);
+	RandomForce.Y = FMath::RandRange(-50.f, 50.f);
+	RandomForce.Z = FMath::RandRange(30.f, 40.f);
 	
+	BallInScene->ApplySwipeForce(RandomForce);
 }
 
 
