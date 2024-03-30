@@ -53,4 +53,5 @@ private:
 	float SwipeStartTime = 0.0f;
 	float SwipeEndTime = 0.0f;
 	float TraceDistance = 10000.0f;
+	const FVector ZOffset = FVector(0,0,90);
 };
