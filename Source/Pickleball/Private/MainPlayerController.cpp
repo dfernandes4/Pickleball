@@ -8,6 +8,7 @@
 AMainPlayerController::AMainPlayerController()
 {
 		PrimaryActorTick.bCanEverTick = true;
+		MoveStartTime = 0.0f;
 }
 
 void AMainPlayerController::SetupInputComponent()
@@ -25,10 +26,10 @@ void AMainPlayerController::Tick(float DeltaTime)
 
 	if (bIsPaddleMoving)
 	{
-		MovePaddleSmoothly(MoveStartLocation, MoveTargetLocation, MoveDuration, MoveStartTime);
+		MovePaddleSmoothly(MoveStartLocation, MoveTargetLocation, MoveStartTime);
 
 		// Check if movement should stop
-		if (GetWorld()->GetTimeSeconds() - MoveStartTime >= MoveDuration)
+		if (GetWorld()->GetTimeSeconds() - MoveStartTime >= MOVE_DURATION)
 		{
 			bIsPaddleMoving = false; // Stop moving the paddle
 		}
@@ -62,7 +63,7 @@ void AMainPlayerController::ProcessTouchInput(const FVector& StartLocation,const
 	const float ScreenXDistance = EndLocation.X - StartLocation.X;
 	
 	// Determine if the swipe is long enough to be considered a swipe and not a tap
-	if (FMath::Abs(ScreenXDistance) > SwipeThreshold || FMath::Abs(ScreenYDistance) > SwipeThreshold) 
+	if (FMath::Abs(ScreenXDistance) > SWIPE_THRESHOLD || FMath::Abs(ScreenYDistance) > SWIPE_THRESHOLD) 
 	{
 		const float SwipeTime = SwipeEndTime - SwipeStartTime;
 		APlayerPaddle* PlayerPaddleActor = Cast<APlayerPaddle>(GetPawn()); 
@@ -101,7 +102,6 @@ void AMainPlayerController::HandleTapInput(FVector TapLocation)
 					// Start interpolation to smoothly move the paddle to the target location
 					MoveStartLocation = PlayerPaddleActor->GetActorLocation();
 					MoveTargetLocation = HitResult.ImpactPoint;
-					MoveDuration = 0.5f; // Adjust the duration of movement as needed
 					MoveStartTime = GetWorld()->GetTimeSeconds();
 					bIsPaddleMoving = true;
 					// Move the paddle to the hit location, if valid
@@ -123,14 +123,14 @@ void AMainPlayerController::MoveToZone(const FVector& ZoneTargetLocation)
 }
 
 void AMainPlayerController::MovePaddleSmoothly(const FVector& InMoveStartLocation, const FVector& InMoveTargetLocation,
-	  float InMoveDuration,  float InMoveStartTime)
+	float InMoveStartTime)
 {
 	// Calculate how much time has passed since the movement started
 	float CurrentTime = GetWorld()->GetTimeSeconds();
 	float TimeSinceStarted = CurrentTime - InMoveStartTime;
 
 	// Determine the fraction of the movement that has been completed
-	float Alpha = FMath::Clamp(TimeSinceStarted / InMoveDuration, 0.0f, 1.0f);
+	float Alpha = FMath::Clamp(TimeSinceStarted / MOVE_DURATION, 0.0f, 1.0f);
 
 	// Optionally, use easing for a smoother start/end
 	// Alpha = FMath::SmoothStep(0.0f, 1.0f, Alpha);
@@ -144,8 +144,5 @@ void AMainPlayerController::MovePaddleSmoothly(const FVector& InMoveStartLocatio
 	{
 		PlayerPaddleActor->SetActorLocation(CurrentLocation);
 	}
-
-	
-	
 	
 }

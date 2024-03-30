@@ -76,19 +76,3 @@ void APlayerPaddle::FinishSwing()
 {
 	bIsSwingActive = false;
 }
-
-<<<<<<< Updated upstream
-void APlayerPaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-								 int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	bIsInHittingZone = true;
-}
-
-void APlayerPaddle::OnPaddleEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	bIsInHittingZone = false;
-}
-
-
-=======
->>>>>>> Stashed changes

@@ -24,7 +24,7 @@ protected:
 
 	void CheckTouchInput(ETouchIndex::Type FingerIndex, FVector Location);
 
-	void MovePaddleSmoothly(const FVector& InMoveStartLocation, const FVector& InMoveTargetLocation,float InMoveDuration, float InMoveStartTime);
+	void MovePaddleSmoothly(const FVector& InMoveStartLocation, const FVector& InMoveTargetLocation, float InMoveStartTime);
 
 	void MoveToZone(const FVector& ZoneTargetLocation);
 	
@@ -43,17 +43,15 @@ private:
 	FVector MoveTargetLocation;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Swiping, meta = (AllowPrivateAccess))
-	float MoveDuration; // Or any other suitable duration
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Swiping, meta = (AllowPrivateAccess))
 	float MoveStartTime;
 	
 	FVector InitialTouchLocation;
 	
 	bool bIsTouchActive = false;
-	const float SwipeThreshold = 75.0f;
+	const float SWIPE_THRESHOLD = 75.0f;
 	float SwipeStartTime = 0.0f;
 	float SwipeEndTime = 0.0f;
 	float TraceDistance = 10000.0f;
 	const FVector ZOffset = FVector(0,0,90);
+	const float MOVE_DURATION = 0.5;
 };
