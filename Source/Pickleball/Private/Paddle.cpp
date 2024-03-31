@@ -6,6 +6,7 @@
 #include "Ball.h"
 #include "Components/BoxComponent.h"
 #include "PaperSpriteComponent.h"
+#include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -15,10 +16,13 @@ APaddle::APaddle()
 	PrimaryActorTick.bCanEverTick = false;
 
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
-	SetRootComponent(SceneComponent);
+	RootComponent = SceneComponent;
 
 	PaddleSprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaddleSprite"));
 	PaddleSprite->SetupAttachment(SceneComponent);
+
+	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowDirection"));
+	ArrowComponent->SetupAttachment(SceneComponent);
 	
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
 	BoxCollider->SetupAttachment(PaddleSprite);

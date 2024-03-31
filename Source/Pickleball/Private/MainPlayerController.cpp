@@ -9,6 +9,9 @@ AMainPlayerController::AMainPlayerController()
 {
 		PrimaryActorTick.bCanEverTick = true;
 		MoveStartTime = 0.0f;
+
+	//TODO: turn this off before packaging
+		SetShowMouseCursor(true);
 }
 
 void AMainPlayerController::SetupInputComponent()
@@ -102,6 +105,7 @@ void AMainPlayerController::HandleTapInput(FVector TapLocation)
 					// Start interpolation to smoothly move the paddle to the target location
 					MoveStartLocation = PlayerPaddleActor->GetActorLocation();
 					MoveTargetLocation = HitResult.ImpactPoint;
+					MoveTargetLocation += ZOffset;
 					MoveStartTime = GetWorld()->GetTimeSeconds();
 					bIsPaddleMoving = true;
 					// Move the paddle to the hit location, if valid
