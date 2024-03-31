@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Paddle.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "PlayerPaddle.generated.h"
 
+class USpringArmComponent;
 class UCameraComponent;
 
 UCLASS()
@@ -22,6 +22,8 @@ public:
 	void StartSwing(float ScreenYDistance, float ScreenXDistance, float SwipeTime);
 	UFUNCTION()
 	void FinishSwing();
+
+	
 	
 private:
 
@@ -41,16 +43,18 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
 	FTimerHandle SwingTimerHandle;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess))
-	UCameraComponent* CameraComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess))
-	USpringArmComponent* CameraBoom;
+	
 	
 
 #pragma endregion Swiping
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
 	float CurrentCoinCount;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess))
+	UCameraComponent* CameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess))
+	USpringArmComponent* CameraBoom;
 };

@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Paddle.generated.h"
 
+class UArrowComponent;
 class ABall;
 class UPaperSpriteComponent;
 class UBoxComponent;
@@ -33,6 +34,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
+	UArrowComponent* ArrowComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	UPaperSpriteComponent* PaddleSprite;
 	
@@ -44,6 +48,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
 	ABall* BallInScene;
+
+	
+
+	
 
 	virtual void BeginPlay() override;
 

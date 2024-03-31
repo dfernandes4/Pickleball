@@ -17,14 +17,13 @@ APlayerPaddle::APlayerPaddle()
 	BoxCollider->OnComponentEndOverlap.AddDynamic(this, &APlayerPaddle::OnPaddleEndOverlap);
 	
 	bIsInHittingZone = false;
-	BallInScene = nullptr;
-
+	BallInScene = nullptr;	
 	
-	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	CameraComponent->SetupAttachment(PaddleSprite);
-
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
-	CameraBoom->SetupAttachment((CameraComponent));
+	CameraBoom->SetupAttachment(SceneComponent);
+
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	CameraComponent->SetupAttachment(CameraBoom);
 }
 
 void APlayerPaddle::StartSwing(float ScreenYDistance, float ScreenXDistance, float SwipeTime)
@@ -36,19 +35,19 @@ void APlayerPaddle::StartSwing(float ScreenYDistance, float ScreenXDistance, flo
 		bIsSwingActive = true;
 
 		//Flip paddle after swipe
-		FRotator NewRotation;
+		FRotator CurrentRotation = PaddleSprite->GetRelativeRotation();
 		if(!bIsFacingLeft)
 		{
 			bIsFacingLeft = true;
-			NewRotation = FRotator(0.0f, GetActorRotation().Yaw + 180.0f, 0.0f);
+			CurrentRotation.Yaw += 180.0f;
 		}
 		else
 		{
 			bIsFacingLeft = false;
-			NewRotation = FRotator(0.0f, GetActorRotation().Yaw - 180.0f, 0.0f);
+			CurrentRotation.Yaw -= 180.0f;
 		}
 		
-		this->SetActorRotation(NewRotation, ETeleportType::TeleportPhysics);
+		this->PaddleSprite->SetRelativeRotation(CurrentRotation,false, nullptr, ETeleportType::TeleportPhysics);
 
 		GetWorld()->GetTimerManager().ClearTimer(SwingTimerHandle);
 		GetWorld()->GetTimerManager().SetTimer(SwingTimerHandle, this, &APlayerPaddle::FinishSwing, .5f, false);
