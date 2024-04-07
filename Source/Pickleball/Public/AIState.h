@@ -6,14 +6,14 @@
 #include "Engine/UserDefinedEnum.h"
 #include "AIState.generated.h"
 
-UENUM(BlueprintType)
+UENUM(BlueprintType, Meta = (ScriptName="AIStateEnum"))
 enum class EAIState : uint8
 {
 	Idle,
 	Responding
 };
 
-UCLASS(BlueprintType)
+UCLASS(BlueprintType, Meta = (ScriptName="AIStateObject"))
 class PICKLEBALL_API UAIState : public UUserDefinedEnum
 {
 	GENERATED_BODY()

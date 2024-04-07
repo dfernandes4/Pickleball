@@ -26,17 +26,33 @@ APaddle::APaddle()
 	
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
 	BoxCollider->SetupAttachment(PaddleSprite);
+
+	BoxCollider->SetGenerateOverlapEvents(true);
+	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &APaddle::OnPaddleBeginOverlap);
+	BoxCollider->OnComponentEndOverlap.AddDynamic(this, &APaddle::OnPaddleEndOverlap);
+}
+
+void APaddle::BeginPlay()
+{
+	Super::BeginPlay();
+	BallInScene = Cast<ABall>(UGameplayStatics::GetActorOfClass(GetWorld(), ABall::StaticClass()));
 }
 
 void APaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 								 int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	bIsInHittingZone = true;
+	if(OtherActor->IsA(ABall::StaticClass()))
+	{
+		bIsInHittingZone = true;
+	}
 }
 
 void APaddle::OnPaddleEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	bIsInHittingZone = false;
+	if(OtherActor->IsA(ABall::StaticClass()) && !bIsFirstSwing)
+	{
+		bIsInHittingZone = false;
+	}
 }
 
 bool APaddle::GetIsInHittingZone() const
@@ -44,10 +60,9 @@ bool APaddle::GetIsInHittingZone() const
 	return bIsInHittingZone;
 }
 
-void APaddle::BeginPlay()
+bool APaddle::GetIsFirstSwing() const
 {
-	Super::BeginPlay();
-	BallInScene = Cast<ABall>(UGameplayStatics::GetActorOfClass(GetWorld(), ABall::StaticClass()));
+	return bIsFirstSwing;
 }
 
 

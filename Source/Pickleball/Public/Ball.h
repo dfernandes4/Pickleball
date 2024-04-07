@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Ball.generated.h"
 
+class APaddle;
 class AEnemyPaddle;
 class APlayerPaddle;
 class ABallPositionSymbol;
@@ -22,13 +23,16 @@ public:
 	ABall();
 
 	UFUNCTION()
-	void ApplySwipeForce(const FVector& Force);
+	void ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor);
 
 	UFUNCTION()
 	void OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	UFUNCTION()
-	void PredictProjectileLandingPoint(const FVector& StartLocation, const FVector& LaunchVelocity);
+	void PredictProjectileLandingPoint();
+
+	UFUNCTION()
+	void OnSwipeForceApplied() const;
 
 	UFUNCTION()
 	FVector FindHittingLocation(const float BeginningOfCourtAfterKitchen, const float EndOfCourt) const;
@@ -47,6 +51,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void Tick(float DeltaSeconds) override;
+
 	UPROPERTY(VisibleAnywhere, Category = BaseVariables, meta = (AllowPrivateAccess))
 	int32 Speed;
 
@@ -56,9 +62,15 @@ protected:
 private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components, meta = (AllowPrivateAccess))
+	APaddle* CurrentPaddle;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components, meta = (AllowPrivateAccess))
 	APlayerPaddle* PlayerPaddle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components, meta = (AllowPrivateAccess))
 	AEnemyPaddle* EnemyPaddle;
+
+	UPROPERTY()
+	bool bDidBallLand;
 	
 };

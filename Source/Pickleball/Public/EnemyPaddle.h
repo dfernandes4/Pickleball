@@ -6,6 +6,8 @@
 #include "Paddle.h"
 #include "EnemyPaddle.generated.h"
 
+class UFloatingPawnMovement;
+
 UCLASS()
 class PICKLEBALL_API AEnemyPaddle : public APaddle
 {
@@ -16,4 +18,7 @@ public:
 	AEnemyPaddle();
 
 	void HitBall() const;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	UFloatingPawnMovement* MovementComponent;
 };

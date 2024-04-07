@@ -31,7 +31,6 @@ void AEnemyAIController::BeginPlay()
 		
 		Blackboard->SetValueAsEnum(AIStateKey, static_cast<uint8>(EAIState::Idle));
 		Blackboard->SetValueAsBool(IsInHittingZoneKey, false);
-		Blackboard->SetValueAsVector(StartLocationKey, GetPawn()->GetActorLocation());
 	}
 }
 

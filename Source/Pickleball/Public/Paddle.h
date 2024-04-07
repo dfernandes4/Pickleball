@@ -21,16 +21,21 @@ public:
 	APaddle();
 	
 	UFUNCTION()
+	bool GetIsInHittingZone() const;
+
+	UFUNCTION()
+	bool GetIsFirstSwing() const;
+	
+protected:
+
+	UFUNCTION()
 	void OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 								int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
 	void OnPaddleEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-	UFUNCTION()
-	bool GetIsInHittingZone() const;
-	
-protected:
-	
+	virtual void BeginPlay() override;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
 
@@ -49,10 +54,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
 	ABall* BallInScene;
 
-	
-
-	
-
-	virtual void BeginPlay() override;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
+	bool bIsFirstSwing;
 
 };

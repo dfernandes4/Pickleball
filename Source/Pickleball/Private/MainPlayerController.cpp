@@ -64,12 +64,13 @@ void AMainPlayerController::ProcessTouchInput(const FVector& StartLocation,const
 {
 	const float ScreenYDistance = EndLocation.Y - StartLocation.Y;
 	const float ScreenXDistance = EndLocation.X - StartLocation.X;
+
+	APlayerPaddle* PlayerPaddleActor = Cast<APlayerPaddle>(GetPawn());
 	
 	// Determine if the swipe is long enough to be considered a swipe and not a tap
 	if (FMath::Abs(ScreenXDistance) > SWIPE_THRESHOLD || FMath::Abs(ScreenYDistance) > SWIPE_THRESHOLD) 
 	{
 		const float SwipeTime = SwipeEndTime - SwipeStartTime;
-		APlayerPaddle* PlayerPaddleActor = Cast<APlayerPaddle>(GetPawn()); 
 		if (PlayerPaddleActor)
 		{
 			PlayerPaddleActor->StartSwing(ScreenYDistance, ScreenXDistance, SwipeTime);
@@ -77,8 +78,10 @@ void AMainPlayerController::ProcessTouchInput(const FVector& StartLocation,const
 	}
 	else
 	{
-		HandleTapInput(InitialTouchLocation);
-		
+		if(!PlayerPaddleActor->GetIsFirstSwing())
+		{
+			HandleTapInput(InitialTouchLocation);
+		}
 		//if players tap is in the boundary
 		
 		// Handle tap input
@@ -105,7 +108,7 @@ void AMainPlayerController::HandleTapInput(FVector TapLocation)
 					// Start interpolation to smoothly move the paddle to the target location
 					MoveStartLocation = PlayerPaddleActor->GetActorLocation();
 					MoveTargetLocation = HitResult.ImpactPoint;
-					MoveTargetLocation += ZOffset;
+					//MoveTargetLocation += ZOffset;
 					MoveStartTime = GetWorld()->GetTimeSeconds();
 					bIsPaddleMoving = true;
 					// Move the paddle to the hit location, if valid

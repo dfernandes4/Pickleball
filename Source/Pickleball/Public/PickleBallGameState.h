@@ -12,7 +12,7 @@ class APlayerPaddle;
  * 
  */
 UCLASS()
-class PICKLEBALL_API APickleBallGameState : public AGameState
+class PICKLEBALL_API APickleBallGameState : public AGameStateBase
 {
 	GENERATED_BODY()
 
@@ -22,13 +22,4 @@ class PICKLEBALL_API APickleBallGameState : public AGameState
 public:
 
 	virtual void BeginPlay() override;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game State")
-	APlayerPaddle* PlayerPaddle;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game State")
-	AEnemyPaddle* EnemyPaddle;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game State")
-	TSubclassOf<AEnemyPaddle> EnemyPaddleClass;
 };

@@ -3,20 +3,11 @@
 
 #include "PickleBallGameState.h"
 
-#include "EnemyPaddle.h"
-#include "PlayerPaddle.h"
-#include "Kismet/GameplayStatics.h"
-
 APickleBallGameState::APickleBallGameState()
 {
-	PlayerPaddle = nullptr;
-	EnemyPaddle = nullptr;
 }
 
 void APickleBallGameState::BeginPlay()
 {
 	Super::BeginPlay();
-
-	PlayerPaddle = Cast<APlayerPaddle>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	EnemyPaddle = Cast<AEnemyPaddle>(UGameplayStatics::GetActorOfClass(GetWorld(), EnemyPaddleClass));
 }

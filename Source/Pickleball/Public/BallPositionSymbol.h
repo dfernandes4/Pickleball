@@ -26,4 +26,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	UArrowComponent* ArrowComponent;
+
+protected:
+
+	virtual void BeginPlay() override;
 };

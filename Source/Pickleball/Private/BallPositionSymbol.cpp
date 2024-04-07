@@ -16,5 +16,11 @@ ABallPositionSymbol::ABallPositionSymbol()
 
 	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowComponent"));
 	ArrowComponent->SetupAttachment(SceneComponent);
+}
 
+void ABallPositionSymbol::BeginPlay()
+{
+	Super::BeginPlay();
+
+	SetActorHiddenInGame(true);
 }
