@@ -3,7 +3,6 @@
 
 #include "EnemyPaddle.h"
 #include "Ball.h"
-#include "EnemyAIController.h"
 #include "GameFramework/FloatingPawnMovement.h"
 
 
@@ -20,7 +19,7 @@ void AEnemyPaddle::HitBall() const
 {
 	//Might change values, ENEMY CANNOT MISS!
 	FVector RandomForce;
-	RandomForce.X = FMath::RandRange(-25.f, -30.f);
+	RandomForce.X = FMath::RandRange(-30.f, -35.f);
 	constexpr float YOuterBounds = 372.f;
 	const float PercentageOfDistanceFromCenter = GetActorLocation().Z / YOuterBounds;
 	if(PercentageOfDistanceFromCenter < 0)

@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Ball.generated.h"
 
+struct FPredictProjectilePathPointData;
 class APaddle;
 class AEnemyPaddle;
 class APlayerPaddle;
@@ -32,10 +33,10 @@ public:
 	void PredictProjectileLandingPoint();
 
 	UFUNCTION()
-	void OnSwipeForceApplied() const;
+	void OnSwipeForceApplied(const FVector& HittingLocation) const;
 
-	UFUNCTION()
-	FVector FindHittingLocation(const float BeginningOfCourtAfterKitchen, const float EndOfCourt) const;
+	/*UFUNCTION()
+	FVector FindHittingLocation(bool bIsPlayerPaddle, const FVector& BallsVelocity, const TArray<FPredictProjectilePathPointData>& PathData) const;*/
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
@@ -72,5 +73,8 @@ private:
 
 	UPROPERTY()
 	bool bDidBallLand;
+
+	UPROPERTY()
+	float BallLandingZ;
 	
 };
