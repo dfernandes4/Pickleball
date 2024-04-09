@@ -3,8 +3,6 @@
 
 #include "BTTask_HitBall.h"
 
-#include "NavigationSystem.h"
-#include "Engine/TargetPoint.h"
 #include "AIController.h"
 #include "EnemyPaddle.h"
 #include "BehaviorTree/BlackboardComponent.h"

@@ -16,6 +16,8 @@ ABallPositionSymbol::ABallPositionSymbol()
 
 	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowComponent"));
 	ArrowComponent->SetupAttachment(SceneComponent);
+
+	SetActorEnableCollision(false);
 }
 
 void ABallPositionSymbol::BeginPlay()

@@ -52,6 +52,8 @@ void ABall::BeginPlay()
 	EnemyPaddle = Cast<AEnemyPaddle>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyPaddle::StaticClass()));
 
 	BallPositionSymbol = Cast<ABallPositionSymbol>(UGameplayStatics::GetActorOfClass(GetWorld(), ABallPositionSymbol::StaticClass()));
+
+	BallLandingZ = 105.f;
 }
 
 void ABall::Tick(float DeltaSeconds)
@@ -64,15 +66,24 @@ void ABall::ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor)
 	if(IsValid(BallMesh))
 	{
 		BallMesh->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
-		BallMesh->AddImpulse(Force);
+		BallMesh->SetPhysicsAngularVelocityInDegrees(FVector(0.f, 0.f, 0.f));
+		BallMesh->PutRigidBodyToSleep();
+		
+		FTimerHandle ImpulseTimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(ImpulseTimerHandle, [this, Force]()
+		{
+			BallMesh->WakeRigidBody();
+			BallMesh->AddImpulse(Force);
+		}, .07, false);
+
+
+		CurrentPaddle = const_cast<APaddle*>(PaddleActor);
 		
 		FTimerHandle PredictProjectileLandingPointTimerHandle;
 		FTimerDelegate PredictProjectileLandingPointTimerHandleTimerDel;
 		PredictProjectileLandingPointTimerHandleTimerDel.BindUFunction(this, FName("PredictProjectileLandingPoint"));
 		
-		GetWorld()->GetTimerManager().SetTimer(PredictProjectileLandingPointTimerHandle, PredictProjectileLandingPointTimerHandleTimerDel, 0.01f, false);
-		
-		CurrentPaddle = const_cast<APaddle*>(PaddleActor);
+		GetWorld()->GetTimerManager().SetTimer(PredictProjectileLandingPointTimerHandle, PredictProjectileLandingPointTimerHandleTimerDel, 0.1f, false);
 		
 		UE_LOG(LogTemp, Warning, TEXT("Applying force: %s"), *Force.ToString());
 	}
@@ -95,15 +106,16 @@ void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPr
 void ABall::PredictProjectileLandingPoint()
 {
 	FPredictProjectilePathParams Params;
-	Params.StartLocation = GetActorLocation();
+	Params.StartLocation = BallMesh->GetComponentLocation();
 	Params.LaunchVelocity = BallMesh->GetComponentVelocity();
 	Params.bTraceWithCollision = true; // Set to true if you want to consider collisions along the path
 	Params.ProjectileRadius = BallCollider->GetScaledSphereRadius(); // Set to the radius of your projectile
-	Params.MaxSimTime = 4.0f; // Maximum time in seconds for the simulation (adjust as needed)
+	Params.MaxSimTime = 4.f; // Maximum time in seconds for the simulation (adjust as needed)
 	Params.TraceChannel = ECC_Visibility; // Trace channel to use for collision detection
 	Params.SimFrequency = 30; // Frequency of path simulation points (higher values are more precise but more expensive
-	//Params.DrawDebugType = EDrawDebugTrace::ForDuration;
 	Params.ActorsToIgnore.Add((this)); // Optional: ignore actors that you are sure will not hit
+
+	//Params.DrawDebugType = EDrawDebugTrace::ForDuration;
 
 	FPredictProjectilePathResult PathResult;
 	UGameplayStatics::PredictProjectilePath(this, Params, PathResult);
@@ -112,12 +124,39 @@ void ABall::PredictProjectileLandingPoint()
 	if(PathResult.HitResult.IsValidBlockingHit())
 	{
 		BallPositionSymbol->SetActorLocation(PathResult.HitResult.Location);
+		bDidBallLand = true;
+
+		const auto& PathData = PathResult.PathData;
+
+		const float Min = -115;
+		const float Max = 115;
+		const float XOffset = (FMath::RandBool() ? Min : Max);
+		
+		const FVector BallLandingPosition = BallPositionSymbol->GetActorLocation();
+		FVector HittingLocation = BallLandingPosition + ( XOffset * Params.LaunchVelocity.GetSafeNormal());
+		
+		// Reverse iterate to find the first point in our Z range on descent.
+		for (int32 i = PathData.Num() - 2; i >= 0; --i)
+		{
+			const auto& Point = PathData[i];
+			if (Point.Location.X <= HittingLocation.X)
+			{
+				BallLandingZ = FMath::Clamp((Point.Location.Z + PathData[i + 1].Location.Z)/2, 0, 50);
+			}
+		}
+
+		HittingLocation.Z = BallLandingZ;
+		
+		OnSwipeForceApplied(HittingLocation);
 	}
-	bDidBallLand = PathResult.HitResult.IsValidBlockingHit();
-	OnSwipeForceApplied();
+	else
+	{
+		bDidBallLand = false;
+	}
+	
 }
 
-void ABall::OnSwipeForceApplied() const 
+void ABall::OnSwipeForceApplied(const FVector& HittingLocation) const
 {
 	if(bDidBallLand)
 	{
@@ -125,10 +164,6 @@ void ABall::OnSwipeForceApplied() const
 		{
 			if(IsValid(EnemyPaddle))
 			{
-				constexpr float BeginningOfCourtAfterKitchen = 243;
-				constexpr float EndOfCourt = 730;
-			
-				const FVector HittingLocation = FindHittingLocation(BeginningOfCourtAfterKitchen, EndOfCourt);
 				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(HittingLocation);
 			}
 		}
@@ -138,32 +173,39 @@ void ABall::OnSwipeForceApplied() const
 
 			if(IsValid(PlayerPaddle))
 			{
-				constexpr float BeginningOfCourtAfterKitchen = -243;
-				constexpr float EndOfCourt = -730;
-
-				const FVector HittingLocation = FindHittingLocation(BeginningOfCourtAfterKitchen, EndOfCourt);
 				Cast<AMainPlayerController>(PlayerPaddle->GetController())->MoveToZone(HittingLocation);
 			}
 		}
 	}
 }
 
-FVector ABall::FindHittingLocation(const float BeginningOfCourtAfterKitchen, const float EndOfCourt) const
+/*
+FVector ABall::FindHittingLocation(bool bIsPlayerPaddle, const FVector& BallsVelocity, const TArray<FPredictProjectilePathPointData>& PathData) const
 {
-	constexpr float MIN = -80.0f;
-	constexpr float MAX = 80.0f;
-	const float XOffset = (FMath::RandBool() ? MAX : MIN);
+	float Min,Max;
+	/*
+	if(bIsPlayerPaddle)
+	{
+		Min = -215;
+		Max = 115;
+	}
+	else
+	{
+		Min = -115;
+		Max = 215;
+	}
+	
+	Min = -115;
+	Max = 115;
+	const float XOffset = (FMath::RandBool() ? Min : Max);
 	UE_LOG(LogTemp, Warning, TEXT("XOffset: %f"), XOffset);
 
 	//Change if court size changes
-	constexpr float LeftSideOfCourt = -370.0f;
-	constexpr float RightSideOfCourt = 370.0f;
 	
 	const FVector BallLandingPosition = BallPositionSymbol->GetActorLocation();
-	const float HittingLocationX = (BallLandingPosition.X + XOffset);
-	const float HittingLocationY = BallLandingPosition.Y;
-	const FVector HittingLocation = FVector(HittingLocationX, HittingLocationY, 1);
+	FVector HittingLocation = BallLandingPosition + ( XOffset * BallsVelocity.GetSafeNormal());
+	HittingLocation.Z = CalculateZPosition(PathData, HittingLocation.X);
 	
 	return HittingLocation;
 }
-
+*/
