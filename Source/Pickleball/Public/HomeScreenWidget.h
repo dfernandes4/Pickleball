@@ -23,6 +23,9 @@ private:
 	TObjectPtr<class UImage> TitleImage;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UImage> HighScoreText;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UButton> PlayButton;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
@@ -33,6 +36,16 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UButton> CollectionButton;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UScrollBox>  ScrollBox;
+
+	
+	
+
+	
+
+	
 	                                                                                    
 	
 };
