@@ -16,12 +16,21 @@ class PICKLEBALL_API UShopScreenWidget : public UUserWidget
 
 
 private:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShoPHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UWidgetSwitcher> WidgetSwitcher;
+	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCanvasPanel> CanvasPanel;
 	
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UButton> ExitButton;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShoPHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UHorizontalBox> ChestBoxHolder;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShoPHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UHorizontalBox>GemsBoxHolder;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UButton> Tier1CrateButton;
@@ -31,7 +40,17 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShoPHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UButton> Tier3CrateButton;
-	
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShoPHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UButton> Tier1GemsButton;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShoPHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UButton> Tier2GemsButton;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShoPHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UButton> Tier3GemsButton;
+
+
 
 	
 	

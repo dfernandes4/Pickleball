@@ -8,16 +8,76 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4831c04b-8a09-4d4a-86f1-c7f47b55290a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Content/Blueprints/BP_BallPositionSymbol.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/Textures/Xmarksthesoit.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/UI/BP_SettingScreenWidget.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/BezierCurve.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/BezierCurve_001.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/BezierCurve_002.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/BezierCurve_003.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/BezierCurve_004.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/BezierCurve_005.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/BezierCurve_006.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/BezierCurve_007.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/FinalPickelballcourt.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/FinalPickelballcourt_Mat.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Finalpcikeballcourt.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Finalpcikeballcourt_Mat.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Floor.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/FloorFinal.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/FloorFinal_Mat.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Floorfinalnormal.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Floorfinalnormal_Mat.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Material_001.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Material_003.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Net.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Net1.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Pickelball_court.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Plane.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Pole1.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Pole_001.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Untitled.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/Untitled_Mat.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Models/pole.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/109.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/Asset_1_2.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/Coin_gold.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/Collection.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/Group_982.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/Group_983.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/High_Score_.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/Icon_plus.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/Layout.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/Paddle-1.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/Paddle.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/Pickle.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/Union.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/coin.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/home_btn.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/play.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/HomeScreen/settings_btn.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Background_Pieces.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Ellipse_734.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Ellipse_735.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Ellipse_736.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Line_1.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Line_2.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Line_3.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Master.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Music.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Rectangle_13.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Rectangle_14.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Sound_FX.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Union.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Textures/Settings/Volume.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Pickleball/Private/SettingScreenWidget.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Pickleball/Public/SettingScreenWidget.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Pickleball.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Pickleball.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/BP_PlayerPaddle.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/BP_PlayerPaddle.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/BP_HomeScreenWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/BP_HomeScreenWidget.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/BP_ShopScreenWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/BP_ShopScreenWidget.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Levels/MainLevel.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/MainLevel.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/MainPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/MainPlayerController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/Paddle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/Paddle.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/PlayerPaddle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/PlayerPaddle.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/Paddle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/Paddle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/PlayerPaddle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/PlayerPaddle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pickleball.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/Pickleball.uproject" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/HomeScreenWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/HomeScreenWidget.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/ShopScreenWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/ShopScreenWidget.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,9 +89,15 @@
   </component>
   <component name="GitLabMergeRequestsSettings">{}</component>
   <component name="GithubPullRequestsUISettings">{}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Source/Pickleball/Private/HomeScreenWidget.cpp" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="KubernetesApiProvider">{}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -150,7 +216,11 @@
       <workItem from="1711172260386" duration="1761000" />
       <workItem from="1711237353053" duration="11429000" />
       <workItem from="1711677466498" duration="1202000" />
-      <workItem from="1711840060634" duration="7212000" />
+      <workItem from="1711840060634" duration="9638000" />
+      <workItem from="1712361605915" duration="961000" />
+      <workItem from="1712364042556" duration="9025000" />
+      <workItem from="1712435464003" duration="1287000" />
+      <workItem from="1712639698691" duration="1906000" />
     </task>
     <servers />
   </component>
