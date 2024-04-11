@@ -12,6 +12,16 @@ AMainPlayerController::AMainPlayerController()
 
 	//TODO: turn this off before packaging
 		SetShowMouseCursor(true);
+
+	
+}
+
+
+void AMainPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	DisableInput(this);
 }
 
 void AMainPlayerController::SetupInputComponent()
@@ -130,7 +140,7 @@ void AMainPlayerController::MoveToZone(const FVector& ZoneTargetLocation)
 }
 
 void AMainPlayerController::MovePaddleSmoothly(const FVector& InMoveStartLocation, const FVector& InMoveTargetLocation,
-	float InMoveStartTime)
+                                               float InMoveStartTime)
 {
 	// Calculate how much time has passed since the movement started
 	float CurrentTime = GetWorld()->GetTimeSeconds();

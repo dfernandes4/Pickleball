@@ -25,10 +25,13 @@ private:
 	TObjectPtr<class UCanvasPanel> CanvasPanel;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UImage> TitleImage;
+	TObjectPtr<class UTextBlock> TitleTextBlock;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UImage> HighScoreText;
+	TObjectPtr<UTextBlock> HighScoreTextBlock;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UTextBlock> HighScoreAmountTextBlock;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UButton> PlayButton;
@@ -43,7 +46,16 @@ private:
 	TObjectPtr<UButton> CollectionButton;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UScrollBox>  ScrollBox;
+	TObjectPtr<class UHorizontalBox>  HorizontalBox;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UImage>  PaddleLeft;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UImage>  PaddleMiddle;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UImage>  PaddleRight;
 
 	
 	

@@ -38,7 +38,8 @@ void UCountDownUserWidget::CountdownTimerFinished()
 	else
 	{
 		RemoveFromParent();
-		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-		WidgetLoader->LoadWidget(FName("Workout"), GetWorld());
+
+		APlayerController* PlayerController =  GetWorld()->GetFirstPlayerController();
+		PlayerController->EnableInput(PlayerController);
 	}
 }

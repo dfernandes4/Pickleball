@@ -8,20 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4831c04b-8a09-4d4a-86f1-c7f47b55290a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Content/Blueprints/BP_PickleBallGameInstance.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Pickleball/Private/PickleBallGameInstance.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/Pickleball/Public/PickleBallGameInstance.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Pickleball.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Pickleball.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Datatables/DT_WidgetClassInfo.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Datatables/DT_WidgetClassInfo.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/BP_CountdownWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/BP_CountdownWidget.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/BP_HomeScreenWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/BP_HomeScreenWidget.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/PickelballCourt.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/PickelballCourt.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/Ball.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/Ball.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Textures/HomeScreen/Asset_1_2.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/CountDownUserWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/CountDownUserWidget.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/HomeScreenWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/HomeScreenWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/MainGamemode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/MainGamemode.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/UserWidgetLoader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/UserWidgetLoader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/MainPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/MainPlayerController.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/HomeScreenWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/HomeScreenWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/MainGamemode.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/MainGamemode.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/MainPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/MainPlayerController.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -252,7 +248,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Uproject.PickleBall.executor": "Debug",
+    "Uproject.PickleBall.executor": "Run",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
@@ -358,6 +354,7 @@
       <workItem from="1712639698691" duration="1906000" />
       <workItem from="1712651712105" duration="686000" />
       <workItem from="1712797316925" duration="9447000" />
+      <workItem from="1712809063254" duration="2327000" />
     </task>
     <servers />
   </component>

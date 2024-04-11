@@ -3,6 +3,7 @@
 
 #include "HomeScreenWidget.h"
 
+#include "UserWidgetLoader.h"
 #include "Components/Button.h"
 
 
@@ -19,5 +20,8 @@ void UHomeScreenWidget::NativeConstruct()
 void UHomeScreenWidget::OnPlayButtonClicked()
 {
 	SetVisibility(ESlateVisibility::Collapsed);
+	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+	WidgetLoader->LoadWidget(FName("Countdown"), GetWorld());
+	
 }
 

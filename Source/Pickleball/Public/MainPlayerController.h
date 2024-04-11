@@ -21,6 +21,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void MoveToZone(const FVector& ZoneTargetLocation);
+
+	virtual void BeginPlay() override;
 	
 protected:
 	virtual void SetupInputComponent() override;
