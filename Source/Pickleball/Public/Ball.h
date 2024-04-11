@@ -33,7 +33,7 @@ public:
 	void PredictProjectileLandingPoint();
 
 	UFUNCTION()
-	void OnSwipeForceApplied(const FVector& HittingLocation) const;
+	void OnSwipeForceApplied(const FVector& HittingLocation);
 
 	/*UFUNCTION()
 	FVector FindHittingLocation(bool bIsPlayerPaddle, const FVector& BallsVelocity, const TArray<FPredictProjectilePathPointData>& PathData) const;*/

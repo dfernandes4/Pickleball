@@ -102,7 +102,6 @@ void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPr
 	// can Reflect the ball's direction and modify speed
 	//if not paddle play floor sound
 }
-
 void ABall::PredictProjectileLandingPoint()
 {
 	FPredictProjectilePathParams Params;
@@ -128,8 +127,20 @@ void ABall::PredictProjectileLandingPoint()
 
 		const auto& PathData = PathResult.PathData;
 
-		const float Min = -115;
-		const float Max = 115;
+		float Min = 0.f;
+		float Max = 0.f;
+		
+		if(CurrentPaddle->IsA(APlayerPaddle::StaticClass()))
+		{
+			Min = -215;
+			Max = 115;
+		}
+		else
+		{
+			Min = -115;
+			Max = 215;
+		}
+		
 		const float XOffset = (FMath::RandBool() ? Min : Max);
 		
 		const FVector BallLandingPosition = BallPositionSymbol->GetActorLocation();
@@ -156,12 +167,14 @@ void ABall::PredictProjectileLandingPoint()
 	
 }
 
-void ABall::OnSwipeForceApplied(const FVector& HittingLocation) const
+void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 {
 	if(bDidBallLand)
 	{
 		if(CurrentPaddle->IsA(APlayerPaddle::StaticClass()))
 		{
+			BallPositionSymbol->SetActorHiddenInGame(false);
+			
 			if(IsValid(EnemyPaddle))
 			{
 				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(HittingLocation);
@@ -183,7 +196,6 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation) const
 FVector ABall::FindHittingLocation(bool bIsPlayerPaddle, const FVector& BallsVelocity, const TArray<FPredictProjectilePathPointData>& PathData) const
 {
 	float Min,Max;
-	/*
 	if(bIsPlayerPaddle)
 	{
 		Min = -215;

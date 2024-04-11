@@ -22,8 +22,8 @@ public:
 	void StartSwing(float ScreenYDistance, float ScreenXDistance, float SwipeTime);
 	UFUNCTION()
 	void FinishSwing();
-
 	
+	virtual void OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 	
 private:
 
