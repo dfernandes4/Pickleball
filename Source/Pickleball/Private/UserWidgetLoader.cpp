@@ -6,8 +6,8 @@
 UWidgetLoader::UWidgetLoader()
 {
 	const ConstructorHelpers::FObjectFinder<UDataTable> WidgetClassTableFinder
-		(TEXT("/Script/Engine.DataTable'/Game/Blueprints/DataTables/DT_WidgetClassInfo.DT_WidgetClassInfo'"));
-	
+		(TEXT("/Script/Engine.DataTable'/Game/Blueprints/Datatables/DT_WidgetClassInfo.DT_WidgetClassInfo'"));
+	           
 	if(WidgetClassTableFinder.Succeeded())
 	{
 		WidgetClassTable = WidgetClassTableFinder.Object;
@@ -35,6 +35,9 @@ void UWidgetLoader::LoadWidget(const FName& WidgetName,  UWorld* WorldContextObj
 			}
 		}
 	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Widget class table not found"));
+	}
 	
-	UE_LOG(LogTemp, Error, TEXT("Widget class table not found"))
 }

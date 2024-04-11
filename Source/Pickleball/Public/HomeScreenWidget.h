@@ -14,6 +14,11 @@ class PICKLEBALL_API UHomeScreenWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+	UFUNCTION()
+	void OnPlayButtonClicked();
+	
+	virtual void NativeConstruct() override;
 
 private:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))

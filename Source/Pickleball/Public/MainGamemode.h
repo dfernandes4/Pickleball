@@ -13,5 +13,8 @@ UCLASS()
 class PICKLEBALL_API AMainGamemode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+public:
+
+	virtual void BeginPlay() override;
 };

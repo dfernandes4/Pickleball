@@ -33,7 +33,6 @@ ABall::ABall()
 	BallMesh->SetSimulatePhysics(true);
 	BallMesh->SetEnableGravity(false);
 	BallMesh->SetMassOverrideInKg(NAME_None, 0.048f, true);
-	BallMesh->SetUseCCD(true);
 	BallCollider->SetCollisionProfileName(TEXT("Custom"));
 
 	// Alternatively, you can set specific collision responses
@@ -47,6 +46,8 @@ void ABall::BeginPlay()
 	Super::BeginPlay();
 
 	// Get PlayerPaddle from GameStateClass
+	
+	BallMesh->SetUseCCD(true);
 	
 	PlayerPaddle = Cast<APlayerPaddle>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	EnemyPaddle = Cast<AEnemyPaddle>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyPaddle::StaticClass()));
