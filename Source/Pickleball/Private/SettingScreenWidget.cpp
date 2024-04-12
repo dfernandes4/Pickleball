@@ -3,3 +3,20 @@
 
 #include "SettingScreenWidget.h"
 
+#include "Components/Button.h"
+
+void USettingScreenWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	if(ExitButton != nullptr)
+	{
+		ExitButton->OnClicked.AddDynamic(this, &USettingScreenWidget::OnExitButtonClicked);
+	}
+}
+
+void USettingScreenWidget::OnExitButtonClicked()
+{
+	RemoveFromParent();
+	OnSettingsClosed.Broadcast();
+}

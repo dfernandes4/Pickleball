@@ -15,10 +15,16 @@ class PICKLEBALL_API UHomeScreenWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UFUNCTION()
-	void OnPlayButtonClicked();
 	
 	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void OnPlayButtonClicked();
+
+	UFUNCTION()
+	void HandleSettingsClosed();
+	UFUNCTION()
+	void OnSettingsButtonClicked();
 
 private:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
@@ -52,18 +58,10 @@ private:
 	TObjectPtr<class UImage>  PaddleLeft;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UImage>  PaddleMiddle;
+	TObjectPtr<UImage>  PaddleMiddle;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UImage>  PaddleRight;
-
-	
-	
-
-	
-
-	
-	                                                                                    
+	TObjectPtr<UImage>  PaddleRight;
 	
 };
 

@@ -19,7 +19,7 @@ UWidgetLoader::UWidgetLoader()
 	}
 }
 
-void UWidgetLoader::LoadWidget(const FName& WidgetName,  UWorld* WorldContextObject) const
+UUserWidget* UWidgetLoader::LoadWidget(const FName& WidgetName,  UWorld* WorldContextObject, int32 PreferredZOrder) const
 {
 	if(WidgetClassTable != nullptr)
 	{
@@ -31,7 +31,9 @@ void UWidgetLoader::LoadWidget(const FName& WidgetName,  UWorld* WorldContextObj
 			UUserWidget* WidgetObject = CreateWidget<UUserWidget>(WorldContextObject, WidgetClass);
 			if(WidgetObject != nullptr)
 			{
-				WidgetObject->AddToViewport();
+				WidgetObject->AddToViewport(PreferredZOrder);
+				
+				return WidgetObject;
 			}
 		}
 	}
@@ -39,5 +41,5 @@ void UWidgetLoader::LoadWidget(const FName& WidgetName,  UWorld* WorldContextObj
 	{
 		UE_LOG(LogTemp, Error, TEXT("Widget class table not found"));
 	}
-	
+	return nullptr;
 }

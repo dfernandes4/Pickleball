@@ -6,6 +6,7 @@
 #include "Paddle.h"
 #include "PlayerPaddle.generated.h"
 
+class AMainGamemode;
 class USpringArmComponent;
 class UCameraComponent;
 
@@ -22,6 +23,11 @@ public:
 	void StartSwing(float ScreenYDistance, float ScreenXDistance, float SwipeTime);
 	UFUNCTION()
 	void FinishSwing();
+	
+	UFUNCTION()
+	float GetScore() const;
+
+	virtual void BeginPlay() override;
 	
 	virtual void OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 	
@@ -51,6 +57,12 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
 	float CurrentCoinCount;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
+	float CurrentScore;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
+	AMainGamemode* MainGamemode;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess))
 	UCameraComponent* CameraComponent;

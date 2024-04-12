@@ -6,13 +6,28 @@
 #include "Blueprint/UserWidget.h"
 #include "SettingScreenWidget.generated.h"
 
+class UBackgroundBlur;
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSettingsClosedDelegate);
+
 UCLASS()
 class PICKLEBALL_API USettingScreenWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+public:
+
+	virtual void NativeConstruct() override;
+	
+	UFUNCTION()
+	void OnExitButtonClicked();
+
+	UPROPERTY()
+	FOnSettingsClosedDelegate OnSettingsClosed;
+
+private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCanvasPanel> CanvasPanel;
@@ -46,6 +61,9 @@ class PICKLEBALL_API USettingScreenWidget : public UUserWidget
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UImage> MusicImage;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UBackgroundBlur> BackgroundBlur;
 	;
 	
 	

@@ -39,6 +39,9 @@ void UCountDownUserWidget::CountdownTimerFinished()
 	{
 		RemoveFromParent();
 
+		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+		WidgetLoader->LoadWidget(FName("PlayScreen"), GetWorld());
+		
 		APlayerController* PlayerController =  GetWorld()->GetFirstPlayerController();
 		PlayerController->EnableInput(PlayerController);
 	}
