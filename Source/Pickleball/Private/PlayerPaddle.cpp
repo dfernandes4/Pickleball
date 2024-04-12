@@ -5,6 +5,7 @@
 
 #include "Ball.h"
 #include "Engine.h"
+#include "MainGamemode.h"
 #include "PaperSpriteComponent.h"
 
 // Sets default values
@@ -20,11 +21,19 @@ APlayerPaddle::APlayerPaddle()
 	CameraComponent->SetupAttachment(CameraBoom);
 
 	bIsFirstSwing = true;
+
+	CurrentScore = 0;
+}
+
+void APlayerPaddle::BeginPlay()
+{
+	Super::BeginPlay();
+
+	MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
 }
 
 void APlayerPaddle::StartSwing(float ScreenYDistance, float ScreenXDistance, float SwipeTime)
 {
-	
 	// If swipe is going up
 	if((ScreenYDistance < 0) && !bIsSwingActive)
 	{
@@ -71,6 +80,14 @@ void APlayerPaddle::StartSwing(float ScreenYDistance, float ScreenXDistance, flo
 					BallInScene->BallMesh->SetEnableGravity(true);
 					bIsFirstSwing = false;
 				}
+				
+				CurrentScore++;
+				
+				if(MainGamemode)
+				{
+					MainGamemode->OnScoreUpdated.Broadcast(CurrentScore);
+				}
+				
 				BallInScene->ApplySwipeForce(Force, this);
 				
 			}
@@ -84,8 +101,13 @@ void APlayerPaddle::FinishSwing()
 	bIsSwingActive = false;
 }
 
+float APlayerPaddle::GetScore() const
+{
+	return CurrentScore;
+}
+
 void APlayerPaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	Super::OnPaddleBeginOverlap(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 }

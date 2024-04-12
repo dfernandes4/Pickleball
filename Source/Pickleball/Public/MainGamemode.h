@@ -6,9 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "MainGamemode.generated.h"
 
-/**
- * 
- */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnScoreUpdated, int, NewScore);
+
 UCLASS()
 class PICKLEBALL_API AMainGamemode : public AGameModeBase
 {
@@ -17,4 +16,6 @@ class PICKLEBALL_API AMainGamemode : public AGameModeBase
 public:
 
 	virtual void BeginPlay() override;
+
+	FOnScoreUpdated OnScoreUpdated;
 };

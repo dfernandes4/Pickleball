@@ -3,9 +3,12 @@
 
 #include "HomeScreenWidget.h"
 
+#include "SettingScreenWidget.h"
 #include "UserWidgetLoader.h"
 #include "Components/Button.h"
 
+
+class USettingScreenWidget;
 
 void UHomeScreenWidget::NativeConstruct()
 {
@@ -14,6 +17,10 @@ void UHomeScreenWidget::NativeConstruct()
 	if(PlayButton!= nullptr)
 	{
 		PlayButton->OnClicked.AddDynamic(this,&UHomeScreenWidget::OnPlayButtonClicked);
+	}
+	if(SettingsButton!= nullptr)
+	{
+		SettingsButton->OnClicked.AddDynamic(this,&UHomeScreenWidget::OnSettingsButtonClicked);
 	}
 }
 
@@ -25,3 +32,15 @@ void UHomeScreenWidget::OnPlayButtonClicked()
 	
 }
 
+void UHomeScreenWidget::OnSettingsButtonClicked()
+{
+	SetVisibility(ESlateVisibility::HitTestInvisible);
+	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+	USettingScreenWidget* SettingScreenWidget = Cast<USettingScreenWidget>(WidgetLoader->LoadWidget(FName("SettingScreen"), GetWorld(),  1));
+	SettingScreenWidget->OnSettingsClosed.AddDynamic(this, &UHomeScreenWidget::HandleSettingsClosed);
+}
+
+void UHomeScreenWidget::HandleSettingsClosed()
+{
+	SetVisibility(ESlateVisibility::Visible);
+}

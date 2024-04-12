@@ -11,7 +11,7 @@ public:
 	UWidgetLoader();
 
 	UFUNCTION()
-	void LoadWidget(const FName& WidgetName, UWorld* WorldContextObject) const;
+	UUserWidget* LoadWidget(const FName& WidgetName, UWorld* WorldContextObject, int32 PreferredZOrder = 0) const;
 	
 private:
 	

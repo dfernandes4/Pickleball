@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "PlayScreenWidget.generated.h"
 
+class AMainGamemode;
 /**
  * 
  */
@@ -13,8 +14,15 @@ UCLASS()
 class PICKLEBALL_API UPlayScreenWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
+	
+public:
+	UFUNCTION()
+	void UpdateScore(int NewScore);
+	
+	virtual void NativeConstruct() override;
+	
 private:
+	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "PlayingHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCanvasPanel> CanvasPanel;
 
@@ -29,5 +37,8 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "PlayingHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UTextBlock> ScoreText;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
+	AMainGamemode* MainGamemode;
 	
 };
