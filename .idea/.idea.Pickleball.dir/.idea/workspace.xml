@@ -9,15 +9,10 @@
   <component name="ChangeListManager">
     <list default="true" id="4831c04b-8a09-4d4a-86f1-c7f47b55290a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Pickleball.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Pickleball.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Datatables/DT_WidgetClassInfo.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Datatables/DT_WidgetClassInfo.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/BP_CountdownWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/BP_CountdownWidget.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/BP_HomeScreenWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/BP_HomeScreenWidget.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Textures/HomeScreen/Asset_1_2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/CountDownUserWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/CountDownUserWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/HomeScreenWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/HomeScreenWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/MainPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/MainPlayerController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/HomeScreenWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/HomeScreenWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/MainPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/MainPlayerController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/PickelballCourt.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/PickelballCourt.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Models/Floor.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Floor.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Models/Material_001.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Material_001.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Models/Pickelball_court.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Pickelball_court.uasset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -241,31 +236,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Uproject.PickleBall.executor": "Run",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Uproject.PickleBall.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\ethan\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
-      "C:\\Users\\ethan\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
-      "C:\\Users\\ethan\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\ethan\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\ethan\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\ethan\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="PickleBall" type="Uproject" factoryName="rider.uproject">
       <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/Pickleball.uproject" />
@@ -354,7 +349,11 @@
       <workItem from="1712639698691" duration="1906000" />
       <workItem from="1712651712105" duration="686000" />
       <workItem from="1712797316925" duration="9447000" />
-      <workItem from="1712809063254" duration="2327000" />
+      <workItem from="1712809063254" duration="3104000" />
+      <workItem from="1712876141218" duration="749000" />
+      <workItem from="1712899755737" duration="832000" />
+      <workItem from="1712902202986" duration="305000" />
+      <workItem from="1712950151332" duration="1874000" />
     </task>
     <servers />
   </component>
