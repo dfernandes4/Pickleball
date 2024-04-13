@@ -3,6 +3,7 @@
 
 #include "HomeScreenWidget.h"
 
+#include "CollectionWidget.h"
 #include "SettingScreenWidget.h"
 #include "UserWidgetLoader.h"
 #include "Components/Button.h"
@@ -22,6 +23,10 @@ void UHomeScreenWidget::NativeConstruct()
 	{
 		SettingsButton->OnClicked.AddDynamic(this,&UHomeScreenWidget::OnSettingsButtonClicked);
 	}
+	if(CollectionButton!= nullptr)
+	{
+		CollectionButton->OnClicked.AddDynamic(this,&UHomeScreenWidget::OnCollectionButtonClicked);
+	}
 }
 
 void UHomeScreenWidget::OnPlayButtonClicked()
@@ -37,10 +42,18 @@ void UHomeScreenWidget::OnSettingsButtonClicked()
 	SetVisibility(ESlateVisibility::HitTestInvisible);
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	USettingScreenWidget* SettingScreenWidget = Cast<USettingScreenWidget>(WidgetLoader->LoadWidget(FName("SettingScreen"), GetWorld(),  1));
-	SettingScreenWidget->OnSettingsClosed.AddDynamic(this, &UHomeScreenWidget::HandleSettingsClosed);
+	SettingScreenWidget->OnSettingsClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
 }
 
-void UHomeScreenWidget::HandleSettingsClosed()
+void UHomeScreenWidget::OnCollectionButtonClicked()
+{
+	SetVisibility(ESlateVisibility::HitTestInvisible);
+	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+	UCollectionWidget* CollectionWidget = Cast<UCollectionWidget>(WidgetLoader->LoadWidget(FName("CollectionScreen"), GetWorld(),  1));
+	CollectionWidget->OnCollectionClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+}
+
+void UHomeScreenWidget::HandleChildClosed()
 {
 	SetVisibility(ESlateVisibility::Visible);
 }

@@ -20,11 +20,13 @@ public:
 
 	UFUNCTION()
 	void OnPlayButtonClicked();
-
-	UFUNCTION()
-	void HandleSettingsClosed();
 	UFUNCTION()
 	void OnSettingsButtonClicked();
+	UFUNCTION()
+	void OnCollectionButtonClicked();
+
+	UFUNCTION()
+	void HandleChildClosed();
 
 private:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
