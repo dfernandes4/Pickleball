@@ -5,6 +5,7 @@
 
 #include "CollectionWidget.h"
 #include "SettingScreenWidget.h"
+#include "ShopScreenWidget.h"
 #include "UserWidgetLoader.h"
 #include "Components/Button.h"
 
@@ -51,6 +52,14 @@ void UHomeScreenWidget::OnCollectionButtonClicked()
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	UCollectionWidget* CollectionWidget = Cast<UCollectionWidget>(WidgetLoader->LoadWidget(FName("CollectionScreen"), GetWorld(),  1));
 	CollectionWidget->OnCollectionClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+}
+
+void UHomeScreenWidget::OnShopButtonClicked()
+{
+	SetVisibility(ESlateVisibility::HitTestInvisible);
+	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+	UShopScreenWidget* ShopScreenWidget = Cast<UShopScreenWidget>(WidgetLoader->LoadWidget(FName("PaddleShopScreen"), GetWorld(),  1));
+	ShopScreenWidget->OnShopClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
 }
 
 void UHomeScreenWidget::HandleChildClosed()

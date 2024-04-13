@@ -51,16 +51,16 @@ private:
 	TObjectPtr<class UButton> ExitButton;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UImage> VolumeImage;
+	TObjectPtr<class UTextBlock> VolumeTextBlock;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UImage> MasterImage;
+	TObjectPtr<UTextBlock> MasterTextBlock;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UImage> SoundFxImage;
+	TObjectPtr<UTextBlock> SoundFxTextBlock;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UImage> MusicImage;
+	TObjectPtr<UTextBlock> MusicTextBlock;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UBackgroundBlur> BackgroundBlur;

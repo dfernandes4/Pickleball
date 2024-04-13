@@ -24,6 +24,8 @@ public:
 	void OnSettingsButtonClicked();
 	UFUNCTION()
 	void OnCollectionButtonClicked();
+	UFUNCTION()
+	void OnShopButtonClicked();
 
 	UFUNCTION()
 	void HandleChildClosed();

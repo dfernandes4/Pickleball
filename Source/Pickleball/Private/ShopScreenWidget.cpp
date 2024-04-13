@@ -3,3 +3,19 @@
 
 #include "ShopScreenWidget.h"
 
+#include "Components/Button.h"
+
+void UShopScreenWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	if(ExitButton != nullptr)
+	{
+		ExitButton->OnClicked.AddDynamic(this, &UShopScreenWidget::OnExitButtonClicked);
+	}
+}
+
+void UShopScreenWidget::OnExitButtonClicked()
+{
+	RemoveFromParent();
+	OnShopClosed.Broadcast();
+}
