@@ -8,9 +8,9 @@
 void UShopScreenWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	if(ExitButton != nullptr)
+	if(ExitBtn != nullptr)
 	{
-		ExitButton->OnClicked.AddDynamic(this, &UShopScreenWidget::OnExitButtonClicked);
+		ExitBtn->OnClicked.AddDynamic(this, &UShopScreenWidget::OnExitButtonClicked);
 	}
 }
 

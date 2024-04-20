@@ -9,11 +9,22 @@
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShopClosedDelegate);
+
 UCLASS()
 class PICKLEBALL_API UShopScreenWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+
+	virtual void NativeConstruct() override;
+	
+	UFUNCTION()
+	void OnExitButtonClicked();
+	
+	UPROPERTY()
+	FOnShopClosedDelegate OnShopClosed;
 
 private:
 
@@ -38,12 +49,5 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UBackgroundBlur> BackgroundBlur;
-	
-	
-
-	
-	
-
-	
 	
 };

@@ -44,12 +44,12 @@ void APlayerPaddle::StartSwing(float ScreenYDistance, float ScreenXDistance, flo
 		if(!bIsFacingLeft)
 		{
 			bIsFacingLeft = true;
-			CurrentRotation.Yaw += 180.0f;
+			CurrentRotation.Yaw += 90.0f;
 		}
 		else
 		{
 			bIsFacingLeft = false;
-			CurrentRotation.Yaw -= 180.0f;
+			CurrentRotation.Yaw -= 90.0f;
 		}
 		
 		this->PaddleSprite->SetRelativeRotation(CurrentRotation,false, nullptr, ETeleportType::TeleportPhysics);

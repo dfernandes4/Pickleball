@@ -25,7 +25,7 @@ APaddle::APaddle()
 	ArrowComponent->SetupAttachment(SceneComponent);
 	
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
-	BoxCollider->SetupAttachment(PaddleSprite);
+	BoxCollider->SetupAttachment(SceneComponent);
 
 	BoxCollider->SetGenerateOverlapEvents(true);
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &APaddle::OnPaddleBeginOverlap);

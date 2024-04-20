@@ -28,6 +28,10 @@ void UHomeScreenWidget::NativeConstruct()
 	{
 		CollectionButton->OnClicked.AddDynamic(this,&UHomeScreenWidget::OnCollectionButtonClicked);
 	}
+	if(ShopButton!= nullptr)
+	{
+		ShopButton->OnClicked.AddDynamic(this,&UHomeScreenWidget::OnShopButtonClicked);
+	}
 }
 
 void UHomeScreenWidget::OnPlayButtonClicked()
