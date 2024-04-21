@@ -5,6 +5,9 @@
 
 #include "MainGamemode.h"
 #include "Components/TextBlock.h"
+#include "Kismet/GameplayStatics.h"
+
+ 
 
 void UPlayScreenWidget::NativeConstruct()
 {
@@ -21,4 +24,6 @@ void UPlayScreenWidget::NativeConstruct()
 void UPlayScreenWidget::UpdateScore(int NewScore)
 {
 	ScoreText->SetText(FText::FromString(FString::FromInt(NewScore)));
+
+	UGameplayStatics::PlaySound2D(GetWorld(), PointSoundEffect);
 }
