@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Sound/SoundBase.h"
 #include "Ball.generated.h"
 
 struct FPredictProjectilePathPointData;
@@ -46,7 +47,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	UStaticMeshComponent* BallMesh;
-	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = components, meta = (AllowPrivateAccess))
+	UAudioComponent* AudioComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = components)
+	USoundBase* HitSound;
 protected:
 	
 	// Called when the game starts or when spawned

@@ -10,6 +10,7 @@
 #include "PlayerPaddle.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/AudioComponent.h"
 
 class AEnemyAIController;
 // Sets default values
@@ -27,6 +28,10 @@ ABall::ABall()
 	
 	BallCollider = CreateDefaultSubobject<USphereComponent>(TEXT("BallCollider"));
 	BallCollider->SetupAttachment(BallMesh);
+
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
+	AudioComponent->SetupAttachment(RootComponent);
+	AudioComponent->bAutoActivate = false;
 
 	Speed = 100;
 
@@ -77,7 +82,11 @@ void ABall::ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor)
 			BallMesh->AddImpulse(Force);
 		}, .07, false);
 
-
+		
+			AudioComponent->SetSound(HitSound);
+			AudioComponent->Play();
+		
+		
 		CurrentPaddle = const_cast<APaddle*>(PaddleActor);
 		
 		FTimerHandle PredictProjectileLandingPointTimerHandle;
