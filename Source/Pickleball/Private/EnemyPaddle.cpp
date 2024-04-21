@@ -30,7 +30,7 @@ void AEnemyPaddle::HitBall() const
 	{
 		RandomForce.Y = FMath::RandRange(PercentageOfDistanceFromCenter * -50.f, 0.f);
 	}
-	RandomForce.Z = FMath::RandRange(30.f, 40.f);
+	RandomForce.Z = 30;
 	
 	BallInScene->ApplySwipeForce(RandomForce, this);
 }

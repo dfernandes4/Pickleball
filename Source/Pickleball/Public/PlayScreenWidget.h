@@ -18,6 +18,11 @@ class PICKLEBALL_API UPlayScreenWidget : public UUserWidget
 public:
 	UFUNCTION()
 	void UpdateScore(int NewScore);
+
+	UFUNCTION()
+	void HandlePauseClosed();
+	UFUNCTION()
+	void PauseButtonClicked();
 	
 	virtual void NativeConstruct() override;
 	

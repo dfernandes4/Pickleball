@@ -20,7 +20,7 @@ public:
 	APlayerPaddle();
 
 	UFUNCTION()
-	void StartSwing(float ScreenYDistance, float ScreenXDistance, float SwipeTime);
+	void StartSwing();
 	UFUNCTION()
 	void FinishSwing();
 	

@@ -15,46 +15,31 @@ class PICKLEBALL_API AMainPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
-
-	AMainPlayerController();
-	
-	virtual void Tick(float DeltaTime) override;
-
-	void MoveToZone(const FVector& ZoneTargetLocation);
-
-	virtual void BeginPlay() override;
-	
-protected:
 	virtual void SetupInputComponent() override;
-
-	void CheckTouchInput(ETouchIndex::Type FingerIndex, FVector Location);
-
-	void MovePaddleSmoothly(const FVector& InMoveStartLocation, const FVector& InMoveTargetLocation, float InMoveStartTime);
 	
-	void HandleTapInput(FVector TapLocation);
+	UFUNCTION()
+	FVector GetPaddleVelocity() const;
 
-	// A method to determine if an input is a swipe and then perform an action
-	void ProcessTouchInput(const FVector& StartLocation,const FVector& EndLocation);
+protected:
+	virtual void PlayerTick(float DeltaTime) override;
+	virtual void BeginPlay() override;
+
+	void OnTouchPressed(const ETouchIndex::Type FingerIndex, const FVector Location);
+	void OnTouchReleased(const ETouchIndex::Type FingerIndex, const FVector Location);
+	void OnTouchMoved(const ETouchIndex::Type FingerIndex, const FVector Location);
 
 private:
-	bool bIsPaddleMoving = false;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Swiping, meta = (AllowPrivateAccess))
-	FVector MoveStartLocation;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Swiping, meta = (AllowPrivateAccess))
-	FVector MoveTargetLocation;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Swiping, meta = (AllowPrivateAccess))
-	float MoveStartTime;
-	
-	FVector InitialTouchLocation;
-	
-	bool bIsTouchActive = false;
-	const float SWIPE_THRESHOLD = 75.0f;
-	float SwipeStartTime = 0.0f;
-	float SwipeEndTime = 0.0f;
-	float TraceDistance = 10000.0f;
-	const FVector ZOffset = FVector(0,0,50);
-	const float MOVE_DURATION = 0.5;
+	bool bIsTouching = false;
+	FVector2D InitialTouchLocation;
+	FVector2D TouchLocation;
+	FVector TouchOffset;
+
+	UPROPERTY()
+	FVector PaddleStartLocation;
+	UPROPERTY()
+	FVector NewPaddleLocation;
+	UPROPERTY()
+	float CurrentDeltaTime;
+	UPROPERTY()
+	FVector PaddleVelocity;
 };

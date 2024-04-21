@@ -6,6 +6,7 @@
 #include "Ball.h"
 #include "Engine.h"
 #include "MainGamemode.h"
+#include "MainPlayerController.h"
 #include "PaperSpriteComponent.h"
 
 // Sets default values
@@ -23,6 +24,7 @@ APlayerPaddle::APlayerPaddle()
 	bIsFirstSwing = true;
 
 	CurrentScore = 0;
+	
 }
 
 void APlayerPaddle::BeginPlay()
@@ -32,10 +34,10 @@ void APlayerPaddle::BeginPlay()
 	MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
 }
 
-void APlayerPaddle::StartSwing(float ScreenYDistance, float ScreenXDistance, float SwipeTime)
+void APlayerPaddle::StartSwing()
 {
 	// If swipe is going up
-	if((ScreenYDistance < 0) && !bIsSwingActive)
+	if(!bIsSwingActive)
 	{
 		bIsSwingActive = true;
 
@@ -64,12 +66,14 @@ void APlayerPaddle::StartSwing(float ScreenYDistance, float ScreenXDistance, flo
 		{
 			if (IsValid(BallInScene))
 			{
-				constexpr float RelativeAdjustmentToWorld = 0.075;
+				FVector ScaledPaddleVelocity = (Cast<AMainPlayerController>(GetController())->GetPaddleVelocity()) * .01;
+
+				UE_LOG(LogTemp, Warning, TEXT("Paddle Velocity: %s"), *(Cast<AMainPlayerController>(GetController())->GetPaddleVelocity()).ToString());
 				
 				//Range of X-Y-Z Should be between 10-40
-				const float ForceXDistance = FMath::Clamp(((-ScreenYDistance * RelativeAdjustmentToWorld) / (SwipeTime * 1.25)), 20.0f, 50.0f);
-				const float ForceYDistance = FMath::Clamp(ScreenXDistance * RelativeAdjustmentToWorld, -75.0f, 75.0f);
-				const float ForceZDistance = FMath::Clamp(-ScreenYDistance * RelativeAdjustmentToWorld, 20.0f, 75.0f);
+				const float ForceXDistance = FMath::Clamp(ScaledPaddleVelocity.X, 30.0f, 50.0f);
+				const float ForceYDistance = FMath::Clamp(ScaledPaddleVelocity.Y, -75.0f, 75.0f);
+				const float ForceZDistance = 25;
 				
 				// Normalize the swipe direction to use as a direction vector in the world
 				const FVector Force = FVector(ForceXDistance, ForceYDistance, ForceZDistance);
@@ -110,5 +114,10 @@ void APlayerPaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AA
                                          UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	Super::OnPaddleBeginOverlap(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+
+	if(OtherActor->IsA(ABall::StaticClass()))
+	{
+		StartSwing();
+	}
 }
 

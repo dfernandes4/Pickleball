@@ -124,41 +124,13 @@ void ABall::PredictProjectileLandingPoint()
 	if(PathResult.HitResult.IsValidBlockingHit())
 	{
 		BallPositionSymbol->SetActorLocation(PathResult.HitResult.Location);
-		bDidBallLand = true;
 
-		const auto& PathData = PathResult.PathData;
-
-		float Min = 0.f;
-		float Max = 0.f;
-		
-		if(CurrentPaddle->IsA(APlayerPaddle::StaticClass()))
-		{
-			Min = -215;
-			Max = 115;
-		}
-		else
-		{
-			Min = -115;
-			Max = 215;
-		}
-		
-		const float XOffset = (FMath::RandBool() ? Min : Max);
-		
+		constexpr float Offset = 225;
 		const FVector BallLandingPosition = BallPositionSymbol->GetActorLocation();
-		FVector HittingLocation = BallLandingPosition + ( XOffset * Params.LaunchVelocity.GetSafeNormal());
+		FVector HittingLocation = BallLandingPosition + ( Offset * Params.LaunchVelocity.GetSafeNormal());
+		HittingLocation.Z = -20.f;
 		
-		// Reverse iterate to find the first point in our Z range on descent.
-		for (int32 i = PathData.Num() - 2; i >= 0; --i)
-		{
-			const auto& Point = PathData[i];
-			if (Point.Location.X <= HittingLocation.X)
-			{
-				BallLandingZ = FMath::Clamp((Point.Location.Z + PathData[i + 1].Location.Z)/2, 0, 50);
-			}
-		}
-
-		HittingLocation.Z = BallLandingZ;
-		
+		bDidBallLand = true;
 		OnSwipeForceApplied(HittingLocation);
 	}
 	else
@@ -184,11 +156,6 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 		else if(CurrentPaddle->IsA(AEnemyPaddle::StaticClass()))
 		{
 			BallPositionSymbol->SetActorHiddenInGame(false);
-
-			if(IsValid(PlayerPaddle))
-			{
-				Cast<AMainPlayerController>(PlayerPaddle->GetController())->MoveToZone(HittingLocation);
-			}
 		}
 	}
 }
