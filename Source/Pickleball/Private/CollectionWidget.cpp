@@ -4,6 +4,7 @@
 #include "CollectionWidget.h"
 
 #include "Components/Button.h"
+#include "Kismet/GameplayStatics.h"
 
 void UCollectionWidget::NativeConstruct()
 {
@@ -19,4 +20,5 @@ void UCollectionWidget::OnExitButtonClicked()
 {
 	RemoveFromParent();
 	OnCollectionClosed.Broadcast();
+	UGameplayStatics::PlaySound2D(GetWorld(), BackSoundEffect);
 }

@@ -25,7 +25,10 @@ public:
 	UFUNCTION()
 	void OnExitButtonClicked();
 	
-	FOnCollectionClosedDelegate OnCollectionClosed; 
+	FOnCollectionClosedDelegate OnCollectionClosed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundBase* BackSoundEffect;
 
 private:
 

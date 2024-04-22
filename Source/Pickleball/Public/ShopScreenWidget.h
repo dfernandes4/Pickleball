@@ -26,6 +26,10 @@ public:
 	UPROPERTY()
 	FOnShopClosedDelegate OnShopClosed;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundBase* BackSoundEffect;
+
+
 private:
 
 	
