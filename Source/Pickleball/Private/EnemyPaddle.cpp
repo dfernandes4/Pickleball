@@ -19,16 +19,16 @@ void AEnemyPaddle::HitBall() const
 {
 	//Might change values, ENEMY CANNOT MISS!
 	FVector RandomForce;
-	RandomForce.X = FMath::RandRange(-30.f, -35.f);
+	RandomForce.X = -32;
 	constexpr float YOuterBounds = 372.f;
 	const float PercentageOfDistanceFromCenter = GetActorLocation().Z / YOuterBounds;
 	if(PercentageOfDistanceFromCenter < 0)
 	{
-		RandomForce.Y = FMath::RandRange(0.f, -PercentageOfDistanceFromCenter * 50.f);
+		RandomForce.Y = FMath::RandRange(0.f, -PercentageOfDistanceFromCenter * 45.f);
 	}
 	else
 	{
-		RandomForce.Y = FMath::RandRange(PercentageOfDistanceFromCenter * -50.f, 0.f);
+		RandomForce.Y = FMath::RandRange(PercentageOfDistanceFromCenter * -45.f, 0.f);
 	}
 	RandomForce.Z = 30;
 	

@@ -17,6 +17,7 @@ AEnemyAIController::AEnemyAIController()
 	AIStateKey = "AIStateKey";
 	LocationToHitAtKey = "LocationToHitAtKey";
 	StartLocationKey = "StartLocationKey";
+	BallLandingLocationKey = "BallLandingLocationKey";
 	IsInHittingZoneKey = "IsInHittingZoneKey";
 }
 
@@ -53,4 +54,9 @@ void AEnemyAIController::SetRespondingState(const FVector& LocationToHitAt) cons
 void AEnemyAIController::SetIdleState() const
 {
 	Blackboard->SetValueAsEnum(AIStateKey, static_cast<uint8>(EAIState::Idle));
+}
+
+void AEnemyAIController::SetBallLandingLocation(const FVector& BallLandingLocation) const
+{
+	Blackboard->SetValueAsVector(BallLandingLocationKey, BallLandingLocation);
 }

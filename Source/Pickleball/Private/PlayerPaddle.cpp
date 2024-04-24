@@ -18,6 +18,8 @@ APlayerPaddle::APlayerPaddle()
 	bIsFirstSwing = true;
 
 	CurrentScore = 0;
+
+	bIsPlayersTurn = true;
 	
 }
 
@@ -28,12 +30,12 @@ void APlayerPaddle::BeginPlay()
 	MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
 }
 
-void APlayerPaddle::StartSwing()
+void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 {
 	// If swipe is going up
-	if(!bIsSwingActive)
+	if(bIsPlayersTurn)
 	{
-		bIsSwingActive = true;
+		bIsPlayersTurn = false;
 
 		//Flip paddle after swipe
 		FRotator CurrentRotation = PaddleSprite->GetRelativeRotation();
@@ -49,9 +51,6 @@ void APlayerPaddle::StartSwing()
 		}
 		
 		this->PaddleSprite->SetRelativeRotation(CurrentRotation,false, nullptr, ETeleportType::TeleportPhysics);
-
-		GetWorld()->GetTimerManager().ClearTimer(SwingTimerHandle);
-		GetWorld()->GetTimerManager().SetTimer(SwingTimerHandle, this, &APlayerPaddle::FinishSwing, .5f, false);
 		
 		//play the sound effect
 		//play particle effect
@@ -65,12 +64,27 @@ void APlayerPaddle::StartSwing()
 				UE_LOG(LogTemp, Warning, TEXT("Paddle Velocity: %s"), *(Cast<AMainPlayerController>(GetController())->GetPaddleVelocity()).ToString());
 				
 				//Range of X-Y-Z Should be between 10-40
-				const float ForceXDistance = FMath::Clamp(ScaledPaddleVelocity.X, 30.0f, 50.0f);
-				const float ForceYDistance = FMath::Clamp(ScaledPaddleVelocity.Y, -75.0f, 75.0f);
-				const float ForceZDistance = 25;
+				float MinXOffset = 25 * (BallCurrentLocation.X / -670);
+				float MaxXOffset = 10 * (BallCurrentLocation.X / -670);;
+				const float ForceXDistance = FMath::Clamp(ScaledPaddleVelocity.X, 15.0f + MinXOffset, 30.0f + MaxXOffset);
+				const float ForceYDistance = FMath::Clamp(ScaledPaddleVelocity.Y, -10.0f, 10.0f);
+				float ForceZDistance = 20;
+				if(BallCurrentLocation.Z < 185)
+				{
+					// 10 is the addition needed to make the ball go over the fence if it is on the floor)
+					ForceZDistance += (15 * (BallCurrentLocation.Z / 185));
+					if(BallCurrentLocation.X < -470 || ForceYDistance > 2 || ForceYDistance < -2)
+					{
+						ForceZDistance += 2;
+					}
+					{
+						ForceZDistance += 5;
+					}
+				}
 				
 				// Normalize the swipe direction to use as a direction vector in the world
 				const FVector Force = FVector(ForceXDistance, ForceYDistance, ForceZDistance);
+				UE_LOG(LogTemp, Warning, TEXT("Force: %s"), *Force.ToString());
 				
 				// Apply the force in the calculated direction with the calculated magnitude
 				if(bIsFirstSwing)
@@ -94,11 +108,6 @@ void APlayerPaddle::StartSwing()
 	}
 }
 
-void APlayerPaddle::FinishSwing()
-{
-	bIsSwingActive = false;
-}
-
 float APlayerPaddle::GetScore() const
 {
 	return CurrentScore;
@@ -111,7 +120,13 @@ void APlayerPaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AA
 
 	if(OtherActor->IsA(ABall::StaticClass()))
 	{
-		StartSwing();
+		StartSwing(Cast<ABall>(OtherActor)->BallMesh->GetComponentLocation());
 	}
 }
+
+void APlayerPaddle::SetIsPlayersTurn(bool bIsPlayersTurnIn)
+{
+	bIsPlayersTurn = bIsPlayersTurnIn;
+}
+
 

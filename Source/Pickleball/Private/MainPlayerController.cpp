@@ -1,5 +1,5 @@
-#include "GameFramework/Pawn.h"
 #include "MainPlayerController.h"
+#include "GameFramework/Pawn.h"
 
 void AMainPlayerController::SetupInputComponent()
 {
@@ -15,8 +15,9 @@ void AMainPlayerController::SetupInputComponent()
 }
 
 void AMainPlayerController::BeginPlay()
-{
+{ 
     Super::BeginPlay();
+    DisableInput(this);
 }
 
 void AMainPlayerController::PlayerTick(float DeltaTime)
@@ -29,6 +30,7 @@ void AMainPlayerController::PlayerTick(float DeltaTime)
         if (DeprojectScreenPositionToWorld(TouchLocation.X, TouchLocation.Y, WorldLocation, WorldDirection))
         {
             NewPaddleLocation = WorldLocation + TouchOffset;
+            NewPaddleLocation.X = FMath::Clamp(NewPaddleLocation.X, -750.f,-88.f);
             FHitResult HitResult;
             GetPawn()->SetActorLocation(NewPaddleLocation, true, &HitResult, ETeleportType::TeleportPhysics);
             PaddleVelocity = (NewPaddleLocation - PaddleStartLocation) / DeltaTime;

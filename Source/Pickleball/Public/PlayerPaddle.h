@@ -20,9 +20,7 @@ public:
 	APlayerPaddle();
 
 	UFUNCTION()
-	void StartSwing();
-	UFUNCTION()
-	void FinishSwing();
+	void StartSwing(const FVector& BallCurrentLocation);
 	
 	UFUNCTION()
 	float GetScore() const;
@@ -30,7 +28,9 @@ public:
 	virtual void BeginPlay() override;
 	
 	virtual void OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
-	
+
+	UFUNCTION()
+	void SetIsPlayersTurn(bool bIsPlayersTurnIn);
 private:
 
 #pragma region Swiping
@@ -63,4 +63,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
 	AMainGamemode* MainGamemode;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
+	bool bIsPlayersTurn;
 };

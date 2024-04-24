@@ -20,6 +20,7 @@ public:
 	virtual void BeginPlay() override;
 	void SetRespondingState(const FVector& LocationToHitAt) const;
 	void SetIdleState() const;
+	void SetBallLandingLocation(const FVector& BallLandingLocation) const;
 
 private:
 	
@@ -43,6 +44,8 @@ private:
 	FName LocationToHitAtKey;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "BlackboardKeys", meta = (AllowPrivateAccess = "true"))
 	FName StartLocationKey;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "BlackboardKeys", meta = (AllowPrivateAccess = "true"))
+	FName BallLandingLocationKey;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "BlackboardKeys", meta = (AllowPrivateAccess = "true"))
 	FName IsInHittingZoneKey;
 	
