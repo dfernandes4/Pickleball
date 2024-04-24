@@ -26,9 +26,14 @@ public:
 	void OnCollectionButtonClicked();
 	UFUNCTION()
 	void OnShopButtonClicked();
+	UFUNCTION()
+	void OnPlusCoinClicked();
 
 	UFUNCTION()
 	void HandleChildClosed();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundBase* MenuSoundEffect;
 
 private:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
@@ -54,6 +59,9 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UButton> CollectionButton;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UButton> PlusCoinButton;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UHorizontalBox>  HorizontalBox;

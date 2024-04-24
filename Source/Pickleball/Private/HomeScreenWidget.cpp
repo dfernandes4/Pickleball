@@ -3,11 +3,13 @@
 
 #include "HomeScreenWidget.h"
 
+#include "CoinShopScreen.h"
 #include "CollectionWidget.h"
 #include "SettingScreenWidget.h"
 #include "ShopScreenWidget.h"
 #include "UserWidgetLoader.h"
 #include "Components/Button.h"
+#include "Kismet/GameplayStatics.h"
 
 
 class USettingScreenWidget;
@@ -32,6 +34,10 @@ void UHomeScreenWidget::NativeConstruct()
 	{
 		ShopButton->OnClicked.AddDynamic(this,&UHomeScreenWidget::OnShopButtonClicked);
 	}
+	if(PlusCoinButton != nullptr)
+	{
+		PlusCoinButton->OnClicked.AddDynamic(this, &UHomeScreenWidget::UHomeScreenWidget::OnPlusCoinClicked);
+	}
 }
 
 void UHomeScreenWidget::OnPlayButtonClicked()
@@ -39,6 +45,7 @@ void UHomeScreenWidget::OnPlayButtonClicked()
 	SetVisibility(ESlateVisibility::Collapsed);
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	WidgetLoader->LoadWidget(FName("Countdown"), GetWorld());
+	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 	
 }
 
@@ -48,6 +55,7 @@ void UHomeScreenWidget::OnSettingsButtonClicked()
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	USettingScreenWidget* SettingScreenWidget = Cast<USettingScreenWidget>(WidgetLoader->LoadWidget(FName("SettingScreen"), GetWorld(),  1));
 	SettingScreenWidget->OnSettingsClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 }
 
 void UHomeScreenWidget::OnCollectionButtonClicked()
@@ -56,6 +64,7 @@ void UHomeScreenWidget::OnCollectionButtonClicked()
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	UCollectionWidget* CollectionWidget = Cast<UCollectionWidget>(WidgetLoader->LoadWidget(FName("CollectionScreen"), GetWorld(),  1));
 	CollectionWidget->OnCollectionClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 }
 
 void UHomeScreenWidget::OnShopButtonClicked()
@@ -64,6 +73,16 @@ void UHomeScreenWidget::OnShopButtonClicked()
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	UShopScreenWidget* ShopScreenWidget = Cast<UShopScreenWidget>(WidgetLoader->LoadWidget(FName("PaddleShopScreen"), GetWorld(),  1));
 	ShopScreenWidget->OnShopClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+}
+
+void UHomeScreenWidget::OnPlusCoinClicked()
+{
+	SetVisibility(ESlateVisibility::HitTestInvisible);
+	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+	UCoinShopScreen* CoinShopScreenWidget = Cast<UCoinShopScreen>(WidgetLoader->LoadWidget(FName("CoinShopScreen"), GetWorld(),  1));
+	CoinShopScreenWidget->OnCoinShopClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 }
 
 void UHomeScreenWidget::HandleChildClosed()

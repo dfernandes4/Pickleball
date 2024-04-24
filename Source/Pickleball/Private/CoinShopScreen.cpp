@@ -1,24 +1,24 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "CollectionWidget.h"
+#include "CoinShopScreen.h"
 
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 
-void UCollectionWidget::NativeConstruct()
+void UCoinShopScreen::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if(ExitButton != nullptr)
+	if(ExitBtn != nullptr)
 	{
-		ExitButton->OnClicked.AddDynamic(this, &UCollectionWidget::OnExitButtonClicked);
+		ExitBtn->OnClicked.AddDynamic(this, &UCoinShopScreen::OnExitButtonPressed);
 	}
 }
 
-void UCollectionWidget::OnExitButtonClicked()
+void UCoinShopScreen::OnExitButtonPressed()
 {
 	RemoveFromParent();
-	OnCollectionClosed.Broadcast();
+	OnCoinShopClosed.Broadcast();
 	UGameplayStatics::PlaySound2D(GetWorld(), BackSoundEffect);
 }

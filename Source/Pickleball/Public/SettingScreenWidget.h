@@ -27,6 +27,10 @@ public:
 	UPROPERTY()
 	FOnSettingsClosedDelegate OnSettingsClosed;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundBase* BackSoundEffect;
+
+
 private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))

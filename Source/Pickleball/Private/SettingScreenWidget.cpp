@@ -4,6 +4,7 @@
 #include "SettingScreenWidget.h"
 
 #include "Components/Button.h"
+#include "Kismet/GameplayStatics.h"
 
 void USettingScreenWidget::NativeConstruct()
 {
@@ -19,4 +20,5 @@ void USettingScreenWidget::OnExitButtonClicked()
 {
 	RemoveFromParent();
 	OnSettingsClosed.Broadcast();
+	UGameplayStatics::PlaySound2D(GetWorld(), BackSoundEffect);
 }

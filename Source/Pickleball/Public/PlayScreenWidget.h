@@ -19,10 +19,10 @@ public:
 	UFUNCTION()
 	void UpdateScore(int NewScore);
 
-	UFUNCTION()
-	void HandlePauseClosed();
-	UFUNCTION()
-	void PauseButtonClicked();
+	//UFUNCTION()
+	//void HandlePauseClosed();
+	//UFUNCTION()
+	//void PauseButtonClicked();
 	
 	virtual void NativeConstruct() override;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
