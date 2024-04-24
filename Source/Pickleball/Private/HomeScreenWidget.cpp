@@ -3,6 +3,7 @@
 
 #include "HomeScreenWidget.h"
 
+#include "CoinShopScreen.h"
 #include "CollectionWidget.h"
 #include "SettingScreenWidget.h"
 #include "ShopScreenWidget.h"
@@ -24,17 +25,18 @@ void UHomeScreenWidget::NativeConstruct()
 	if(SettingsButton!= nullptr)
 	{
 		SettingsButton->OnClicked.AddDynamic(this,&UHomeScreenWidget::OnSettingsButtonClicked);
-		UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 	}
 	if(CollectionButton!= nullptr)
 	{
 		CollectionButton->OnClicked.AddDynamic(this,&UHomeScreenWidget::OnCollectionButtonClicked);
-		UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 	}
 	if(ShopButton!= nullptr)
 	{
 		ShopButton->OnClicked.AddDynamic(this,&UHomeScreenWidget::OnShopButtonClicked);
-		UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+	}
+	if(PlusCoinButton != nullptr)
+	{
+		PlusCoinButton->OnClicked.AddDynamic(this, &UHomeScreenWidget::UHomeScreenWidget::OnPlusCoinClicked);
 	}
 }
 
@@ -71,6 +73,15 @@ void UHomeScreenWidget::OnShopButtonClicked()
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	UShopScreenWidget* ShopScreenWidget = Cast<UShopScreenWidget>(WidgetLoader->LoadWidget(FName("PaddleShopScreen"), GetWorld(),  1));
 	ShopScreenWidget->OnShopClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+}
+
+void UHomeScreenWidget::OnPlusCoinClicked()
+{
+	SetVisibility(ESlateVisibility::HitTestInvisible);
+	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+	UCoinShopScreen* CoinShopScreenWidget = Cast<UCoinShopScreen>(WidgetLoader->LoadWidget(FName("CoinShopScreen"), GetWorld(),  1));
+	CoinShopScreenWidget->OnCoinShopClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 }
 
