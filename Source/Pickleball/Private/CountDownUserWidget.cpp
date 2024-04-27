@@ -29,6 +29,7 @@ void UCountDownUserWidget::PlayCountDownAnimation()
 		const float AnimationDuration = FadeInAnimation->GetEndTime();
 		FTimerHandle CountdownTimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(CountdownTimerHandle, this, &UCountDownUserWidget::CountdownTimerFinished, AnimationDuration, false);
+		
 	}
 }
 
@@ -38,6 +39,8 @@ void UCountDownUserWidget::CountdownTimerFinished()
 	if(CurrentCount > 0)
 	{
 		PlayCountDownAnimation();
+		UGameplayStatics::PlaySound2D(GetWorld(), CountDownSoundEffect);
+
 	}
 	else
 	{
@@ -52,6 +55,7 @@ void UCountDownUserWidget::CountdownTimerFinished()
 		APlayerController* PlayerController =  GetWorld()->GetFirstPlayerController();
 		PlayerController->EnableInput(PlayerController);
 
+		UGameplayStatics::PlaySound2D(GetWorld(), CountDownSoundEffect);
 		
 	}
 }
