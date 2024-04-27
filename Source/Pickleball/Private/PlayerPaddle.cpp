@@ -86,13 +86,6 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 				const FVector Force = FVector(ForceXDistance, ForceYDistance, ForceZDistance);
 				UE_LOG(LogTemp, Warning, TEXT("Force: %s"), *Force.ToString());
 				
-				// Apply the force in the calculated direction with the calculated magnitude
-				if(bIsFirstSwing)
-				{
-					BallInScene->BallMesh->SetEnableGravity(true);
-					bIsFirstSwing = false;
-				}
-				
 				CurrentScore++;
 				
 				if(MainGamemode)

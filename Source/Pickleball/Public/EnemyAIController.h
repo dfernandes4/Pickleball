@@ -18,6 +18,7 @@ public:
 	
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void BeginPlay() override;
+	void SetRespondingState() const;
 	void SetRespondingState(const FVector& LocationToHitAt) const;
 	void SetIdleState() const;
 	void SetBallLandingLocation(const FVector& BallLandingLocation) const;

@@ -17,7 +17,7 @@ public:
 	// Sets default values for this pawn's properties
 	AEnemyPaddle();
 
-	void HitBall() const;
+	void HitBall();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	UFloatingPawnMovement* MovementComponent;

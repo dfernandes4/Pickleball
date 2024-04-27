@@ -155,8 +155,6 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 	{
 		if(CurrentPaddle->IsA(APlayerPaddle::StaticClass()))
 		{
-			BallPositionSymbol->SetActorHiddenInGame(true);
-			
 			if(IsValid(EnemyPaddle))
 			{
 				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(HittingLocation);
@@ -165,7 +163,6 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 		}
 		else if(CurrentPaddle->IsA(AEnemyPaddle::StaticClass()))
 		{
-			BallPositionSymbol->SetActorHiddenInGame(false);
 			PlayerPaddle->SetIsPlayersTurn(true);
 		}
 	}

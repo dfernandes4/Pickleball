@@ -30,6 +30,8 @@ APaddle::APaddle()
 	BoxCollider->SetGenerateOverlapEvents(true);
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &APaddle::OnPaddleBeginOverlap);
 	BoxCollider->OnComponentEndOverlap.AddDynamic(this, &APaddle::OnPaddleEndOverlap);
+
+	bIsFirstSwing = true;
 }
 
 void APaddle::BeginPlay()

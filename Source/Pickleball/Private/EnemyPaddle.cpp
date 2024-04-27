@@ -15,9 +15,15 @@ AEnemyPaddle::AEnemyPaddle()
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
 }
 
-void AEnemyPaddle::HitBall() const
+void AEnemyPaddle::HitBall()
 {
 	//Might change values, ENEMY CANNOT MISS!
+	if(bIsFirstSwing)
+	{
+		BallInScene->BallMesh->SetEnableGravity(true);
+		bIsFirstSwing = false;
+	}
+	
 	FVector RandomForce;
 	RandomForce.X = -32;
 	constexpr float YOuterBounds = 372.f;
@@ -34,5 +40,6 @@ void AEnemyPaddle::HitBall() const
 	
 	BallInScene->ApplySwipeForce(RandomForce, this);
 }
+
 
 

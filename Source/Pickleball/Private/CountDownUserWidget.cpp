@@ -3,9 +3,13 @@
 
 #include "CountDownUserWidget.h"
 
+#include "AIState.h"
+#include "EnemyAIController.h"
 #include "UserWidgetLoader.h"
 #include "Animation/WidgetAnimation.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Components/TextBlock.h"
+#include "Kismet/GameplayStatics.h"
 
 void UCountDownUserWidget::NativeConstruct()
 {
@@ -37,6 +41,9 @@ void UCountDownUserWidget::CountdownTimerFinished()
 	}
 	else
 	{
+		AEnemyAIController* EnemyAIController = Cast<AEnemyAIController>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyAIController::StaticClass()));
+		EnemyAIController->SetRespondingState();
+		
 		RemoveFromParent();
 
 		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
@@ -44,5 +51,7 @@ void UCountDownUserWidget::CountdownTimerFinished()
 		
 		APlayerController* PlayerController =  GetWorld()->GetFirstPlayerController();
 		PlayerController->EnableInput(PlayerController);
+
+		
 	}
 }
