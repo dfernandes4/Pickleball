@@ -13,6 +13,7 @@ AEnemyPaddle::AEnemyPaddle()
 	PrimaryActorTick.bCanEverTick = false;
 
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
+	MovementComponent->MaxSpeed = 400.f;
 }
 
 void AEnemyPaddle::HitBall()
@@ -27,14 +28,14 @@ void AEnemyPaddle::HitBall()
 	FVector RandomForce;
 	RandomForce.X = -32;
 	constexpr float YOuterBounds = 372.f;
-	const float PercentageOfDistanceFromCenter = GetActorLocation().Z / YOuterBounds;
+	const float PercentageOfDistanceFromCenter = GetActorLocation().Y / YOuterBounds;
 	if(PercentageOfDistanceFromCenter < 0)
 	{
-		RandomForce.Y = FMath::RandRange(0.f, -PercentageOfDistanceFromCenter * 45.f);
+		RandomForce.Y = FMath::RandRange(0.f, -PercentageOfDistanceFromCenter * 15.f);
 	}
 	else
 	{
-		RandomForce.Y = FMath::RandRange(PercentageOfDistanceFromCenter * -45.f, 0.f);
+		RandomForce.Y = FMath::RandRange(PercentageOfDistanceFromCenter * -15.f, 0.f);
 	}
 	RandomForce.Z = 30;
 	

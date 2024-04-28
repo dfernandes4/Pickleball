@@ -17,7 +17,6 @@ void AMainPlayerController::SetupInputComponent()
 void AMainPlayerController::BeginPlay()
 { 
     Super::BeginPlay();
-    DisableInput(this);
 }
 
 void AMainPlayerController::PlayerTick(float DeltaTime)
