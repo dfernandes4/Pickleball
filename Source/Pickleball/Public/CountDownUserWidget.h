@@ -20,6 +20,9 @@ public:
 	void PlayCountDownAnimation();
 	UFUNCTION()
 	void CountdownTimerFinished();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundBase* CountDownSoundEffect; 
 	
 private:
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
@@ -28,6 +31,8 @@ private:
 	TObjectPtr<class UTextBlock> CountDownTextBlock;
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 	TObjectPtr<UWidgetAnimation> FadeInAnimation;
+
+	
 	
 	int CurrentCount;
 };

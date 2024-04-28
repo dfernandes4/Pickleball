@@ -19,9 +19,15 @@ class PICKLEBALL_API UShopScreenWidget : public UUserWidget
 public:
 
 	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void OnAddCoinsBtnClicked();
 	
 	UFUNCTION()
 	void OnExitButtonClicked();
+
+	UFUNCTION()
+	void HandleChildClosed();
 	
 	UPROPERTY()
 	FOnShopClosedDelegate OnShopClosed;

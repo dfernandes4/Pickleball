@@ -27,6 +27,9 @@ public:
 	virtual void NativeConstruct() override;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundBase* PointSoundEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundBase* PauseSoundEffect;
 	
 private:
 	

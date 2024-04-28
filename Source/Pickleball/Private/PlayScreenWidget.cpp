@@ -44,6 +44,7 @@ void UPlayScreenWidget::PauseButtonClicked()
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	USettingScreenWidget* SettingScreenWidget = Cast<USettingScreenWidget>(WidgetLoader->LoadWidget(FName("SettingScreen"), GetWorld(),  1));
 	SettingScreenWidget->OnSettingsClosed.AddDynamic(this, &UPlayScreenWidget::HandlePauseClosed);
+	UGameplayStatics::PlaySound2D(GetWorld(), PauseSoundEffect);
 }
 
 void UPlayScreenWidget::HandlePauseClosed()
