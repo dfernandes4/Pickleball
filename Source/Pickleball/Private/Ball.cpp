@@ -157,8 +157,8 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 		{
 			if(IsValid(EnemyPaddle))
 			{
-				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(HittingLocation);
 				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetBallLandingLocation(BallPositionSymbol->GetActorLocation());
+				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(HittingLocation);
 			}
 		}
 		else if(CurrentPaddle->IsA(AEnemyPaddle::StaticClass()))

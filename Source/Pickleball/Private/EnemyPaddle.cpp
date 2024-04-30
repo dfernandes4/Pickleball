@@ -14,6 +14,8 @@ AEnemyPaddle::AEnemyPaddle()
 
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
 	MovementComponent->MaxSpeed = 400.f;
+
+	ForceMultiplier = 1;
 }
 
 void AEnemyPaddle::HitBall()
@@ -23,23 +25,29 @@ void AEnemyPaddle::HitBall()
 	{
 		BallInScene->BallMesh->SetEnableGravity(true);
 		bIsFirstSwing = false;
-	}
-	
-	FVector RandomForce;
-	RandomForce.X = -32;
-	constexpr float YOuterBounds = 372.f;
-	const float PercentageOfDistanceFromCenter = GetActorLocation().Y / YOuterBounds;
-	if(PercentageOfDistanceFromCenter < 0)
-	{
-		RandomForce.Y = FMath::RandRange(0.f, -PercentageOfDistanceFromCenter * 15.f);
+
+		BallInScene->ApplySwipeForce(FVector(-32,10,30), this);
 	}
 	else
 	{
-		RandomForce.Y = FMath::RandRange(PercentageOfDistanceFromCenter * -15.f, 0.f);
-	}
-	RandomForce.Z = 30;
+		FVector RandomForce;
+		RandomForce.X = -32 * ForceMultiplier;
+		constexpr float YOuterBounds = 372.f;
+		const float PercentageOfDistanceFromCenter = GetActorLocation().Y / YOuterBounds;
+		if(PercentageOfDistanceFromCenter < 0)
+		{
+			RandomForce.Y = FMath::RandRange(0.f, -PercentageOfDistanceFromCenter * 15.f);
+		}
+		else
+		{
+			RandomForce.Y = FMath::RandRange(PercentageOfDistanceFromCenter * -15.f, 0.f);
+		}
+		RandomForce.Z = 30 / ForceMultiplier;
 	
-	BallInScene->ApplySwipeForce(RandomForce, this);
+		BallInScene->ApplySwipeForce(RandomForce, this);
+	}
+	
+	
 }
 
 
