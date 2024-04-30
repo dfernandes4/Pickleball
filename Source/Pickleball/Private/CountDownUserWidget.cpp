@@ -10,18 +10,25 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 void UCountDownUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 	CurrentCount = 3;
 	PlayCountDownAnimation();
+
+	if (CountDownSoundEffect != nullptr)
+	{
+		CountDownSoundEffect->PrimeSoundCue();
+	}
 }
 
 void UCountDownUserWidget::PlayCountDownAnimation()
 {
 	if(CurrentCount > 0)
 	{
+		UGameplayStatics::PlaySound2D(GetWorld(), CountDownSoundEffect);
 		CountDownTextBlock->SetText(FText::FromString(FString::FromInt(CurrentCount)));
 		PlayAnimation(FadeInAnimation);
 
@@ -39,7 +46,6 @@ void UCountDownUserWidget::CountdownTimerFinished()
 	if(CurrentCount > 0)
 	{
 		PlayCountDownAnimation();
-		UGameplayStatics::PlaySound2D(GetWorld(), CountDownSoundEffect);
 
 	}
 	else
@@ -54,8 +60,6 @@ void UCountDownUserWidget::CountdownTimerFinished()
 		
 		APlayerController* PlayerController =  GetWorld()->GetFirstPlayerController();
 		PlayerController->EnableInput(PlayerController);
-
-		UGameplayStatics::PlaySound2D(GetWorld(), CountDownSoundEffect);
 		
 	}
 }

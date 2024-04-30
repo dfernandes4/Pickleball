@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/Slider.h"
 #include "SettingScreenWidget.generated.h"
 
 class UBackgroundBlur;
@@ -30,6 +31,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundBase* BackSoundEffect;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundClass* MasterSoundClass;
+		
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundClass* SFXSoundClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundClass* MusicSoundClass;
+
 
 private:
 
@@ -43,13 +53,13 @@ private:
 	TObjectPtr<UImage> OutlineImage;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class USlider> Slider1;
+	TObjectPtr<class USlider> MasterSlider;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USlider> Slider2;
+	TObjectPtr<USlider> SfxSlider;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USlider> Slider3;
+	TObjectPtr<USlider> MusicSlider;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UButton> ExitButton;
@@ -68,7 +78,19 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UBackgroundBlur> BackgroundBlur;
-	;
+
+
+	UFUNCTION(meta = (AllowPrivateAccess = "true"))
+	void OnMasterVolumeChanged(float NewVolume);
+
+	UFUNCTION(meta = (AllowPrivateAccess = "true"))
+	void OnSFXVolumeChanged(float NewVolume);
+
+	UFUNCTION(meta = (AllowPrivateAccess = "true"))
+	void OnMusicVolumeChanged(float NewVolume);
+	
+	
+	
 	
 	
 
