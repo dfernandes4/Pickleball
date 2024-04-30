@@ -14,8 +14,19 @@ class PICKLEBALL_API AMainGamemode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	AMainGamemode();
 
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundClass* MasterSoundClass;
+		
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundClass* SFXSoundClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundClass* MusicSoundClass;
+
 
 	FOnScoreUpdated OnScoreUpdated;
 };

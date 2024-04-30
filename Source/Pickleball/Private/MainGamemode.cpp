@@ -2,8 +2,25 @@
 
 
 #include "MainGamemode.h"
-
+#include "Sound/SoundClass.h"
 #include "UserWidgetLoader.h"
+
+
+AMainGamemode::AMainGamemode()
+{
+	if(MasterSoundClass != nullptr)
+	{
+		MasterSoundClass->Properties.Volume = .8;
+	}
+	if(SFXSoundClass != nullptr)
+	{
+		SFXSoundClass->Properties.Volume = .8;
+	}
+	if(MusicSoundClass != nullptr)
+	{
+		MusicSoundClass->Properties.Volume = .8;
+	}
+}
 
 void AMainGamemode::BeginPlay()
 {
