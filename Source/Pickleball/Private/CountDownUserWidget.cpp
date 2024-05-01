@@ -17,11 +17,6 @@ void UCountDownUserWidget::NativeConstruct()
 	Super::NativeConstruct();
 	CurrentCount = 3;
 	PlayCountDownAnimation();
-
-	if (CountDownSoundEffect != nullptr)
-	{
-		CountDownSoundEffect->PrimeSoundCue();
-	}
 }
 
 void UCountDownUserWidget::PlayCountDownAnimation()
