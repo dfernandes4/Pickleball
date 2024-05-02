@@ -80,7 +80,7 @@ void ABall::ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor)
 		{
 			BallMesh->WakeRigidBody();
 			BallMesh->AddImpulse(Force);
-		}, .07, false);
+		}, .08, false);
 
 		
 			AudioComponent->SetSound(HitSound);
@@ -94,8 +94,6 @@ void ABall::ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor)
 		PredictProjectileLandingPointTimerHandleTimerDel.BindUFunction(this, FName("PredictProjectileLandingPoint"));
 		
 		GetWorld()->GetTimerManager().SetTimer(PredictProjectileLandingPointTimerHandle, PredictProjectileLandingPointTimerHandleTimerDel, 0.1f, false);
-		
-		UE_LOG(LogTemp, Warning, TEXT("Applying force: %s"), *Force.ToString());
 	}
 }
 
@@ -167,33 +165,3 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 		}
 	}
 }
-
-/*
-FVector ABall::FindHittingLocation(bool bIsPlayerPaddle, const FVector& BallsVelocity, const TArray<FPredictProjectilePathPointData>& PathData) const
-{
-	float Min,Max;
-	if(bIsPlayerPaddle)
-	{
-		Min = -215;
-		Max = 115;
-	}
-	else
-	{
-		Min = -115;
-		Max = 215;
-	}
-	
-	Min = -115;
-	Max = 115;
-	const float XOffset = (FMath::RandBool() ? Min : Max);
-	UE_LOG(LogTemp, Warning, TEXT("XOffset: %f"), XOffset);
-
-	//Change if court size changes
-	
-	const FVector BallLandingPosition = BallPositionSymbol->GetActorLocation();
-	FVector HittingLocation = BallLandingPosition + ( XOffset * BallsVelocity.GetSafeNormal());
-	HittingLocation.Z = CalculateZPosition(PathData, HittingLocation.X);
-	
-	return HittingLocation;
-}
-*/
