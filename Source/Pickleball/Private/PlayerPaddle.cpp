@@ -19,6 +19,8 @@ APlayerPaddle::APlayerPaddle()
 	CurrentScore = 0;
 
 	bIsPlayersTurn = true;
+
+	SwipeForceMultiplier = .02f;
 	
 }
 
@@ -64,7 +66,7 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 		{
 			if (IsValid(BallInScene))
 			{
-				FVector ScaledPaddleVelocity = (Cast<AMainPlayerController>(GetController())->GetPaddleVelocity()) * .01;
+				FVector ScaledPaddleVelocity = (Cast<AMainPlayerController>(GetController())->GetPaddleVelocity()) * SwipeForceMultiplier;
 
 				UE_LOG(LogTemp, Warning, TEXT("Paddle Velocity: %s"), *(Cast<AMainPlayerController>(GetController())->GetPaddleVelocity()).ToString());
 				
