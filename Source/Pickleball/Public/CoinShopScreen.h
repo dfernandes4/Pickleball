@@ -22,6 +22,15 @@ public:
 	
 	UFUNCTION()
 	void OnExitButtonPressed();
+
+	UFUNCTION()
+	void OnSomeGoldBtnPressed();
+	
+	UFUNCTION()
+	void OnLotsofGoldBtnPressed();
+	
+	UFUNCTION()
+	void OnTonsofBtnPressed();
 	
 	FOnCoinShopClosedDelegate OnCoinShopClosed;
 	

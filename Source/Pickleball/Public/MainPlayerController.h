@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Interfaces/OnlineStoreInterfaceV2.h"
 #include "MainPlayerController.generated.h"
 
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPurchaseCompletedDelegate, int32, CoinsAmount);
+
 UCLASS()
 class PICKLEBALL_API AMainPlayerController : public APlayerController
 {
@@ -19,6 +22,15 @@ public:
 	
 	UFUNCTION()
 	FVector GetPaddleVelocity() const;
+
+	UFUNCTION()
+	void InitiatePurchaseRequest(const FString& ProductId);
+
+	
+	void HandlePurchaseCompletion(bool bWasSuccessful, const TArray<FUniqueOfferId>& Offers, const FString& ErrorMsg);
+	
+	FOnPurchaseCompletedDelegate  OnPurchaseCompleted;
+	
 
 protected:
 	virtual void PlayerTick(float DeltaTime) override;

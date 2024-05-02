@@ -1,5 +1,9 @@
 #include "MainPlayerController.h"
+#include "OnlineSubsystem.h"
 #include "GameFramework/Pawn.h"
+#include "Interfaces/OnlineStoreInterfaceV2.h"
+#include "Interfaces/OnlineIdentityInterface.h"
+
 
 void AMainPlayerController::SetupInputComponent()
 {
@@ -66,4 +70,71 @@ void AMainPlayerController::OnTouchMoved(const ETouchIndex::Type FingerIndex, co
 FVector AMainPlayerController::GetPaddleVelocity() const
 {
     return PaddleVelocity;
+}
+
+ void AMainPlayerController::InitiatePurchaseRequest(const FString& ProductId)
+{
+
+    IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
+    if (OnlineSub)
+    {
+        IOnlineStoreV2Ptr StoreInterface = OnlineSub->GetStoreV2Interface();
+        if (StoreInterface.IsValid())
+        {
+            
+            // Get the identity interface to obtain the user ID
+            IOnlineIdentityPtr IdentityInterface = OnlineSub->GetIdentityInterface();
+            if (!IdentityInterface.IsValid())
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Identity interface not available"));
+                return;
+            }
+
+            // Obtain the user ID
+            FUniqueNetIdPtr UserId = IdentityInterface->GetUniquePlayerId(0); // Assuming the first local player
+            if (!UserId.IsValid())
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Failed to get valid user ID"));
+                return;
+            }
+
+            TArray<FUniqueOfferId> OfferIds;
+            OfferIds.Add(FUniqueOfferId(ProductId));
+            FOnQueryOnlineStoreOffersComplete OnQueryCompleteDelegate = FOnQueryOnlineStoreOffersComplete::CreateUObject(this, &AMainPlayerController::HandlePurchaseCompletion);
+            // Trigger the purchase
+            StoreInterface->QueryOffersById(*UserId, OfferIds, OnQueryCompleteDelegate);
+        }
+    }
+}
+
+void AMainPlayerController::HandlePurchaseCompletion(bool bWasSuccessful, const TArray<FUniqueOfferId>& Offers, const FString& ErrorMsg)
+{
+    if (bWasSuccessful && Offers.Num() > 0)
+    {
+        // Reward the player for that purchase
+        const FString& OfferId = Offers[0];
+        int32 CoinsAmount = 0;
+        if(OfferId == "")
+        {
+            CoinsAmount = 100;
+        }
+        else if(OfferId == "")
+        {
+            CoinsAmount = 500;
+        }
+        else if(OfferId == "")
+        {
+            CoinsAmount = 1500;
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Offer Id is not valid."));
+            return;
+        }
+        OnPurchaseCompleted.Broadcast(CoinsAmount);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Purchase failed: %s"), *ErrorMsg);
+    }
 }

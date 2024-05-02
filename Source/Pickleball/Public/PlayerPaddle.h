@@ -21,6 +21,9 @@ public:
 
 	UFUNCTION()
 	void StartSwing(const FVector& BallCurrentLocation);
+
+	UFUNCTION()
+	void AddPlayerCoins(int32 CoinsAmount);
 	
 	UFUNCTION()
 	float GetScore() const;

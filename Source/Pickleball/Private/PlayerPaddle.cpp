@@ -4,7 +4,6 @@
 #include "PlayerPaddle.h"
 
 #include "Ball.h"
-#include "Engine.h"
 #include "MainGamemode.h"
 #include "MainPlayerController.h"
 #include "PaperSpriteComponent.h"
@@ -28,6 +27,12 @@ void APlayerPaddle::BeginPlay()
 	Super::BeginPlay();
 
 	MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
+
+	AMainPlayerController* PlayerController = Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController());
+	if (PlayerController)
+	{
+		PlayerController->OnPurchaseCompleted.AddDynamic(this, &APlayerPaddle::AddPlayerCoins);
+	}
 }
 
 void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
@@ -99,6 +104,11 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 		}
 		
 	}
+}
+
+void APlayerPaddle::AddPlayerCoins(int32 CoinsAmount)
+{
+	CurrentCoinCount += CoinsAmount;
 }
 
 float APlayerPaddle::GetScore() const
