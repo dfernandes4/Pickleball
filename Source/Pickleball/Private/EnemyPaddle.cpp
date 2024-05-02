@@ -26,17 +26,24 @@ void AEnemyPaddle::HitBall()
 		BallInScene->BallMesh->SetEnableGravity(true);
 		bIsFirstSwing = false;
 
-		BallInScene->ApplySwipeForce(FVector(-32,10,30), this);
+		BallInScene->ApplySwipeForce(FVector(-42,13.5,35), this);
 	}
 	else
 	{
 		FVector RandomForce;
-		RandomForce.X = -32 * ForceMultiplier;
+		const float BallCurrentZ = BallInScene->BallMesh->GetComponentLocation().Z;
+		const float ZRatioToFloor = FMath::Clamp((BallCurrentZ / 40), 0.02, 1);
+		
 		constexpr float YOuterBounds = 372.f;
 		constexpr float XOuterBounds = 670.f;
 		
 		const float PercentageOfYDistanceFromCenter = GetActorLocation().Y / YOuterBounds;
 		const float PercentageOfXDistanceFromCenter = GetActorLocation().X / XOuterBounds;
+
+		const float PercentageOfZRatioUsed = (1 - PercentageOfXDistanceFromCenter) * ZRatioToFloor;
+		const float XToLoseFromZRatio = (32 * ForceMultiplier) * PercentageOfZRatioUsed;
+		
+		RandomForce.X = (-32 * ForceMultiplier) + XToLoseFromZRatio;
 		
 		if(PercentageOfYDistanceFromCenter < 0)
 		{
@@ -46,12 +53,8 @@ void AEnemyPaddle::HitBall()
 		{
 			RandomForce.Y = FMath::RandRange(PercentageOfYDistanceFromCenter * -15.f, 0.f);
 		}
-		RandomForce.Z = (26 / ForceMultiplier) * PercentageOfXDistanceFromCenter; // + ((FMath::Abs(RandomForce.Y/15) * 15));
-		const float BallCurrentZ = BallInScene->BallMesh->GetComponentLocation().Z;
-		if(BallCurrentZ < 20)
-		{
-			RandomForce.Z += (1 - (BallCurrentZ / 20)) *  10;
-		}
+		
+		RandomForce.Z = FMath::Clamp(((26 / ForceMultiplier) * PercentageOfXDistanceFromCenter) + (.3 * (((26 / ForceMultiplier) * PercentageOfXDistanceFromCenter) * (1 - ZRatioToFloor))), 0.f, (26 / ForceMultiplier));
 
 		UE_LOG(LogTemp, Warning, TEXT("RandomForce: %s"), *RandomForce.ToString());
 		UE_LOG(LogTemp, Warning, TEXT("Ball's Mesh Location: %s"), *BallInScene->BallMesh->GetComponentLocation().ToString());

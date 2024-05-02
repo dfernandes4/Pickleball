@@ -78,7 +78,7 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 				float ForceZDistance = 20;
 				if(BallCurrentLocation.Z < 185)
 				{
-					// 10 is the addition needed to make the ball go over the fence if it is on the floor)
+					// 10 is the addition needed to make the ball go over the fence if it is on the floor
 					ForceZDistance += (15 * (BallCurrentLocation.Z / 185));
 					if(BallCurrentLocation.X < -470 || ForceYDistance > 2 || ForceYDistance < -2)
 					{
