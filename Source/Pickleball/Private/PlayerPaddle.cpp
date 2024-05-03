@@ -7,6 +7,8 @@
 #include "MainGamemode.h"
 #include "MainPlayerController.h"
 #include "PaperSpriteComponent.h"
+#include "PickleballSaveGame.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APlayerPaddle::APlayerPaddle()
@@ -132,6 +134,72 @@ void APlayerPaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AA
 void APlayerPaddle::SetIsPlayersTurn(bool bIsPlayersTurnIn)
 {
 	bIsPlayersTurn = bIsPlayersTurnIn;
+}
+
+void APlayerPaddle::SaveAllStats()
+{
+	UPickleballSaveGame* SaveGameInstance = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromSlot("PlayerSaveSlot", 0));
+	if (!SaveGameInstance)
+	{
+		SaveGameInstance = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
+	}
+	
+	SaveGameInstance->SetPlayerCoins(CurrentCoinCount);
+	SaveGameInstance->SetPlayerHighScore(HighScore);
+	SaveGameInstance->SetPaddleUnlockStatuses(PaddleUnlockStatuses);
+
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, "PlayerSaveSlot", 0);
+}
+
+void APlayerPaddle::SavePlayerCoins(int32 CoinAmount)
+{
+	UPickleballSaveGame* SaveGameInstance = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromSlot("PlayerSaveSlot", 0));
+	if (!SaveGameInstance)
+	{
+		SaveGameInstance = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
+	}
+	
+	SaveGameInstance->SetPlayerCoins(CoinAmount);
+
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, "PlayerSaveSlot", 0);
+}
+
+void APlayerPaddle::SavePlayerHighScore(int32 HighScoreAmount)
+{
+	UPickleballSaveGame* SaveGameInstance = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromSlot("PlayerSaveSlot", 0));
+	if (!SaveGameInstance)
+	{
+		SaveGameInstance = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
+	}
+	
+	SaveGameInstance->SetPlayerHighScore(HighScoreAmount);
+
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, "PlayerSaveSlot", 0);
+}
+
+void APlayerPaddle::SavePlayerPaddleUnlockStatuses(const TMap<FString, bool>& PaddleUnlockStatusesIn)
+{
+	UPickleballSaveGame* SaveGameInstance = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromSlot("PlayerSaveSlot", 0));
+	if (!SaveGameInstance)
+	{
+		SaveGameInstance = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
+	}
+	
+	SaveGameInstance->SetPaddleUnlockStatuses(PaddleUnlockStatusesIn);
+
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, "PlayerSaveSlot", 0);
+}
+
+void APlayerPaddle::LoadGame()
+{
+	UPickleballSaveGame* SaveGameInstance = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromSlot("PlayerSaveSlot", 0));
+
+	if(SaveGameInstance != nullptr)
+	{
+		CurrentCoinCount = SaveGameInstance->GetPlayerCoins();
+		HighScore = SaveGameInstance->GetPlayerHighScore();
+		PaddleUnlockStatuses = SaveGameInstance->GetPaddleUnlockStatuses();
+	}
 }
 
 

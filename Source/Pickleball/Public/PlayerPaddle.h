@@ -16,6 +16,7 @@ class PICKLEBALL_API APlayerPaddle : public APaddle
 	GENERATED_BODY()
 
 public:
+	
 	// Sets default values for this pawn's properties
 	APlayerPaddle();
 
@@ -34,6 +35,27 @@ public:
 
 	UFUNCTION()
 	void SetIsPlayersTurn(bool bIsPlayersTurnIn);
+
+#pragma region Save/Load
+
+	UFUNCTION()
+	void SaveAllStats();
+
+	UFUNCTION()
+	void SavePlayerCoins(int32 CoinAmount);
+
+	UFUNCTION()
+	void SavePlayerHighScore(int32 CoinAmount);
+
+	UFUNCTION()
+	void SavePlayerPaddleUnlockStatuses(const TMap<FString, bool>& PaddleUnlockStatusesIn);
+
+	UFUNCTION()
+	void LoadGame();
+
+	
+#pragma endregion Save/Load
+	
 private:
 
 #pragma region Swiping
@@ -59,14 +81,20 @@ private:
 #pragma endregion Swiping
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
-	float CurrentCoinCount;
+	int32 CurrentCoinCount;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
+	int32 HighScore;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
-	float CurrentScore;
-
+	int32 CurrentScore;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
+	TMap<FString, bool> PaddleUnlockStatuses;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ClassVariables, meta = (AllowPrivateAccess))
 	AMainGamemode* MainGamemode;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ClassVariables, meta = (AllowPrivateAccess))
 	bool bIsPlayersTurn;
 };
