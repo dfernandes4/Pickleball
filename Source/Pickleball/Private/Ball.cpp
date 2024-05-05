@@ -2,11 +2,10 @@
 
 
 #include "Ball.h"
-
+#include "NiagaraComponent.h"
 #include "BallPositionSymbol.h"
 #include "EnemyAIController.h"
 #include "EnemyPaddle.h"
-#include "MainPlayerController.h"
 #include "PlayerPaddle.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -32,6 +31,10 @@ ABall::ABall()
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
 	AudioComponent->SetupAttachment(RootComponent);
 	AudioComponent->bAutoActivate = false;
+	
+	Trail = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Trail"));
+	Trail->SetupAttachment(BallMesh);
+    
 
 	Speed = 100;
 

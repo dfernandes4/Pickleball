@@ -7,6 +7,7 @@
 #include "Sound/SoundBase.h"
 #include "Ball.generated.h"
 
+class UNiagaraComponent;
 struct FPredictProjectilePathPointData;
 class APaddle;
 class AEnemyPaddle;
@@ -53,6 +54,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = components)
 	USoundBase* HitSound;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	UNiagaraComponent* Trail;
+	
 protected:
 	
 	// Called when the game starts or when spawned
