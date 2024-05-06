@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "MainGamemode.generated.h"
 
+class APlayerPaddle;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnScoreUpdated, int, NewScore);
 
 UCLASS()
@@ -18,6 +19,8 @@ public:
 
 	virtual void BeginPlay() override;
 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundClass* MasterSoundClass;
 		
@@ -26,6 +29,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundClass* MusicSoundClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	APlayerPaddle* PlayerPaddle;
 
 
 	FOnScoreUpdated OnScoreUpdated;
