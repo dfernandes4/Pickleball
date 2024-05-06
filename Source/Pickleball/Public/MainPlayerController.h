@@ -7,6 +7,7 @@
 #include "Interfaces/OnlineStoreInterfaceV2.h"
 #include "MainPlayerController.generated.h"
 
+
 /**
  * 
  */
@@ -54,4 +55,5 @@ private:
 	float CurrentDeltaTime;
 	UPROPERTY()
 	FVector PaddleVelocity;
+
 };

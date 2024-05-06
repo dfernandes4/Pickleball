@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Paddle.h"
 #include "PlayerPaddle.generated.h"
-
+class UNiagaraComponent;
 class AMainGamemode;
 class USpringArmComponent;
 class UCameraComponent;
@@ -53,6 +53,11 @@ public:
 	UFUNCTION()
 	void LoadGame();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	UParticleSystem* SwingEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	UNiagaraComponent* HitEffect;
 	
 #pragma endregion Save/Load
 	
@@ -77,6 +82,9 @@ private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Swiping, meta = (AllowPrivateAccess))
 	float SwipeForceMultiplier;
+	
+
+	
 
 #pragma endregion Swiping
 	
@@ -97,4 +105,5 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ClassVariables, meta = (AllowPrivateAccess))
 	bool bIsPlayersTurn;
+	
 };

@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Paddle.generated.h"
 
+
 class UArrowComponent;
 class ABall;
 class UPaperSpriteComponent;
@@ -56,6 +57,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
 	bool bIsFirstSwing;
+
+	
 
 	
 };

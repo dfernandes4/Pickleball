@@ -2,6 +2,7 @@
 
 
 #include "EnemyPaddle.h"
+#include "NiagaraComponent.h"
 #include "Ball.h"
 #include "GameFramework/FloatingPawnMovement.h"
 
