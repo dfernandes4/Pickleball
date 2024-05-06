@@ -2,7 +2,7 @@
 
 
 #include "PlayerPaddle.h"
-
+#include "NiagaraComponent.h"
 #include "Ball.h"
 #include "MainGamemode.h"
 #include "MainPlayerController.h"
@@ -23,6 +23,13 @@ APlayerPaddle::APlayerPaddle()
 	bIsPlayersTurn = true;
 
 	SwipeForceMultiplier = .02f;
+
+	SwingEffect = CreateDefaultSubobject<UParticleSystem>(TEXT("swingeffect"));
+	AttachToComponent(PaddleSprite, FAttachmentTransformRules::KeepRelativeTransform);
+	
+
+	HitEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Hiteffect"));
+	HitEffect->SetupAttachment(PaddleSprite);
 	
 }
 
@@ -61,7 +68,6 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 		
 		this->PaddleSprite->SetRelativeRotation(CurrentRotation,false, nullptr, ETeleportType::TeleportPhysics);
 		
-		//play the sound effect
 		//play particle effect
 		
 		if(bIsInHittingZone)

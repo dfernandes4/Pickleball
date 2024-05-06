@@ -7,6 +7,7 @@
 #include "EnemyPaddle.generated.h"
 
 class UFloatingPawnMovement;
+class UNiagaraComponent;
 
 UCLASS()
 class PICKLEBALL_API AEnemyPaddle : public APaddle
@@ -21,9 +22,18 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	UFloatingPawnMovement* MovementComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Effects, meta = (AllowPrivateAccess))
+	UNiagaraComponent* SwingEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Effects, meta = (AllowPrivateAccess))
+	UNiagaraComponent* HitEffect;
+	
 	
 private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitting", meta = (AllowPrivateAccess = "true"))
 	float ForceMultiplier;
+
+	
 };
