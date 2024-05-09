@@ -19,6 +19,8 @@ public:
 	AEnemyPaddle();
 
 	void HitBall();
+	
+	virtual void FlipPaddle() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	UFloatingPawnMovement* MovementComponent;

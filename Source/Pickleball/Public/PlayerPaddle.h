@@ -35,6 +35,8 @@ public:
 
 	UFUNCTION()
 	void SetIsPlayersTurn(bool bIsPlayersTurnIn);
+	
+	virtual void FlipPaddle() override;
 
 #pragma region Save/Load
 
@@ -73,9 +75,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
 	bool bIsSwingActive;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
-	bool bIsFacingLeft;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
 	FTimerHandle SwingTimerHandle;
