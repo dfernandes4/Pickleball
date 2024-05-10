@@ -37,5 +37,8 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitting", meta = (AllowPrivateAccess = "true"))
 	float ForceMultiplier;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitting", meta = (AllowPrivateAccess = "true"))
+	float ZForceMultiplierFORTESTING;
+
 	
 };

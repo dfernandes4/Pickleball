@@ -31,6 +31,9 @@ void AEnemyPaddle::HitBall()
 		bIsFirstSwing = false;
 
 		BallInScene->ApplySwipeForce(FVector(-42,13.5,35), this);
+
+		//Tester
+		//BallInScene->ApplySwipeForce(FVector(-128,0,-2.7),  this);
 	}
 	else
 	{
@@ -41,22 +44,26 @@ void AEnemyPaddle::HitBall()
 		
 		const float PercentageOfYDistanceFromCenter = GetActorLocation().Y / YOuterBounds;
 		const float PercentageOfXDistanceFromCenter = FMath::Clamp(GetActorLocation().X / XOuterBounds, 0,1);
-
-		// Find out later!
-		const float ExtraXForceNeeded = ((-16 * ForceMultiplier) * PercentageOfXDistanceFromCenter);
-		RandomForce.X = (-32 * ForceMultiplier) + ExtraXForceNeeded;
+		
+		const float ExtraXForceNeeded = ((-15 / ForceMultiplier) * PercentageOfXDistanceFromCenter);	
+		RandomForce.X = (-33 * ForceMultiplier) + ExtraXForceNeeded;
 
 		// Based on position from center
 		constexpr float MinYVal = -8.f;
 		constexpr float MaxYVal = 8.f;
-		RandomForce.Y = FMath::RandRange(MinYVal * (1 + PercentageOfYDistanceFromCenter), MaxYVal * (1 - PercentageOfYDistanceFromCenter));
-		
-		const float ExtraZForceNeeded = ((13 / (ForceMultiplier * ForceMultiplier)) * PercentageOfXDistanceFromCenter);
-		RandomForce.Z = (26 / (ForceMultiplier * ForceMultiplier)) + ExtraZForceNeeded;
+		RandomForce.Y = ZForceMultiplierFORTESTING * FMath::RandRange(MinYVal * (1 + PercentageOfYDistanceFromCenter), MaxYVal * (1 - PercentageOfYDistanceFromCenter));
+
+		// (0.00324 × X^2) + (0.820 × X) + 49.23
+		RandomForce.Z = (0.00324 * FMath::Pow(RandomForce.X, 2)) + (0.820 * RandomForce.X) + 49.23;
+
+		/*
+			const float ExtraZForceNeeded = ((12.7 * ZForceMultiplierFORTESTING) * PercentageOfXDistanceFromCenter);
+			RandomForce.Z = ((26.3 * ZForceMultiplierFORTESTING) + ExtraZForceNeeded);
+		*/
 
 		UE_LOG(LogTemp, Warning, TEXT("RandomForce: %s"), *RandomForce.ToString());
-		UE_LOG(LogTemp, Warning, TEXT("Ball's Mesh Location: %s"), *BallInScene->BallMesh->GetComponentLocation().ToString());
 		BallInScene->BallMesh->SetWorldLocation(FVector(BallInScene->BallMesh->GetComponentLocation().X, BallInScene->BallMesh->GetComponentLocation().Y, 45));
+		UE_LOG(LogTemp, Warning, TEXT("Ball's Mesh Location: %s"), *BallInScene->BallMesh->GetComponentLocation().ToString());
 		BallInScene->ApplySwipeForce(RandomForce, this);
 	}
 	
