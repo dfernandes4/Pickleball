@@ -19,6 +19,8 @@ public:
 	AEnemyPaddle();
 
 	void HitBall();
+	
+	virtual void FlipPaddle() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	UFloatingPawnMovement* MovementComponent;
@@ -34,6 +36,9 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitting", meta = (AllowPrivateAccess = "true"))
 	float ForceMultiplier;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitting", meta = (AllowPrivateAccess = "true"))
+	float ZForceMultiplierFORTESTING;
 
 	
 };
