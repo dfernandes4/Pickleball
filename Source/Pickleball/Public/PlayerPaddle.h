@@ -53,11 +53,9 @@ public:
 	UFUNCTION()
 	void LoadGame();
 
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
-	UParticleSystem* SwingEffect;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
-	UNiagaraComponent* HitEffect;
+	UNiagaraComponent* SwingEffect;
 	
 #pragma endregion Save/Load
 	

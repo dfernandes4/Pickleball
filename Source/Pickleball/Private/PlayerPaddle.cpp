@@ -24,12 +24,9 @@ APlayerPaddle::APlayerPaddle()
 
 	SwipeForceMultiplier = .02f;
 
-	SwingEffect = CreateDefaultSubobject<UParticleSystem>(TEXT("swingeffect"));
-	AttachToComponent(PaddleSprite, FAttachmentTransformRules::KeepRelativeTransform);
-	
+	SwingEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Hiteffect"));
+	SwingEffect->SetupAttachment(SceneComponent);
 
-	HitEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Hiteffect"));
-	HitEffect->SetupAttachment(PaddleSprite);
 	
 }
 
@@ -44,6 +41,8 @@ void APlayerPaddle::BeginPlay()
 	{
 		PlayerController->OnPurchaseCompleted.AddDynamic(this, &APlayerPaddle::AddPlayerCoins);
 	}
+
+	//SwingEffect->Deactivate();
 }
 
 void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
@@ -54,19 +53,38 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 		bIsPlayersTurn = false;
 
 		//Flip paddle after swipe
+		FRotator SwingEffectCurrentRotation = SwingEffect->GetRelativeRotation();
+		FVector  SwingEffectCurrentLocation = SwingEffect->GetRelativeLocation();
 		FRotator CurrentRotation = PaddleSprite->GetRelativeRotation();
 		if(!bIsFacingLeft)
 		{
 			bIsFacingLeft = true;
 			CurrentRotation.Yaw += 90.0f;
+			SwingEffectCurrentRotation.Roll +=180.0f;
+			SwingEffectCurrentLocation.X += 20.0f;
+			SwingEffectCurrentLocation.Y += 48.0;
 		}
 		else
 		{
 			bIsFacingLeft = false;
 			CurrentRotation.Yaw -= 90.0f;
+			SwingEffectCurrentRotation.Roll -=180.0f;
+			SwingEffectCurrentLocation.X -= 20.0f;
+			SwingEffectCurrentLocation.Y -= 48.0;
+			
 		}
 		
+			
+		
+		
+		SwingEffect->ResetSystem();
+
+		
 		this->PaddleSprite->SetRelativeRotation(CurrentRotation,false, nullptr, ETeleportType::TeleportPhysics);
+
+		this->SwingEffect->SetRelativeRotation(SwingEffectCurrentRotation,false,nullptr,ETeleportType::TeleportPhysics);
+
+		this->SwingEffect->SetRelativeLocation(SwingEffectCurrentLocation,false,nullptr,ETeleportType::TeleportPhysics);
 		
 		//play particle effect
 		
