@@ -44,7 +44,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "BlackboardKeys", meta = (AllowPrivateAccess = "true"))
 	FName LocationToHitAtKey;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "BlackboardKeys", meta = (AllowPrivateAccess = "true"))
-	FName StartLocationKey;
+	FName DefaultTargetLocationKey;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "BlackboardKeys", meta = (AllowPrivateAccess = "true"))
 	FName BallLandingLocationKey;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "BlackboardKeys", meta = (AllowPrivateAccess = "true"))

@@ -18,6 +18,7 @@ AEnemyPaddle::AEnemyPaddle()
 	MovementComponent->MaxSpeed = 400.f;
 
 	ForceMultiplier = 1;
+	XForceToTest = 0;
 }
 
 void AEnemyPaddle::HitBall()
@@ -30,32 +31,46 @@ void AEnemyPaddle::HitBall()
 		BallInScene->BallMesh->SetEnableGravity(true);
 		bIsFirstSwing = false;
 
-		BallInScene->ApplySwipeForce(FVector(-42,13.5,35), this);
+		FVector RandomForceToTest;
+		RandomForceToTest.X = XForceToTest;
+		RandomForceToTest.Y = 0;
+		RandomForceToTest.Z = ZForceMultiplierFORTESTING;
+
+		//BallInScene->ApplySwipeForce(FVector(-42,13.5,35), this);
 
 		//Tester
-		//BallInScene->ApplySwipeForce(FVector(-128,0,-2.7),  this);
+		BallInScene->ApplySwipeForce(FVector(RandomForceToTest),  this);
+		UE_LOG(LogTemp, Warning, TEXT("ForceBeingTested: %s"), *RandomForceToTest.ToString());
 	}
 	else
 	{
 		FVector RandomForce;
 		
 		constexpr float YOuterBounds = 372.f;
-		constexpr float XOuterBounds = 670.f;
+		constexpr float FarthestHittingLocation = 895.0f;
 		
 		const float PercentageOfYDistanceFromCenter = GetActorLocation().Y / YOuterBounds;
-		const float PercentageOfXDistanceFromCenter = FMath::Clamp(GetActorLocation().X / XOuterBounds, 0,1);
+		const float PercentageOfXDistanceFromFarthestHittingLocation = FMath::Clamp(GetActorLocation().X / FarthestHittingLocation, 0,1);
 		
-		const float ExtraXForceNeeded = ((-15 / ForceMultiplier) * PercentageOfXDistanceFromCenter);	
-		RandomForce.X = (-33 * ForceMultiplier) + ExtraXForceNeeded;
+		RandomForce.X = (-32 * ForceMultiplier);
 
 		// Based on position from center
 		constexpr float MinYVal = -8.f;
 		constexpr float MaxYVal = 8.f;
-		RandomForce.Y = ZForceMultiplierFORTESTING * FMath::RandRange(MinYVal * (1 + PercentageOfYDistanceFromCenter), MaxYVal * (1 - PercentageOfYDistanceFromCenter));
+		RandomForce.Y = FMath::RandRange(MinYVal * (1 + PercentageOfYDistanceFromCenter), MaxYVal * (1 - PercentageOfYDistanceFromCenter));
+		
+		const float MinZ = (1.854 * (FMath::Pow(10.f, -5.f) * FMath::Pow(RandomForce.X, 3.f))) +
+							(7.416 * (FMath::Pow(10.f, -3.f) * FMath::Pow(RandomForce.X, 2.f))) + (1.092 * RandomForce.X) + 54.61;
 
-		// (0.00324 × X^2) + (0.820 × X) + 49.23
-		RandomForce.Z = (0.00324 * FMath::Pow(RandomForce.X, 2)) + (0.820 * RandomForce.X) + 49.23;
+		// 7.065×10−13x7+5.755×10−10x6+1.978×10−7x5+3.731×10−5x4+4.212×10−3x3+0.290x2+11.91x+262.7375
+		const float MaxZ = (7.065 * (FMath::Pow(10.f, -13.f) * FMath::Pow(RandomForce.X, 7.f))) + 
+						(5.7551 * (FMath::Pow(10.f, -10.f) * FMath::Pow(RandomForce.X, 6.f))) + 
+						(1.9777 * (FMath::Pow(10.f, -7.f) * FMath::Pow(RandomForce.X, 5.f))) + 
+						(.0000373143f * FMath::Pow(RandomForce.X, 4.f)) + 
+						(.00421209 * FMath::Pow(RandomForce.X, 3.f)) + 
+						(0.290215 * FMath::Pow(RandomForce.X, 2.f)) + (11.9063 * RandomForce.X) + 262.738;
 
+		RandomForce.Z = MinZ + ((MaxZ-MinZ) * PercentageOfXDistanceFromFarthestHittingLocation);
 		/*
 			const float ExtraZForceNeeded = ((12.7 * ZForceMultiplierFORTESTING) * PercentageOfXDistanceFromCenter);
 			RandomForce.Z = ((26.3 * ZForceMultiplierFORTESTING) + ExtraZForceNeeded);

@@ -24,12 +24,8 @@ APlayerPaddle::APlayerPaddle()
 
 	SwipeForceMultiplier = .02f;
 
-	SwingEffect = CreateDefaultSubobject<UParticleSystem>(TEXT("swingeffect"));
-	AttachToComponent(PaddleSprite, FAttachmentTransformRules::KeepRelativeTransform);
-	
-
-	HitEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Hiteffect"));
-	HitEffect->SetupAttachment(PaddleSprite);
+	SwingEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("SwingEffect"));
+	SwingEffect->SetupAttachment(SceneComponent);
 	
 }
 

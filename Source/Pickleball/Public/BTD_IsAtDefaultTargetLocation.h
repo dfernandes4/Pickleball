@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTDecorator.h"
-#include "BTD_IsAtStartPosition.generated.h"
+#include "BTD_IsAtDefaultTargetLocation.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PICKLEBALL_API UBTD_IsAtStartPosition : public UBTDecorator
+class PICKLEBALL_API UBTD_IsAtDefaultTargetLocation : public UBTDecorator
 {
 	GENERATED_BODY()
 
