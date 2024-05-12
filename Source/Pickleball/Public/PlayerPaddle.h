@@ -55,6 +55,7 @@ public:
 	UFUNCTION()
 	void LoadGame();
 
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	UNiagaraComponent* SwingEffect;
 	
