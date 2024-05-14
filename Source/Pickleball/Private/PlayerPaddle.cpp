@@ -137,6 +137,7 @@ void APlayerPaddle::FlipPaddle()
 		CurrentRotation.Yaw -= 90.0f;
 		SwingEffectCurrentRotation.Roll +=180.0f;
 		SwingEffectCurrentLocation.Y -= 48.0;
+		
 	}
 	else
 	{
