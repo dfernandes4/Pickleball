@@ -9,6 +9,8 @@
 class APlayerPaddle;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnScoreUpdated, int, NewScore);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameOverDelegate);
+
 UCLASS()
 class PICKLEBALL_API AMainGamemode : public AGameModeBase
 {
@@ -16,6 +18,10 @@ class PICKLEBALL_API AMainGamemode : public AGameModeBase
 
 public:
 	AMainGamemode();
+	
+	FOnGameOverDelegate OnGameOver;
+
+	void GameOver();
 
 	virtual void BeginPlay() override;
 

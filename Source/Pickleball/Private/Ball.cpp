@@ -138,7 +138,7 @@ void ABall::PredictProjectileLandingPoint()
 		constexpr float Offset = 225;
 		const FVector BallLandingPosition = BallPositionSymbol->GetActorLocation();
 		FVector HittingLocation = BallLandingPosition + ( Offset * Params.LaunchVelocity.GetSafeNormal());
-		HittingLocation.Z = -20.f;
+		HittingLocation.Z = 0.f;
 		
 		bDidBallLand = true;
 		OnSwipeForceApplied(HittingLocation);
