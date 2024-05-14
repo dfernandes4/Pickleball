@@ -38,12 +38,5 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitting", meta = (AllowPrivateAccess = "true"))
 	float ForceMultiplier;
 
-	//	Testing Vars Fix before release
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitting", meta = (AllowPrivateAccess = "true"))
-	float ZForceMultiplierFORTESTING;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitting", meta = (AllowPrivateAccess = "true"))
-	float XForceToTest;
-
 	
 };
