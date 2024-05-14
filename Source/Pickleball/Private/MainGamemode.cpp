@@ -38,6 +38,13 @@ void AMainGamemode::BeginPlay()
 	}
 }
 
+void AMainGamemode::GameOver()
+{
+	
+	OnGameOver.Broadcast();
+	
+}
+
 void AMainGamemode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);

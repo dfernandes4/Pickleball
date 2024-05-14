@@ -17,6 +17,10 @@ AEnemyPaddle::AEnemyPaddle()
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
 	MovementComponent->MaxSpeed = 400.f;
 
+	SwingEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Hiteffect"));
+	SwingEffect->SetupAttachment(SceneComponent);
+	
+
 	ForceMultiplier = 1;
 }
 
@@ -77,19 +81,32 @@ void AEnemyPaddle::HitBall()
 void AEnemyPaddle::FlipPaddle()
 {
 	//Flip paddle after swipe
+	FRotator SwingEffectCurrentRotation = SwingEffect->GetRelativeRotation();
+	FVector  SwingEffectCurrentLocation = SwingEffect->GetRelativeLocation();
 	FRotator CurrentRotation = PaddleSprite->GetRelativeRotation();
 	if(!bIsFacingLeft)
 	{
 		bIsFacingLeft = true;
 		CurrentRotation.Yaw -= 90.0f;
+		SwingEffectCurrentRotation.Roll +=180.0f;
+		SwingEffectCurrentLocation.X -= 22.0;
+		SwingEffectCurrentLocation.Y -= 40.0;
 	}
 	else
 	{
 		bIsFacingLeft = false;
 		CurrentRotation.Yaw += 90.0f;
+		SwingEffectCurrentRotation.Roll -=180.0f;
+		SwingEffectCurrentLocation.X += 22.0;
+		SwingEffectCurrentLocation.Y += 40.0;
 	}
+	SwingEffect->ResetSystem();
 		
 	this->PaddleSprite->SetRelativeRotation(CurrentRotation,false, nullptr, ETeleportType::TeleportPhysics);
+	this->SwingEffect->SetRelativeRotation(SwingEffectCurrentRotation,false,nullptr,ETeleportType::TeleportPhysics);
+
+	this->SwingEffect->SetRelativeLocation(SwingEffectCurrentLocation,false,nullptr,ETeleportType::TeleportPhysics);
+
 }
 
 
