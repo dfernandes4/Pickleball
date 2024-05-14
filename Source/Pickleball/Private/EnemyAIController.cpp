@@ -6,6 +6,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Engine/TargetPoint.h"
 #include "Kismet/GameplayStatics.h"
 
 AEnemyAIController::AEnemyAIController()
@@ -18,7 +19,7 @@ AEnemyAIController::AEnemyAIController()
 	
 	AIStateKey = "AIStateKey";
 	LocationToHitAtKey = "LocationToHitAtKey";
-	StartLocationKey = "StartLocationKey";
+	DefaultTargetLocationKey = "DefaultTargetLocationKey";
 	BallLandingLocationKey = "BallLandingLocationKey";
 	IsInHittingZoneKey = "IsInHittingZoneKey";
 }
@@ -31,7 +32,10 @@ void AEnemyAIController::BeginPlay()
 	{
 		Blackboard->InitializeBlackboard(*BehaviorTree.Get()->BlackboardAsset.Get());
 
-		Blackboard->SetValueAsVector(StartLocationKey, GetPawn()->GetActorLocation());
+		// Find target point actor bp in scene named BP_DefaultTargetLocation
+
+		ATargetPoint* DefaultTargetLocation = Cast<ATargetPoint>(UGameplayStatics::GetActorOfClass(GetWorld(), ATargetPoint::StaticClass()));
+		Blackboard->SetValueAsVector(DefaultTargetLocationKey, DefaultTargetLocation->GetActorLocation());
 		Blackboard->SetValueAsVector(LocationToHitAtKey, (UGameplayStatics::GetActorOfClass(GetWorld(), ABall::StaticClass())->GetActorLocation() + FVector(80.f, 0.f, 0.f)));
 		
 		Blackboard->SetValueAsEnum(AIStateKey, static_cast<uint8>(EAIState::Idle));

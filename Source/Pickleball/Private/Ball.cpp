@@ -154,6 +154,8 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 {
 	if(bDidBallLand)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Ball's Landing Location: %s"), *BallPositionSymbol->GetActorLocation().ToString());
+		
 		if(CurrentPaddle->IsA(APlayerPaddle::StaticClass()))
 		{
 			if(IsValid(EnemyPaddle))
