@@ -18,9 +18,15 @@ public:
 	// Sets default values for this pawn's properties
 	AEnemyPaddle();
 
+	UFUNCTION()
 	void HitBall();
 	
 	virtual void FlipPaddle() override;
+
+	UFUNCTION()
+	void IncrementForceMultiplier(int NewScore);
+
+	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	UFloatingPawnMovement* MovementComponent;

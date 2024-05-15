@@ -4,6 +4,7 @@
 #include "EnemyPaddle.h"
 #include "NiagaraComponent.h"
 #include "Ball.h"
+#include "MainGamemode.h"
 #include "PaperSpriteComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 
@@ -15,13 +16,29 @@ AEnemyPaddle::AEnemyPaddle()
 	PrimaryActorTick.bCanEverTick = false;
 
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
-	MovementComponent->MaxSpeed = 400.f;
+
+	//Ramp up Movement based on enemies hits
+	MovementComponent->Acceleration = 800;
+	MovementComponent->Deceleration = 800;
+	MovementComponent->MaxSpeed = 2000.f;
 
 	SwingEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Hiteffect"));
 	SwingEffect->SetupAttachment(SceneComponent);
 	
 
-	ForceMultiplier = 1;
+	ForceMultiplier = 1.5;
+}
+
+void AEnemyPaddle::BeginPlay()
+{
+	Super::BeginPlay();
+
+	AMainGamemode* MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
+
+	if(MainGamemode)
+	{
+		MainGamemode->OnScoreUpdated.AddDynamic(this, &AEnemyPaddle::IncrementForceMultiplier);
+	}
 }
 
 void AEnemyPaddle::HitBall()
@@ -45,7 +62,8 @@ void AEnemyPaddle::HitBall()
 		
 		const float PercentageOfYDistanceFromCenter = GetActorLocation().Y / YOuterBounds;
 		const float PercentageOfXDistanceFromFarthestHittingLocation = FMath::Clamp(GetActorLocation().X / FarthestHittingLocation, 0,1);
-		
+
+		// Max -176 Min -48
 		RandomForce.X = (-32 * ForceMultiplier);
 
 		// Based on position from center
@@ -54,24 +72,22 @@ void AEnemyPaddle::HitBall()
 		RandomForce.Y = FMath::RandRange(MinYVal * (1 + PercentageOfYDistanceFromCenter), MaxYVal * (1 - PercentageOfYDistanceFromCenter));
 
 		// Interpolation for Z
-		const float MinZ = (1.854 * (FMath::Pow(10.f, -5.f) * FMath::Pow(RandomForce.X, 3.f))) +
+		const float MinZ =  (1.854 * (FMath::Pow(10.f, -5.f) * FMath::Pow(RandomForce.X, 3.f))) +
 							(7.416 * (FMath::Pow(10.f, -3.f) * FMath::Pow(RandomForce.X, 2.f))) + (1.092 * RandomForce.X) + 54.61;
 		
-		const float MaxZ = (7.065 * (FMath::Pow(10.f, -13.f) * FMath::Pow(RandomForce.X, 7.f))) + 
-						(5.7551 * (FMath::Pow(10.f, -10.f) * FMath::Pow(RandomForce.X, 6.f))) + 
-						(1.9777 * (FMath::Pow(10.f, -7.f) * FMath::Pow(RandomForce.X, 5.f))) + 
-						(.0000373143f * FMath::Pow(RandomForce.X, 4.f)) + 
-						(.00421209 * FMath::Pow(RandomForce.X, 3.f)) + 
-						(0.290215 * FMath::Pow(RandomForce.X, 2.f)) + (11.9063 * RandomForce.X) + 262.738;
+		const float MaxZ =  (7.065 * (FMath::Pow(10.f, -13.f) * FMath::Pow(RandomForce.X, 7.f))) + 
+							(5.7551 * (FMath::Pow(10.f, -10.f) * FMath::Pow(RandomForce.X, 6.f))) + 
+							(1.9777 * (FMath::Pow(10.f, -7.f) * FMath::Pow(RandomForce.X, 5.f))) + 
+							(.0000373143f * FMath::Pow(RandomForce.X, 4.f)) + 
+							(.00421209 * FMath::Pow(RandomForce.X, 3.f)) + 
+							(0.290215 * FMath::Pow(RandomForce.X, 2.f)) + (11.9063 * RandomForce.X) + 262.738;
 
 		RandomForce.Z = MinZ + ((MaxZ-MinZ) * PercentageOfXDistanceFromFarthestHittingLocation);
-
-		// Set ball to perfect height
-		UE_LOG(LogTemp, Warning, TEXT("RandomForce: %s"), *RandomForce.ToString());
-		BallInScene->BallMesh->SetWorldLocation(FVector(BallInScene->BallMesh->GetComponentLocation().X, BallInScene->BallMesh->GetComponentLocation().Y, 45));
+		
+		//UE_LOG(LogTemp, Warning, TEXT("RandomForce: %s"), *RandomForce.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("Ball's Mesh Location: %s"), *BallInScene->BallMesh->GetComponentLocation().ToString());
 
 		// Apply force
-		UE_LOG(LogTemp, Warning, TEXT("Ball's Mesh Location: %s"), *BallInScene->BallMesh->GetComponentLocation().ToString());
 		BallInScene->ApplySwipeForce(RandomForce, this);
 	}
 	
@@ -109,5 +125,7 @@ void AEnemyPaddle::FlipPaddle()
 
 }
 
-
-
+void AEnemyPaddle::IncrementForceMultiplier(int NewScore)
+{
+	ForceMultiplier += .1;
+}

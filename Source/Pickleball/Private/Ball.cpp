@@ -74,6 +74,8 @@ void ABall::ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor)
 {
 	if(IsValid(BallMesh))
 	{
+		BallMesh->SetWorldLocation(FVector(BallMesh->GetComponentLocation().X, BallMesh->GetComponentLocation().Y, 45));
+		
 		BallMesh->SetPhysicsLinearVelocity(FVector(0.f, 0.f, 0.f));
 		BallMesh->SetPhysicsAngularVelocityInDegrees(FVector(0.f, 0.f, 0.f));
 		BallMesh->PutRigidBodyToSleep();
@@ -91,12 +93,18 @@ void ABall::ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor)
 		
 		
 		CurrentPaddle = const_cast<APaddle*>(PaddleActor);
-		
 		FTimerHandle PredictProjectileLandingPointTimerHandle;
 		FTimerDelegate PredictProjectileLandingPointTimerHandleTimerDel;
 		PredictProjectileLandingPointTimerHandleTimerDel.BindUFunction(this, FName("PredictProjectileLandingPoint"));
-		
-		GetWorld()->GetTimerManager().SetTimer(PredictProjectileLandingPointTimerHandle, PredictProjectileLandingPointTimerHandleTimerDel, 0.1f, false);
+
+		if(CurrentPaddle->IsA(APlayerPaddle::StaticClass()))
+		{
+			GetWorld()->GetTimerManager().SetTimer(PredictProjectileLandingPointTimerHandle, PredictProjectileLandingPointTimerHandleTimerDel, 0.1f, false);
+		}
+		else if(CurrentPaddle->IsA(AEnemyPaddle::StaticClass()))
+		{
+			OnSwipeForceApplied();
+		}
 	}
 }
 
@@ -110,8 +118,8 @@ void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPr
 			BallPositionSymbol->SetActorHiddenInGame(true);
 		}
 	}
-	// can Reflect the ball's direction and modify speed
-	//if not paddle play floor sound
+	// Can Reflect the ball's direction and modify speed
+	// If not paddle play floor sound
 }
 void ABall::PredictProjectileLandingPoint()
 {
@@ -122,7 +130,7 @@ void ABall::PredictProjectileLandingPoint()
 	Params.ProjectileRadius = BallCollider->GetScaledSphereRadius(); // Set to the radius of your projectile
 	Params.MaxSimTime = 4.f; // Maximum time in seconds for the simulation (adjust as needed)
 	Params.TraceChannel = ECC_Visibility; // Trace channel to use for collision detection
-	Params.SimFrequency = 30; // Frequency of path simulation points (higher values are more precise but more expensive
+	Params.SimFrequency = 20; // Frequency of path simulation points (higher values are more precise but more expensive
 	Params.ActorsToIgnore.Add((this)); // Optional: ignore actors that you are sure will not hit
 
 	//Params.DrawDebugType = EDrawDebugTrace::ForDuration;

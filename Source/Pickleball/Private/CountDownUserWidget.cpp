@@ -46,7 +46,7 @@ void UCountDownUserWidget::CountdownTimerFinished()
 	else
 	{
 		AEnemyAIController* EnemyAIController = Cast<AEnemyAIController>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyAIController::StaticClass()));
-		EnemyAIController->SetRespondingState();
+		EnemyAIController->StartBehaviorTree();
 		
 		RemoveFromParent();
 

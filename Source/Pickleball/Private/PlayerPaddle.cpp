@@ -22,8 +22,6 @@ APlayerPaddle::APlayerPaddle()
 
 	bIsPlayersTurn = true;
 
-	SwipeForceMultiplier = .02f;
-
 	SwingEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Hiteffect"));
 	SwingEffect->SetupAttachment(SceneComponent);
 	
@@ -57,30 +55,32 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 		{
 			if (IsValid(BallInScene))
 			{
-				FVector ScaledPaddleVelocity = (Cast<AMainPlayerController>(GetController())->GetPaddleVelocity()) * SwipeForceMultiplier;
+				FVector ScaledPaddleVelocity = (Cast<AMainPlayerController>(GetController())->GetPaddleVelocity());
+				ScaledPaddleVelocity.X *= .02;
+				ScaledPaddleVelocity.Y *= .01;
 
 				UE_LOG(LogTemp, Warning, TEXT("Paddle Velocity: %s"), *(Cast<AMainPlayerController>(GetController())->GetPaddleVelocity()).ToString());
+				UE_LOG(LogTemp, Warning, TEXT("Paddle Scaled Velocity: %s"), *(ScaledPaddleVelocity.ToString()));
+
+				constexpr float FarthestHittingLocation = -895.0f;
+				const float PercentageOfXDistanceFromFarthestHittingLocation = FMath::Clamp(GetActorLocation().X / FarthestHittingLocation, 0,1);
 				
-				//Range of X-Y-Z Should be between 10-40
-				float MinXOffset = 25 * (BallCurrentLocation.X / -670);
-				float MaxXOffset = 10 * (BallCurrentLocation.X / -670);;
-				const float ForceXDistance = FMath::Clamp(ScaledPaddleVelocity.X, 15.0f + MinXOffset, 30.0f + MaxXOffset);
-				const float ForceYDistance = FMath::Clamp(ScaledPaddleVelocity.Y, -10.0f, 10.0f);
-				float ForceZDistance = 20;
-				if(BallCurrentLocation.Z < 185)
-				{
-					// 10 is the addition needed to make the ball go over the fence if it is on the floor
-					ForceZDistance += (15 * (BallCurrentLocation.Z / 185));
-					if(BallCurrentLocation.X < -470 || ForceYDistance > 2 || ForceYDistance < -2)
-					{
-						ForceZDistance += 2;
-					}
-					{
-						ForceZDistance += 5;
-					}
-				}
+				const float ForceXDistance = FMath::Clamp(ScaledPaddleVelocity.X, 32, 176);
+				const float ForceYDistance = FMath::Clamp(ScaledPaddleVelocity.Y, -15.0f, 15.0f);
 				
-				// Normalize the swipe direction to use as a direction vector in the world
+				// Interpolation for Z
+				const float MinZ =  (1.854 * (FMath::Pow(10.f, -5.f) * FMath::Pow(-ForceXDistance, 3.f))) +
+									(7.416 * (FMath::Pow(10.f, -3.f) * FMath::Pow(-ForceXDistance, 2.f))) + (1.092 * -ForceXDistance) + 54.61;
+		
+				const float MaxZ =  (7.065 * (FMath::Pow(10.f, -13.f) * FMath::Pow(-ForceXDistance, 7.f))) + 
+									(5.7551 * (FMath::Pow(10.f, -10.f) * FMath::Pow(-ForceXDistance, 6.f))) + 
+									(1.9777 * (FMath::Pow(10.f, -7.f) * FMath::Pow(-ForceXDistance, 5.f))) + 
+									(.0000373143f * FMath::Pow(-ForceXDistance, 4.f)) + 
+									(.00421209 * FMath::Pow(-ForceXDistance, 3.f)) + 
+									(0.290215 * FMath::Pow(-ForceXDistance, 2.f)) + (11.9063 * -ForceXDistance) + 262.738;
+
+				const float ForceZDistance = .5 * (MinZ + ((MaxZ-MinZ) * PercentageOfXDistanceFromFarthestHittingLocation));
+				
 				const FVector Force = FVector(ForceXDistance, ForceYDistance, ForceZDistance);
 				UE_LOG(LogTemp, Warning, TEXT("Force: %s"), *Force.ToString());
 				
@@ -95,7 +95,6 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 				
 			}
 		}
-		
 	}
 }
 

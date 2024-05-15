@@ -38,7 +38,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	APlayerPaddle* PlayerPaddle;
-
-
+	
 	FOnScoreUpdated OnScoreUpdated;
 };

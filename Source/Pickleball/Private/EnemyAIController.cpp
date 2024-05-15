@@ -38,15 +38,13 @@ void AEnemyAIController::BeginPlay()
 		Blackboard->SetValueAsVector(DefaultTargetLocationKey, DefaultTargetLocation->GetActorLocation());
 		Blackboard->SetValueAsVector(LocationToHitAtKey, (UGameplayStatics::GetActorOfClass(GetWorld(), ABall::StaticClass())->GetActorLocation() + FVector(80.f, 0.f, 0.f)));
 		
-		Blackboard->SetValueAsEnum(AIStateKey, static_cast<uint8>(EAIState::Idle));
+		Blackboard->SetValueAsEnum(AIStateKey, static_cast<uint8>(EAIState::Responding));
 		Blackboard->SetValueAsBool(IsInHittingZoneKey, false);
 	}
 }
 
-void AEnemyAIController::OnPossess(APawn* InPawn)
+void AEnemyAIController::StartBehaviorTree() const
 {
-	Super::OnPossess(InPawn);
-	
 	if (BehaviorTree.Get() != nullptr)
 	{
 		BehaviorTreeComponent->StartTree(*BehaviorTree);

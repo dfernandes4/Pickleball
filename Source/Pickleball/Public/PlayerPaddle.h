@@ -54,7 +54,6 @@ public:
 
 	UFUNCTION()
 	void LoadGame();
-
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	UNiagaraComponent* SwingEffect;
@@ -76,12 +75,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
 	FTimerHandle SwingTimerHandle;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Swiping, meta = (AllowPrivateAccess))
-	float SwipeForceMultiplier;
-	
-
-	
 
 #pragma endregion Swiping
 	

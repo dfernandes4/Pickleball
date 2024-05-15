@@ -35,10 +35,7 @@ public:
 	void PredictProjectileLandingPoint();
 
 	UFUNCTION()
-	void OnSwipeForceApplied(const FVector& HittingLocation);
-
-	/*UFUNCTION()
-	FVector FindHittingLocation(bool bIsPlayerPaddle, const FVector& BallsVelocity, const TArray<FPredictProjectilePathPointData>& PathData) const;*/
+	void OnSwipeForceApplied(const FVector& HittingLocation = FVector::ZeroVector);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
