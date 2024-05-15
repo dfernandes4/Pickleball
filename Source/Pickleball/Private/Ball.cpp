@@ -6,6 +6,7 @@
 #include "BallPositionSymbol.h"
 #include "EnemyAIController.h"
 #include "EnemyPaddle.h"
+#include "MainGamemode.h"
 #include "PlayerPaddle.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -143,8 +144,12 @@ void ABall::PredictProjectileLandingPoint()
 	{
 		BallPositionSymbol->SetActorLocation(PathResult.HitResult.Location);
 
-		constexpr float Offset = 225;
+		float Offset = 225;
 		const FVector BallLandingPosition = BallPositionSymbol->GetActorLocation();
+		if(BallLandingPosition.X >= -9.5f && BallLandingPosition.X <= 9.5f)
+		{
+			Offset *= 2.f;
+		}
 		FVector HittingLocation = BallLandingPosition + ( Offset * Params.LaunchVelocity.GetSafeNormal());
 		HittingLocation.Z = 0.f;
 		
@@ -154,6 +159,11 @@ void ABall::PredictProjectileLandingPoint()
 	else
 	{
 		bDidBallLand = false;
+		AMainGamemode* MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
+		if(MainGamemode)
+		{
+			MainGamemode->OnGameOver.Broadcast();
+		}
 	}
 	
 }

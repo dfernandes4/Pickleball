@@ -5,10 +5,12 @@
 
 #include "CoinShopScreen.h"
 #include "CollectionWidget.h"
+#include "PlayerPaddle.h"
 #include "SettingScreenWidget.h"
 #include "ShopScreenWidget.h"
 #include "UserWidgetLoader.h"
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -37,6 +39,18 @@ void UHomeScreenWidget::NativeConstruct()
 	if(PlusCoinButton != nullptr)
 	{
 		PlusCoinButton->OnClicked.AddDynamic(this, &UHomeScreenWidget::UHomeScreenWidget::OnPlusCoinClicked);
+	}
+
+	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	
+	if(HighScoreAmountTextBlock != nullptr && PlayerPaddle != nullptr)
+	{
+		HighScoreAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerPaddle->GetHighScore())));
+	}
+	
+	if(CoinAmountTextBlock != nullptr && PlayerPaddle != nullptr)
+	{
+		CoinAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerPaddle->GetPlayerCoins())));
 	}
 }
 

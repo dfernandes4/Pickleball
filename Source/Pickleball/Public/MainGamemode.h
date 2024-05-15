@@ -21,8 +21,6 @@ public:
 	
 	FOnGameOverDelegate OnGameOver;
 
-	void GameOver();
-
 	virtual void BeginPlay() override;
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

@@ -3,6 +3,9 @@
 
 #include "PickleBallGameInstance.h"
 
+#include "PlayerPaddle.h"
+#include "Kismet/GameplayStatics.h"
+
 
 UPickleBallGameInstance::UPickleBallGameInstance()
 {
@@ -12,4 +15,9 @@ void UPickleBallGameInstance::Init()
 {
 	Super::Init();
 	
+}
+
+void UPickleBallGameInstance::Shutdown()
+{
+	Super::Shutdown();
 }

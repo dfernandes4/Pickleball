@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Paddle.h"
 #include "PlayerPaddle.generated.h"
+class UPickleballSaveGame;
 class UNiagaraComponent;
 class AMainGamemode;
 class USpringArmComponent;
@@ -30,6 +31,7 @@ public:
 	float GetScore() const;
 
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	virtual void OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
@@ -44,16 +46,22 @@ public:
 	void SaveAllStats();
 
 	UFUNCTION()
-	void SavePlayerCoins(int32 CoinAmount);
+	void SavePlayerCoins();
 
 	UFUNCTION()
-	void SavePlayerHighScore(int32 CoinAmount);
+	void SavePlayerHighScore();
 
 	UFUNCTION()
-	void SavePlayerPaddleUnlockStatuses(const TMap<FString, bool>& PaddleUnlockStatusesIn);
+	void SavePlayerPaddleUnlockStatuses();
 
 	UFUNCTION()
 	void LoadGame();
+
+	UFUNCTION()
+	int32 GetHighScore() const;
+
+	UFUNCTION()
+	int32 GetPlayerCoins() const;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	UNiagaraComponent* SwingEffect;
@@ -61,6 +69,9 @@ public:
 #pragma endregion Save/Load
 	
 private:
+
+	UFUNCTION()
+	UPickleballSaveGame* GetOrCreateSaveGame();
 
 #pragma region Swiping
 	

@@ -30,19 +30,6 @@ void AMainGamemode::BeginPlay()
 
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	WidgetLoader->LoadWidget(FName("HomeScreen"), GetWorld());
-
-	PlayerPaddle = Cast<APlayerPaddle>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	if(PlayerPaddle != nullptr)
-	{
-		PlayerPaddle->LoadGame();
-	}
-}
-
-void AMainGamemode::GameOver()
-{
-	
-	OnGameOver.Broadcast();
-	
 }
 
 void AMainGamemode::EndPlay(const EEndPlayReason::Type EndPlayReason)
