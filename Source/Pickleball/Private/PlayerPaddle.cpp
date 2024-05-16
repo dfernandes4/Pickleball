@@ -152,16 +152,18 @@ void APlayerPaddle::FlipPaddle()
 	{
 		bIsFacingLeft = true;
 		CurrentRotation.Yaw -= 90.0f;
-		SwingEffectCurrentRotation.Roll +=180.0f;
+		SwingEffectCurrentRotation.Pitch +=180.0f;
 		SwingEffectCurrentLocation.Y -= 48.0;
+		SwingEffectCurrentRotation.Yaw -= 30.0;
 		
 	}
 	else
 	{
 		bIsFacingLeft = false;
 		CurrentRotation.Yaw += 90.0f;
-		SwingEffectCurrentRotation.Roll -=180.0f;
+		SwingEffectCurrentRotation.Pitch -=180.0f;
 		SwingEffectCurrentLocation.Y += 48.0;
+		SwingEffectCurrentRotation.Yaw  += 30.0;
 	}
 	SwingEffect->ResetSystem();
 	this->PaddleSprite->SetRelativeRotation(CurrentRotation,false, nullptr, ETeleportType::TeleportPhysics);

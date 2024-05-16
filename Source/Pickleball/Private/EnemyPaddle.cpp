@@ -104,17 +104,17 @@ void AEnemyPaddle::FlipPaddle()
 	{
 		bIsFacingLeft = true;
 		CurrentRotation.Yaw -= 90.0f;
-		SwingEffectCurrentRotation.Roll +=180.0f;
-		SwingEffectCurrentLocation.X -= 22.0;
-		SwingEffectCurrentLocation.Y -= 40.0;
+		SwingEffectCurrentRotation.Pitch +=180.0f;
+		SwingEffectCurrentLocation.Y -= 48.0;
+		SwingEffectCurrentRotation.Yaw += 30.0;
 	}
 	else
 	{
 		bIsFacingLeft = false;
 		CurrentRotation.Yaw += 90.0f;
-		SwingEffectCurrentRotation.Roll -=180.0f;
-		SwingEffectCurrentLocation.X += 22.0;
-		SwingEffectCurrentLocation.Y += 40.0;
+		SwingEffectCurrentRotation.Pitch -=180.0f;
+		SwingEffectCurrentLocation.Y += 48.0;
+		SwingEffectCurrentRotation.Yaw  -= 30.0;
 	}
 	SwingEffect->ResetSystem();
 		
