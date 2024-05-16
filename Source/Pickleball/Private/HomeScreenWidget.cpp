@@ -6,6 +6,7 @@
 #include "CoinShopScreen.h"
 #include "CollectionWidget.h"
 #include "PlayerPaddle.h"
+#include "SaveGameInterface.h"
 #include "SettingScreenWidget.h"
 #include "ShopScreenWidget.h"
 #include "UserWidgetLoader.h"
@@ -41,17 +42,25 @@ void UHomeScreenWidget::NativeConstruct()
 		PlusCoinButton->OnClicked.AddDynamic(this, &UHomeScreenWidget::UHomeScreenWidget::OnPlusCoinClicked);
 	}
 
-	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	
-	if(HighScoreAmountTextBlock != nullptr && PlayerPaddle != nullptr)
+	// TODO: Change On Screen Coins and Highscore when they change
+	ISaveGameInterface* SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (SaveGameInterface)
 	{
-		HighScoreAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerPaddle->GetHighScore())));
+		FPlayerData PlayerData = SaveGameInterface->GetSaveGamePlayerData();
+
+		if(HighScoreAmountTextBlock != nullptr )
+		{
+			HighScoreAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerData.PlayerHighScore)));
+		}
+	
+		if(CoinAmountTextBlock != nullptr)
+		{
+			CoinAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerData.PlayerCoins)));
+		}
+		
 	}
 	
-	if(CoinAmountTextBlock != nullptr && PlayerPaddle != nullptr)
-	{
-		CoinAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerPaddle->GetPlayerCoins())));
-	}
+	
 }
 
 void UHomeScreenWidget::OnPlayButtonClicked()

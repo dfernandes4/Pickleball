@@ -31,13 +31,3 @@ void AMainGamemode::BeginPlay()
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	WidgetLoader->LoadWidget(FName("HomeScreen"), GetWorld());
 }
-
-void AMainGamemode::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	Super::EndPlay(EndPlayReason);
-	
-	if(PlayerPaddle != nullptr)
-	{
-		PlayerPaddle->SaveAllStats();
-	}
-}

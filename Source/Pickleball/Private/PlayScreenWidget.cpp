@@ -10,8 +10,6 @@
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
- 
-
 void UPlayScreenWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -21,6 +19,7 @@ void UPlayScreenWidget::NativeConstruct()
 	if(MainGamemode)
 	{
 		MainGamemode->OnScoreUpdated.AddDynamic(this, &UPlayScreenWidget::UpdateScore);
+		MainGamemode->OnGameOver.AddDynamic(this, &UPlayScreenWidget::HandleGameOver);
 	}
 	if(PauseButton)
 	{
@@ -30,7 +29,7 @@ void UPlayScreenWidget::NativeConstruct()
 
 void UPlayScreenWidget::UpdateScore(int NewScore)
 {
-	ScoreText->SetText(FText::FromString(FString::FromInt(NewScore)));
+	ScoreText->SetText(FText::FromString(FString::FromInt(NewScore))); 
 
 	UGameplayStatics::PlaySound2D(GetWorld(), PointSoundEffect);
 }
@@ -45,6 +44,12 @@ void UPlayScreenWidget::PauseButtonClicked()
 	USettingScreenWidget* SettingScreenWidget = Cast<USettingScreenWidget>(WidgetLoader->LoadWidget(FName("SettingScreen"), GetWorld(),  1));
 	SettingScreenWidget->OnSettingsClosed.AddDynamic(this, &UPlayScreenWidget::HandlePauseClosed);
 	UGameplayStatics::PlaySound2D(GetWorld(), PauseSoundEffect);
+}
+
+void UPlayScreenWidget::HandleGameOver()
+{
+	// Could play a fade out of everything thing then delete screen
+	RemoveFromParent();
 }
 
 void UPlayScreenWidget::HandlePauseClosed()

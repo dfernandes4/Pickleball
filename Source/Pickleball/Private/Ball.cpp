@@ -159,11 +159,6 @@ void ABall::PredictProjectileLandingPoint()
 	else
 	{
 		bDidBallLand = false;
-		AMainGamemode* MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
-		if(MainGamemode)
-		{
-			MainGamemode->OnGameOver.Broadcast();
-		}
 	}
 	
 }
@@ -176,10 +171,19 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 		
 		if(CurrentPaddle->IsA(APlayerPaddle::StaticClass()))
 		{
-			if(IsValid(EnemyPaddle))
+			FVector BallLandingLocation = BallPositionSymbol->GetActorLocation();
+			if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -313 && BallLandingLocation.Y < 313))
 			{
 				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetBallLandingLocation(BallPositionSymbol->GetActorLocation());
 				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(HittingLocation);
+			}
+			else
+			{
+				AMainGamemode* MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
+				if(MainGamemode)
+				{
+					MainGamemode->OnGameOver.Broadcast();
+				}
 			}
 		}
 		else if(CurrentPaddle->IsA(AEnemyPaddle::StaticClass()))
