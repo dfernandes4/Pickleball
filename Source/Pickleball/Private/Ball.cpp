@@ -41,13 +41,17 @@ ABall::ABall()
 
 	BallMesh->SetSimulatePhysics(true);
 	BallMesh->SetEnableGravity(false);
-	BallMesh->SetMassOverrideInKg(NAME_None, 0.048f, true);
+	BallMesh->SetMassOverrideInKg(NAME_None, 0.06f, true);
+	BallMesh->OnComponentHit.AddDynamic(this, &ABall::OnBallHit);
+	
 	BallCollider->SetCollisionProfileName(TEXT("Custom"));
 
 	// Alternatively, you can set specific collision responses
 	BallCollider->BodyInstance.SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	BallCollider->BodyInstance.SetObjectType(ECollisionChannel::ECC_WorldDynamic);
 	BallCollider->BodyInstance.SetResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+
+	CurrentBounceCount = 0;
 }
 
 void ABall::BeginPlay()
@@ -64,6 +68,8 @@ void ABall::BeginPlay()
 	BallPositionSymbol = Cast<ABallPositionSymbol>(UGameplayStatics::GetActorOfClass(GetWorld(), ABallPositionSymbol::StaticClass()));
 
 	BallLandingZ = 105.f;
+	
+	MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
 }
 
 void ABall::Tick(float DeltaSeconds)
@@ -112,11 +118,13 @@ void ABall::ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor)
 void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
-	if(OtherActor->ActorHasTag("Court"))
+	if(!OtherActor->ActorHasTag("Fence"))
 	{
-		if(!BallPositionSymbol->IsHidden())
+		CurrentBounceCount++;
+		// Each Bounce + 2 to the count ...?
+		if(CurrentBounceCount > 2)
 		{
-			BallPositionSymbol->SetActorHiddenInGame(true);
+			MainGamemode->OnGameOver.Broadcast();
 		}
 	}
 	// Can Reflect the ball's direction and modify speed
@@ -160,29 +168,42 @@ void ABall::PredictProjectileLandingPoint()
 	{
 		bDidBallLand = false;
 	}
-	
 }
 
 void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 {
+	CurrentBounceCount = 0;
+	
 	if(bDidBallLand)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Ball's Landing Location: %s"), *BallPositionSymbol->GetActorLocation().ToString());
 		
 		if(CurrentPaddle->IsA(APlayerPaddle::StaticClass()))
 		{
+			// Also check that HitInKictchen is false
 			FVector BallLandingLocation = BallPositionSymbol->GetActorLocation();
-			if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -313 && BallLandingLocation.Y < 313))
+			if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -304 && BallLandingLocation.Y < 304))
 			{
-				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetBallLandingLocation(BallPositionSymbol->GetActorLocation());
-				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(HittingLocation);
+				if(PlayerPaddle->IsPlayerInKitchen() && CurrentBounceCount == 0)
+				{
+					if(MainGamemode)
+					{
+						MainGamemode->OnGameOver.Broadcast();
+						// Play Kitchen Text Animation and then display Game Over Screen
+					}
+				}
+				else
+				{
+					Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetBallLandingLocation(BallPositionSymbol->GetActorLocation());
+					Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(HittingLocation);
+				}
 			}
 			else
 			{
-				AMainGamemode* MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
 				if(MainGamemode)
 				{
 					MainGamemode->OnGameOver.Broadcast();
+					// Only display Game Over Screen
 				}
 			}
 		}
@@ -191,4 +212,9 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 			PlayerPaddle->SetIsPlayersTurn(true);
 		}
 	}
+}
+
+int32 ABall::GetCurrentBounceCount() const
+{
+	return CurrentBounceCount;
 }

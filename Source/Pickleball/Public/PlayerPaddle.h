@@ -33,15 +33,18 @@ public:
 
 	UFUNCTION()
 	void OnGameOver();
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	
-	virtual void OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
 	UFUNCTION()
 	void SetIsPlayersTurn(bool bIsPlayersTurnIn);
+
+	UFUNCTION()
+	bool IsPlayerInKitchen() const;
 	
 	virtual void FlipPaddle() override;
+	
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
 #pragma region Save/Load
 

@@ -31,7 +31,6 @@ void UCountDownUserWidget::PlayCountDownAnimation()
 		const float AnimationDuration = FadeInAnimation->GetEndTime();
 		FTimerHandle CountdownTimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(CountdownTimerHandle, this, &UCountDownUserWidget::CountdownTimerFinished, AnimationDuration, false);
-		
 	}
 }
 

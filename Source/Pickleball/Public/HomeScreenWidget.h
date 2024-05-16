@@ -31,11 +31,15 @@ public:
 
 	UFUNCTION()
 	void HandleChildClosed();
+	UFUNCTION()
+	void DisplayPlayerValues();
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundBase* MenuSoundEffect;
 
 private:
+	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCanvasPanel> CanvasPanel;
 

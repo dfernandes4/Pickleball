@@ -26,15 +26,19 @@ public:
 
 	UFUNCTION()
 	void InitiatePurchaseRequest(const FString& ProductId);
-
 	
 	void HandlePurchaseCompletion(bool bWasSuccessful, const TArray<FUniqueOfferId>& Offers, const FString& ErrorMsg);
+
+	UFUNCTION()
+	void OnGameOver();
 	
 	FOnPurchaseCompletedDelegate  OnPurchaseCompleted;
 	
 
 protected:
+	
 	virtual void PlayerTick(float DeltaTime) override;
+	
 	virtual void BeginPlay() override;
 
 	void OnTouchPressed(const ETouchIndex::Type FingerIndex, const FVector Location);

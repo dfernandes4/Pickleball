@@ -166,6 +166,12 @@ void APlayerPaddle::SetIsPlayersTurn(bool bIsPlayersTurnIn)
 	bIsPlayersTurn = bIsPlayersTurnIn;
 }
 
+bool APlayerPaddle::IsPlayerInKitchen() const
+{
+	FVector PaddleLocation = GetActorLocation();
+	return (PaddleLocation.X > -208 && PaddleLocation.Y > -304 && PaddleLocation.Y < 304);
+}
+
 void APlayerPaddle::FlipPaddle()
 {
 	//Flip paddle after swipe

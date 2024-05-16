@@ -1,4 +1,6 @@
 #include "MainPlayerController.h"
+
+#include "MainGamemode.h"
 #include "OnlineSubsystem.h"
 #include "GameFramework/Pawn.h"
 #include "Interfaces/OnlineStoreInterfaceV2.h"
@@ -21,6 +23,12 @@ void AMainPlayerController::SetupInputComponent()
 void AMainPlayerController::BeginPlay()
 { 
     Super::BeginPlay();
+
+    AMainGamemode* MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
+    if (MainGamemode != nullptr)
+    {
+        MainGamemode->OnGameOver.AddDynamic(this, &AMainPlayerController::OnGameOver);
+    }
 }
 
 void AMainPlayerController::PlayerTick(float DeltaTime)
@@ -137,4 +145,9 @@ void AMainPlayerController::HandlePurchaseCompletion(bool bWasSuccessful, const 
     {
         UE_LOG(LogTemp, Error, TEXT("Purchase failed: %s"), *ErrorMsg);
     }
+}
+
+void AMainPlayerController::OnGameOver()
+{
+    DisableInput(this);
 }

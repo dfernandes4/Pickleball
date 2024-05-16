@@ -5,6 +5,7 @@
 
 #include "CoinShopScreen.h"
 #include "CollectionWidget.h"
+#include "MainGamemode.h"
 #include "PlayerPaddle.h"
 #include "SaveGameInterface.h"
 #include "SettingScreenWidget.h"
@@ -42,25 +43,13 @@ void UHomeScreenWidget::NativeConstruct()
 		PlusCoinButton->OnClicked.AddDynamic(this, &UHomeScreenWidget::UHomeScreenWidget::OnPlusCoinClicked);
 	}
 
-	// TODO: Change On Screen Coins and Highscore when they change
-	ISaveGameInterface* SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
-	if (SaveGameInterface)
+	DisplayPlayerValues();
+	
+	AMainGamemode* MainGamemode = Cast<AMainGamemode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if(MainGamemode)
 	{
-		FPlayerData PlayerData = SaveGameInterface->GetSaveGamePlayerData();
-
-		if(HighScoreAmountTextBlock != nullptr )
-		{
-			HighScoreAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerData.PlayerHighScore)));
-		}
-	
-		if(CoinAmountTextBlock != nullptr)
-		{
-			CoinAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerData.PlayerCoins)));
-		}
-		
+		MainGamemode->OnGameOver.AddDynamic(this, &UHomeScreenWidget::DisplayPlayerValues);
 	}
-	
-	
 }
 
 void UHomeScreenWidget::OnPlayButtonClicked()
@@ -111,4 +100,23 @@ void UHomeScreenWidget::OnPlusCoinClicked()
 void UHomeScreenWidget::HandleChildClosed()
 {
 	SetVisibility(ESlateVisibility::Visible);
+}
+
+void UHomeScreenWidget::DisplayPlayerValues()
+{
+	ISaveGameInterface* SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (SaveGameInterface)
+	{
+		FPlayerData PlayerData = SaveGameInterface->GetSaveGamePlayerData();
+
+		if(HighScoreAmountTextBlock != nullptr )
+		{
+			HighScoreAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerData.PlayerHighScore)));
+		}
+	
+		if(CoinAmountTextBlock != nullptr)
+		{
+			CoinAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerData.PlayerCoins)));
+		}
+	}
 }

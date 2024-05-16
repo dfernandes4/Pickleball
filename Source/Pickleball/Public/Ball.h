@@ -7,6 +7,7 @@
 #include "Sound/SoundBase.h"
 #include "Ball.generated.h"
 
+class AMainGamemode;
 class UNiagaraComponent;
 struct FPredictProjectilePathPointData;
 class APaddle;
@@ -36,6 +37,9 @@ public:
 
 	UFUNCTION()
 	void OnSwipeForceApplied(const FVector& HittingLocation = FVector::ZeroVector);
+
+	UFUNCTION()
+	int32 GetCurrentBounceCount() const;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
@@ -84,5 +88,11 @@ private:
 
 	UPROPERTY()
 	float BallLandingZ;
+
+	UPROPERTY()
+	int32 CurrentBounceCount;
+
+	UPROPERTY()
+	AMainGamemode* MainGamemode;
 	
 };
