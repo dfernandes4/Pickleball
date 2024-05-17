@@ -4,6 +4,7 @@
 #include "PlayScreenWidget.h"
 
 #include "MainGamemode.h"
+#include "PlayerPaddle.h"
 #include "SettingScreenWidget.h"
 #include "UserWidgetLoader.h"
 #include "Components/Button.h"
@@ -50,6 +51,23 @@ void UPlayScreenWidget::HandleGameOver()
 {
 	// Could play a fade out of everything thing then delete screen
 	RemoveFromParent();
+
+
+	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	
+	if(PlayerPaddle != nullptr)
+	{
+		if(PlayerPaddle->GetDidPlayerHitInKitchen())
+		{
+			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+			WidgetLoader->LoadWidget(FName("KitchenScreen"), GetWorld());
+		}
+		else
+		{
+			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+			WidgetLoader->LoadWidget(FName("GameOverScreen"), GetWorld());
+		}
+	}
 }
 
 void UPlayScreenWidget::HandlePauseClosed()

@@ -13,7 +13,17 @@ UCLASS()
 class PICKLEBALL_API UKitchenWidget : public UUserWidget
 {
 	GENERATED_BODY()
+	
+public:
+	
+	virtual void NativeConstruct() override;
+	
+	UFUNCTION()
+	void PlayKitchenTextAnimation();
 
+	UFUNCTION()
+	void KitchenTextTimerFinished();
+	
 private:
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCanvasPanel> CanvasPanel;

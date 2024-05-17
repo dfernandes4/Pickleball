@@ -131,6 +131,11 @@ float APlayerPaddle::GetScore() const
 	return CurrentScore;
 }
 
+bool APlayerPaddle::GetDidPlayerHitInKitchen() const
+{
+	return bDidPlayerHitInKitchen;
+}
+
 void APlayerPaddle::OnGameOver()
 {
 	if(CurrentScore > HighScore)
@@ -166,10 +171,11 @@ void APlayerPaddle::SetIsPlayersTurn(bool bIsPlayersTurnIn)
 	bIsPlayersTurn = bIsPlayersTurnIn;
 }
 
-bool APlayerPaddle::IsPlayerInKitchen() const
+bool APlayerPaddle::IsPlayerInKitchen()
 {
 	FVector PaddleLocation = GetActorLocation();
-	return (PaddleLocation.X > -208 && PaddleLocation.Y > -304 && PaddleLocation.Y < 304);
+	bDidPlayerHitInKitchen = (PaddleLocation.X > -208 && PaddleLocation.Y > -304 && PaddleLocation.Y < 304);
+	return bDidPlayerHitInKitchen;
 }
 
 void APlayerPaddle::FlipPaddle()
