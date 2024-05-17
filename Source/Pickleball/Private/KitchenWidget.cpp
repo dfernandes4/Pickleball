@@ -5,6 +5,7 @@
 
 #include "UserWidgetLoader.h"
 #include "Animation/WidgetAnimation.h"
+#include "Kismet/GameplayStatics.h"
 
 void UKitchenWidget::NativeConstruct()
 {
@@ -16,6 +17,7 @@ void UKitchenWidget::PlayKitchenTextAnimation()
 {
 	PlayAnimation(KitchenTextAnimation);
 	// Play Whistle Sound
+	UGameplayStatics::PlaySound2D(GetWorld(), WhistleSoundEffect);
 	
 	const float AnimationDuration = KitchenTextAnimation->GetEndTime();
 	FTimerHandle CountdownTimerHandle;

@@ -32,4 +32,7 @@ private:
 
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 	TObjectPtr<UWidgetAnimation> KitchenTextAnimation;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "EASTEER", meta = (AllowPrivateAccess = "true"))
+	USoundBase* WhistleSoundEffect;
 };
