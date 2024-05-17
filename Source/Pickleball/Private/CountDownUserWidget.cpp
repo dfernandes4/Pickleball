@@ -3,14 +3,13 @@
 
 #include "CountDownUserWidget.h"
 
-#include "AIState.h"
+
 #include "EnemyAIController.h"
 #include "UserWidgetLoader.h"
 #include "Animation/WidgetAnimation.h"
-#include "BehaviorTree/BlackboardComponent.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
-#include "Sound/SoundCue.h"
+
 
 void UCountDownUserWidget::NativeConstruct()
 {
