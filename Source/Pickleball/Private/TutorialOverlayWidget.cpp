@@ -3,3 +3,7 @@
 
 #include "TutorialOverlayWidget.h"
 
+void UTutorialOverlayWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+}
