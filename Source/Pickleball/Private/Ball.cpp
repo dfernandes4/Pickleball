@@ -52,6 +52,7 @@ ABall::ABall()
 	BallCollider->BodyInstance.SetResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 
 	CurrentBounceCount = 0;
+	bLastLocationInKitchen = false;
 }
 
 void ABall::BeginPlay()
@@ -70,6 +71,7 @@ void ABall::BeginPlay()
 	BallLandingZ = 105.f;
 	
 	MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
+	MainGamemode->OnGameOver.AddDynamic(this, &ABall::OnGameOver);
 }
 
 void ABall::Tick(float DeltaSeconds)
@@ -118,15 +120,16 @@ void ABall::ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor)
 void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
-	if(!OtherActor->ActorHasTag("Fence"))
-	{
-		CurrentBounceCount++;
-		// Each Bounce + 2 to the count ...?
-		if(CurrentBounceCount > 2)
+		if(!OtherActor->ActorHasTag("Fence"))
 		{
-			MainGamemode->OnGameOver.Broadcast();
+			CurrentBounceCount++;
+			// Each Bounce + 2 to the count ...?
+			if(CurrentBounceCount == 3)
+			{
+				MainGamemode->OnGameOver.Broadcast();
+				
+			}
 		}
-	}
 	// Can Reflect the ball's direction and modify speed
 	// If not paddle play floor sound
 }
@@ -184,7 +187,7 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 			FVector BallLandingLocation = BallPositionSymbol->GetActorLocation();
 			if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -304 && BallLandingLocation.Y < 304))
 			{
-				if(PlayerPaddle->IsPlayerInKitchen() && CurrentBounceCount == 0)
+				if(IsBallInKitchen() && CurrentBounceCount == 0)
 				{
 					if(MainGamemode)
 					{
@@ -217,4 +220,17 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 int32 ABall::GetCurrentBounceCount() const
 {
 	return CurrentBounceCount;
+}
+
+void ABall::OnGameOver()
+{
+	BallMesh->OnComponentHit.Clear();
+	//Do something on restart to rebind the hit event
+}
+
+bool ABall::IsBallInKitchen()
+{
+	FVector BallLocation = BallMesh->GetComponentLocation();
+	bLastLocationInKitchen =  (BallLocation.X > -208 && BallLocation.Y > -304 && BallLocation.Y < 304);
+	return bLastLocationInKitchen;
 }

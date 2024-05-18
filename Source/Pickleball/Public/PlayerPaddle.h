@@ -32,16 +32,10 @@ public:
 	float GetScore() const;
 
 	UFUNCTION()
-	bool GetDidPlayerHitInKitchen() const;
-
-	UFUNCTION()
 	void OnGameOver();
 
 	UFUNCTION()
 	void SetIsPlayersTurn(bool bIsPlayersTurnIn);
-
-	UFUNCTION()
-	bool IsPlayerInKitchen();
 	
 	virtual void FlipPaddle() override;
 	
@@ -100,8 +94,5 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ClassVariables, meta = (AllowPrivateAccess))
 	bool bIsPlayersTurn;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ClassVariables, meta = (AllowPrivateAccess))
-	bool bDidPlayerHitInKitchen;
 	
 };

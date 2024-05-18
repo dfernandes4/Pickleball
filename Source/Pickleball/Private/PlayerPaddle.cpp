@@ -131,10 +131,6 @@ float APlayerPaddle::GetScore() const
 	return CurrentScore;
 }
 
-bool APlayerPaddle::GetDidPlayerHitInKitchen() const
-{
-	return bDidPlayerHitInKitchen;
-}
 
 void APlayerPaddle::OnGameOver()
 {
@@ -171,12 +167,6 @@ void APlayerPaddle::SetIsPlayersTurn(bool bIsPlayersTurnIn)
 	bIsPlayersTurn = bIsPlayersTurnIn;
 }
 
-bool APlayerPaddle::IsPlayerInKitchen()
-{
-	FVector PaddleLocation = GetActorLocation();
-	bDidPlayerHitInKitchen = (PaddleLocation.X > -208 && PaddleLocation.Y > -304 && PaddleLocation.Y < 304);
-	return bDidPlayerHitInKitchen;
-}
 
 void APlayerPaddle::FlipPaddle()
 {

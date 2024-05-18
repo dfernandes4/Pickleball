@@ -30,7 +30,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = Text, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UTextBlock> KitchenTextBlock;
 
-	UPROPERTY(Transient, meta = (BindWidgetAnim))
+	UPROPERTY(Transient, meta = (BindWidgetAnim), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UWidgetAnimation> KitchenTextAnimation;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "EASTEER", meta = (AllowPrivateAccess = "true"))

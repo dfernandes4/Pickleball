@@ -40,6 +40,12 @@ public:
 
 	UFUNCTION()
 	int32 GetCurrentBounceCount() const;
+
+	UFUNCTION()
+	void OnGameOver();
+	
+	UFUNCTION()
+	bool IsBallInKitchen();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
@@ -58,6 +64,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	UNiagaraComponent* Trail;
+
+	UPROPERTY()
+	bool bLastLocationInKitchen;
 	
 protected:
 	

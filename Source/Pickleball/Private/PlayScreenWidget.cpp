@@ -3,6 +3,7 @@
 
 #include "PlayScreenWidget.h"
 
+#include "Ball.h"
 #include "MainGamemode.h"
 #include "PlayerPaddle.h"
 #include "SettingScreenWidget.h"
@@ -53,11 +54,11 @@ void UPlayScreenWidget::HandleGameOver()
 	RemoveFromParent();
 
 
-	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	ABall* Ball = Cast<ABall>(UGameplayStatics::GetActorOfClass(GetWorld(), ABall::StaticClass()));
 	
-	if(PlayerPaddle != nullptr)
+	if(Ball != nullptr)
 	{
-		if(PlayerPaddle->GetDidPlayerHitInKitchen())
+		if(Ball->bLastLocationInKitchen)
 		{
 			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 			WidgetLoader->LoadWidget(FName("KitchenScreen"), GetWorld());

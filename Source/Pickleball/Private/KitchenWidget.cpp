@@ -20,8 +20,8 @@ void UKitchenWidget::PlayKitchenTextAnimation()
 	UGameplayStatics::PlaySound2D(GetWorld(), WhistleSoundEffect);
 	
 	const float AnimationDuration = KitchenTextAnimation->GetEndTime();
-	FTimerHandle CountdownTimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(CountdownTimerHandle, this, &UKitchenWidget::KitchenTextTimerFinished, AnimationDuration, false);
+	FTimerHandle KitchenTextTimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(KitchenTextTimerHandle, this, &UKitchenWidget::KitchenTextTimerFinished, AnimationDuration, false);
 }
 
 void UKitchenWidget::KitchenTextTimerFinished() 

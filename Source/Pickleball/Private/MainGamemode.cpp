@@ -3,9 +3,9 @@
 
 #include "MainGamemode.h"
 
-#include "PlayerPaddle.h"
 #include "Sound/SoundClass.h"
 #include "UserWidgetLoader.h"
+#include "Kismet/GameplayStatics.h"
 
 
 AMainGamemode::AMainGamemode()
@@ -22,6 +22,7 @@ AMainGamemode::AMainGamemode()
 	{
 		MusicSoundClass->Properties.Volume = .8;
 	}
+	
 }
 
 void AMainGamemode::BeginPlay()
