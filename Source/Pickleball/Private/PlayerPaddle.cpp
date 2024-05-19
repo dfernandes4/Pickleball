@@ -131,7 +131,6 @@ float APlayerPaddle::GetScore() const
 	return CurrentScore;
 }
 
-
 void APlayerPaddle::OnGameOver()
 {
 	if(CurrentScore > HighScore)

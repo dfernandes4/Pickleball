@@ -4,6 +4,7 @@
 #include "PickleBallGameInstance.h"
 
 #include "PickleballSaveGame.h"
+#include "UserWidgetLoader.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -31,10 +32,12 @@ void UPickleBallGameInstance::LoadGameData()
 	if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))
 	{
 		SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
+		bIsFirstTimePlaying = false;
 	}
 	else
 	{
 		SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
+		bIsFirstTimePlaying = true;
 	}
 }
 
@@ -52,4 +55,9 @@ void UPickleBallGameInstance::SavePlayerData(FPlayerData PlayerData)
 {
 	SaveGame->PlayerData = PlayerData;
 	SaveGameData();
+}
+
+bool UPickleBallGameInstance::GetIsFirstTimePlaying()
+{
+	return bIsFirstTimePlaying;
 }

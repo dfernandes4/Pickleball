@@ -7,6 +7,11 @@
 #include "Interfaces/OnlineIdentityInterface.h"
 
 
+AMainPlayerController::AMainPlayerController()
+{
+    bIsFirstTouch = true;
+}
+
 void AMainPlayerController::SetupInputComponent()
 {
     Super::SetupInputComponent();
@@ -29,6 +34,8 @@ void AMainPlayerController::BeginPlay()
     {
         MainGamemode->OnGameOver.AddDynamic(this, &AMainPlayerController::OnGameOver);
     }
+
+    DisableInput(this);
 }
 
 void AMainPlayerController::PlayerTick(float DeltaTime)
@@ -52,6 +59,12 @@ void AMainPlayerController::PlayerTick(float DeltaTime)
 
 void AMainPlayerController::OnTouchPressed(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
+    if (bIsFirstTouch)
+    {
+        OnFirstTouch.Broadcast();
+        bIsFirstTouch = false;
+    }
+    
     bIsTouching = true;
     InitialTouchLocation = FVector2D(Location);
     TouchLocation = InitialTouchLocation;

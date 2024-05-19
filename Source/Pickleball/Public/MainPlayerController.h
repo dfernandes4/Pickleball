@@ -12,6 +12,7 @@
  * 
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPurchaseCompletedDelegate, int32, CoinsAmount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFirstTouchDelegate);
 
 UCLASS()
 class PICKLEBALL_API AMainPlayerController : public APlayerController
@@ -19,6 +20,9 @@ class PICKLEBALL_API AMainPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+
+	AMainPlayerController();
+	
 	virtual void SetupInputComponent() override;
 	
 	UFUNCTION()
@@ -26,13 +30,13 @@ public:
 
 	UFUNCTION()
 	void InitiatePurchaseRequest(const FString& ProductId);
-	
 	void HandlePurchaseCompletion(bool bWasSuccessful, const TArray<FUniqueOfferId>& Offers, const FString& ErrorMsg);
 
 	UFUNCTION()
 	void OnGameOver();
 	
 	FOnPurchaseCompletedDelegate  OnPurchaseCompleted;
+	FOnFirstTouchDelegate OnFirstTouch;
 	
 
 protected:
@@ -59,5 +63,7 @@ private:
 	float CurrentDeltaTime;
 	UPROPERTY()
 	FVector PaddleVelocity;
+	UPROPERTY()
+	bool bIsFirstTouch;;
 
 };
