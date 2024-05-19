@@ -3,6 +3,7 @@
 
 #include "MainGamemode.h"
 
+#include "PickleBallGameInstance.h"
 #include "Sound/SoundClass.h"
 #include "UserWidgetLoader.h"
 #include "Kismet/GameplayStatics.h"
@@ -28,7 +29,16 @@ AMainGamemode::AMainGamemode()
 void AMainGamemode::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-	WidgetLoader->LoadWidget(FName("HomeScreen"), GetWorld());
+	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
+	
+	if(GameInstance->GetIsFirstTimePlaying())
+	{
+		WidgetLoader->LoadWidget(FName("TutorialScreen"), GetWorld());
+	}
+	else
+	{
+		WidgetLoader->LoadWidget(FName("HomeScreen"), GetWorld());
+	}
 }

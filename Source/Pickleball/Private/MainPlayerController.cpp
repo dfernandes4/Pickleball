@@ -29,6 +29,8 @@ void AMainPlayerController::BeginPlay()
     {
         MainGamemode->OnGameOver.AddDynamic(this, &AMainPlayerController::OnGameOver);
     }
+
+    DisableInput(this);
 }
 
 void AMainPlayerController::PlayerTick(float DeltaTime)

@@ -15,8 +15,14 @@ class PICKLEBALL_API UTutorialOverlayWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-
+	
 	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void OnOverlayButtonClicked();
+
+	UFUNCTION()
+	void TransitionToNextAnim(UWidgetAnimation* FadeInAnimOfNext, UWidgetAnimation* FadeOutAnimOfCurrent = nullptr);
 	
 private:
 
@@ -54,6 +60,9 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UTextBlock> SwipeToHitTextBlock;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UButton> OverlayButton;
 
 #pragma endregion Properties
 
@@ -103,6 +112,19 @@ private:
 
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 	TObjectPtr<UWidgetAnimation> PickleballHop4Animation;
+
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+	TObjectPtr<UWidgetAnimation> SlideBubblesFadeInAnimation;
+
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+	TObjectPtr<UWidgetAnimation> SlideBubblesFadeOutAnimation;
 	
 #pragma endregion Animation
+
+#pragma region ClassVariables
+
+	UPROPERTY()
+	int32 AnimCount;
+	
+#pragma endregion ClassVariables
 };

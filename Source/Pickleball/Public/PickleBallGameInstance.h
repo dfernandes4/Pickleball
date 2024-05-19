@@ -32,6 +32,9 @@ public:
 	UFUNCTION()
 	virtual void SavePlayerData(FPlayerData PlayerData) override;
 
+	UFUNCTION()
+	bool GetIsFirstTimePlaying();
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Save, meta = (AllowPrivateAccess))
@@ -39,4 +42,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Save, meta = (AllowPrivateAccess))
 	FString SlotName;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Save, meta = (AllowPrivateAccess))
+	bool bIsFirstTimePlaying;
 };
