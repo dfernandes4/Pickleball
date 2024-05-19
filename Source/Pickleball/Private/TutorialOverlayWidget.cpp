@@ -18,6 +18,9 @@ void UTutorialOverlayWidget::NativeConstruct()
 	
 	PlayAnimation(WelcomeFadeInFadeOutAnimation);
 
+	PlayerController = Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController());
+	PlayerController->OnFirstTouch.AddDynamic(this, &UTutorialOverlayWidget::OnFirstTouch);
+
 	const float AnimationDuration = WelcomeFadeInFadeOutAnimation->GetEndTime();
 	FTimerHandle WelcomeTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(WelcomeTimerHandle, [this]()
@@ -55,25 +58,9 @@ void UTutorialOverlayWidget::OnOverlayButtonClicked()
 		TransitionToNextAnim(SwipeToControlFadeInAnimation, WhereToHitFromFadeOutAnimation);
 		PlayAnimation(PickleballHop4Animation);
 
-		AMainPlayerController* PlayerController = Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController());
+		OverlayButton->SetIsEnabled(false);
+		OverlayButton->SetVisibility(ESlateVisibility::Hidden);
 		PlayerController->EnableInput(PlayerController);
-	}
-	else if(AnimCount == 5)
-	{
-		PlayAnimation(SwipeToControlFadeOutAnimation);
-		PlayAnimation(SlideBubblesFadeOutAnimation);
-		
-		AMainPlayerController* PlayerController = Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController());
-		PlayerController->EnableInput(PlayerController);
-		
-		const float SwipeToControlFadeOutAnimationDuration = SwipeToControlFadeOutAnimation->GetEndTime();
-		
-		FTimerHandle SwipeToControlFadeOutTimerHandle;
-		GetWorld()->GetTimerManager().SetTimer(SwipeToControlFadeOutTimerHandle, [this]()
-		{
-			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-			WidgetLoader->LoadWidget(FName("Countdown"), GetWorld());
-		}, SwipeToControlFadeOutAnimationDuration, false);
 	}
 }
 
@@ -102,4 +89,21 @@ void UTutorialOverlayWidget::TransitionToNextAnim(UWidgetAnimation* FadeInAnimOf
 			OverlayButton->SetIsEnabled(true);
 		}, FadeInAnimOfNextAnimationDuration, false);
 	}
+}
+
+void UTutorialOverlayWidget::OnFirstTouch()
+{
+	PlayAnimation(SwipeToControlFadeOutAnimation);
+	PlayAnimation(SlideBubblesFadeOutAnimation);
+		
+	const float SwipeToControlFadeOutAnimationDuration = SwipeToControlFadeOutAnimation->GetEndTime();
+		
+	FTimerHandle SwipeToControlFadeOutTimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(SwipeToControlFadeOutTimerHandle, [this]()
+	{
+		RemoveFromParent();
+		
+		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+		WidgetLoader->LoadWidget(FName("Countdown"), GetWorld());
+	}, SwipeToControlFadeOutAnimationDuration, false);
 }

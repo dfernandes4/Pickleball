@@ -23,7 +23,9 @@ public:
 
 	UFUNCTION()
 	void TransitionToNextAnim(UWidgetAnimation* FadeInAnimOfNext, UWidgetAnimation* FadeOutAnimOfCurrent = nullptr);
-	
+
+	UFUNCTION()
+	void OnFirstTouch();
 private:
 
 #pragma region Properties
@@ -125,6 +127,9 @@ private:
 
 	UPROPERTY()
 	int32 AnimCount;
+	
+	UPROPERTY()
+	class AMainPlayerController* PlayerController;
 	
 #pragma endregion ClassVariables
 };
