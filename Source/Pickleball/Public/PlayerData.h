@@ -15,6 +15,9 @@ struct FPlayerData
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerStats, meta = (AllowPrivateAccess))
 	int32 PlayerHighScore;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerStats, meta = (AllowPrivateAccess))
+	int32 PlayersLastScore;
 
 	// String : Paddle ID In DT, bool : Unlock Status
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerStats, meta = (AllowPrivateAccess))

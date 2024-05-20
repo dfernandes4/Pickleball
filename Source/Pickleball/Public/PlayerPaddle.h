@@ -53,6 +53,18 @@ public:
 
 	UFUNCTION()
 	int32 GetPlayerCoins() const;
+
+	UFUNCTION()
+	int32 GetCoinsEarnedFromLastMatch() const;
+
+	UFUNCTION()
+	void AddCoins(int32 CoinsToAdd);
+
+	UFUNCTION()
+	int32 GetCurrentScore() const;
+
+	UFUNCTION()
+	void SetCurrentScore(int32 ScoreToSet);
 	
 #pragma endregion Save/Load
 	
@@ -79,6 +91,9 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
 	int32 CurrentCoinCount;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
+	int32 CoinsEarnedFromLastMatch;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
 	int32 HighScore;

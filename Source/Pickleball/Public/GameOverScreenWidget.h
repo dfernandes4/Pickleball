@@ -32,6 +32,9 @@ virtual void NativeConstruct() override;
 	UFUNCTION()
 	void HandleChildClosed();
 
+	UFUNCTION()
+	void DisplayPlayerValues();
+
 private:
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCanvasPanel> CanvasPanel;
@@ -53,7 +56,6 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UTextBlock> CoinsEarnedAmountTextBlock;
-
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UButton> ReplayButton;
@@ -84,6 +86,9 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "EASTEER", meta = (AllowPrivateAccess = "true"))
 	USoundBase* MenuSoundEffect;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "EASTEER", meta = (AllowPrivateAccess = "true"))
+	class APlayerPaddle* PlayerPaddle;
 
 	
 };

@@ -31,9 +31,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundClass* MusicSoundClass;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
-	APlayerPaddle* PlayerPaddle;
 	
 	FOnScoreUpdated OnScoreUpdated;
 };

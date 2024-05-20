@@ -6,7 +6,6 @@
 #include "PickleBallGameInstance.h"
 #include "Sound/SoundClass.h"
 #include "UserWidgetLoader.h"
-#include "Kismet/GameplayStatics.h"
 
 
 AMainGamemode::AMainGamemode()
@@ -32,13 +31,26 @@ void AMainGamemode::BeginPlay()
 	
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
-	
-	if(GameInstance->GetIsFirstTimePlaying())
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+
+	if(GameInstance->GetShouldLaunchStarterScreen())
 	{
-		WidgetLoader->LoadWidget(FName("TutorialScreen"), GetWorld());
+		if(GameInstance->GetIsFirstTimePlaying())
+		{
+			WidgetLoader->LoadWidget(FName("TutorialScreen"), GetWorld());
+			GameInstance->SetShouldLaunchStarterScreen(false);
+		}
+		else
+		{
+			WidgetLoader->LoadWidget(FName("HomeScreen"), GetWorld());
+			GameInstance->SetShouldLaunchStarterScreen(false);
+		}
+
+		PlayerController->DisableInput(PlayerController);
 	}
 	else
 	{
-		WidgetLoader->LoadWidget(FName("HomeScreen"), GetWorld());
+		WidgetLoader->LoadWidget(FName("Countdown"), GetWorld());
+		PlayerController->EnableInput(PlayerController);
 	}
 }

@@ -20,6 +20,7 @@ APlayerPaddle::APlayerPaddle()
 	bIsFirstSwing = true;
 
 	CurrentScore = 0;
+	CoinsEarnedFromLastMatch = 0;
 
 	bIsPlayersTurn = true;
 
@@ -50,7 +51,8 @@ void APlayerPaddle::BeginPlay()
 	if (SaveGameInterface)
 	{
 		FPlayerData PlayerData = SaveGameInterface->GetSaveGamePlayerData();
-		
+
+		CurrentScore = PlayerData.PlayersLastScore;
 		CurrentCoinCount = PlayerData.PlayerCoins;
 		HighScore = PlayerData.PlayerHighScore;
 		PaddleUnlockStatuses = PlayerData.PaddleUnlockStatuses;
@@ -141,8 +143,8 @@ void APlayerPaddle::OnGameOver()
 	int32 HundredsCount = FMath::FloorToInt(CurrentScore / 100.f);
 	int32 ThousandsCount = FMath::FloorToInt(CurrentScore / 1000.f);
 	
-	CurrentCoinCount += FMath::Floor(CurrentScore / 5) + (HundredsCount * 10) + (ThousandsCount * 100);
-	CurrentScore = 0;
+	CoinsEarnedFromLastMatch = FMath::Floor(CurrentScore / 10) + (HundredsCount * 5) + (ThousandsCount * 100);
+	CurrentCoinCount += CoinsEarnedFromLastMatch;
 
 	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
 	GameInstance->SavePlayerData(GetCurrentPlayerData());
@@ -199,7 +201,7 @@ void APlayerPaddle::FlipPaddle()
 
 FPlayerData APlayerPaddle::GetCurrentPlayerData()
 {
-	return FPlayerData(CurrentCoinCount, HighScore, PaddleUnlockStatuses);
+	return FPlayerData(CurrentCoinCount, HighScore, CurrentScore, PaddleUnlockStatuses);
 }
 
 int APlayerPaddle::GetHighScore() const
@@ -210,5 +212,25 @@ int APlayerPaddle::GetHighScore() const
 int APlayerPaddle::GetPlayerCoins() const
 {
 	return CurrentCoinCount;
+}
+
+int32 APlayerPaddle::GetCoinsEarnedFromLastMatch() const
+{
+	return CoinsEarnedFromLastMatch;
+}
+
+void APlayerPaddle::AddCoins(int32 CoinsToAdd)
+{
+	CurrentCoinCount += CoinsToAdd;
+}
+
+int32 APlayerPaddle::GetCurrentScore() const
+{
+	return CurrentScore;
+}
+
+void APlayerPaddle::SetCurrentScore(int32 ScoreToSet)
+{
+	CurrentScore = ScoreToSet;
 }
 

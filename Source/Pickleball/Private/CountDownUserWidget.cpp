@@ -11,9 +11,14 @@
 #include "Kismet/GameplayStatics.h"
 
 
+class AMainPlayerController;
+
 void UCountDownUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	PlayerController->EnableInput(PlayerController);
+	
 	CurrentCount = 3;
 	PlayCountDownAnimation();
 }
