@@ -4,31 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "CollectionWidget.generated.h"
+#include "PaddleToSelectScreenWidget.generated.h"
 
 /**
  * 
  */
-
-class UBackgroundBlur;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCollectionClosedDelegate);
-
 UCLASS()
-class PICKLEBALL_API UCollectionWidget : public UUserWidget
+class PICKLEBALL_API UPaddleToSelectScreenWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
-public:
-	
-	virtual void NativeConstruct() override;
-	
-	UFUNCTION()
-	void OnBackButtonClicked();
-	
-	FOnCollectionClosedDelegate OnCollectionClosed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
-	USoundBase* BackSoundEffect;
 
 private:
 
@@ -41,13 +25,12 @@ private:
 	UPROPERTY(EditAnywhere, Category = Buttons, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UButton> BackButton;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UBackgroundBlur> BackgroundBlur;
+	UPROPERTY(EditAnywhere, Category = Buttons, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UButton> UseButton;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UScrollBox> ScrollBox;
+	TObjectPtr<class UBackgroundBlur> BackgroundBlur;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UWrapBox> CollectedPaddlesWrapBox;
-	
+	TObjectPtr<class UTextBlock> PaddleNameTextBlock;
 };

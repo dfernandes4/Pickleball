@@ -10,13 +10,13 @@ void UCollectionWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if(ExitButton != nullptr)
+	if(BackButton != nullptr)
 	{
-		ExitButton->OnClicked.AddDynamic(this, &UCollectionWidget::OnExitButtonClicked);
+		BackButton->OnClicked.AddDynamic(this, &UCollectionWidget::OnBackButtonClicked);
 	}
 }
 
-void UCollectionWidget::OnExitButtonClicked()
+void UCollectionWidget::OnBackButtonClicked()
 {
 	RemoveFromParent();
 	OnCollectionClosed.Broadcast();
