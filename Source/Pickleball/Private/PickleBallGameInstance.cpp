@@ -4,7 +4,6 @@
 #include "PickleBallGameInstance.h"
 
 #include "PickleballSaveGame.h"
-#include "UserWidgetLoader.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -24,6 +23,7 @@ void UPickleBallGameInstance::Shutdown()
 {
 	Super::Shutdown();
 
+	SaveGame->PlayerData.PlayersLastScore = 0;
 	SaveGameData();
 }
 
@@ -57,7 +57,17 @@ void UPickleBallGameInstance::SavePlayerData(FPlayerData PlayerData)
 	SaveGameData();
 }
 
-bool UPickleBallGameInstance::GetIsFirstTimePlaying()
+bool UPickleBallGameInstance::GetIsFirstTimePlaying() const
 {
 	return bIsFirstTimePlaying;
+}
+
+void UPickleBallGameInstance::SetShouldLaunchStarterScreen(bool bIShouldLaunchStarterScreenIn)
+{
+	bShouldLaunchStarterScreen = bIShouldLaunchStarterScreenIn;
+}
+
+bool UPickleBallGameInstance::GetShouldLaunchStarterScreen() const
+{
+	return bShouldLaunchStarterScreen;
 }

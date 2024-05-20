@@ -27,6 +27,16 @@ void UPlayScreenWidget::NativeConstruct()
 	{
 		PauseButton->OnClicked.AddDynamic(this, &UPlayScreenWidget::PauseButtonClicked);
 	}
+	
+	if(ScoreText != nullptr )
+	{
+		APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+		if(PlayerPaddle != nullptr)
+		{
+			ScoreText->SetText(FText::FromString(FString::FromInt(PlayerPaddle->GetCurrentScore())));
+		}
+	}
+
 }
 
 void UPlayScreenWidget::UpdateScore(int NewScore)
@@ -65,6 +75,7 @@ void UPlayScreenWidget::HandleGameOver()
 		}
 		else
 		{
+			// Should play an Out or Bounced Twice Screen like kitchen
 			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 			WidgetLoader->LoadWidget(FName("GameOverScreen"), GetWorld());
 		}

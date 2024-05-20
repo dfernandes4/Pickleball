@@ -6,8 +6,6 @@
 #include "CoinShopScreen.h"
 #include "CollectionWidget.h"
 #include "MainGamemode.h"
-#include "MainPlayerController.h"
-#include "PlayerPaddle.h"
 #include "SaveGameInterface.h"
 #include "SettingScreenWidget.h"
 #include "ShopScreenWidget.h"
@@ -55,10 +53,8 @@ void UHomeScreenWidget::NativeConstruct()
 
 void UHomeScreenWidget::OnPlayButtonClicked()
 {
-	AMainPlayerController* PlayerController = Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController());
-	PlayerController->EnableInput(PlayerController);
+	RemoveFromParent();
 	
-	SetVisibility(ESlateVisibility::Collapsed);
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	WidgetLoader->LoadWidget(FName("Countdown"), GetWorld());
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);

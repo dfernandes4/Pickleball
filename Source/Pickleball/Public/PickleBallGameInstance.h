@@ -33,7 +33,12 @@ public:
 	virtual void SavePlayerData(FPlayerData PlayerData) override;
 
 	UFUNCTION()
-	bool GetIsFirstTimePlaying();
+	bool GetIsFirstTimePlaying() const;
+	UFUNCTION()
+	bool GetShouldLaunchStarterScreen() const;
+	UFUNCTION()
+	void SetShouldLaunchStarterScreen(bool bIShouldLaunchStarterScreenIn);
+	
 
 private:
 
@@ -45,4 +50,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Save, meta = (AllowPrivateAccess))
 	bool bIsFirstTimePlaying;
+	
+	bool bShouldLaunchStarterScreen = true;
 };
