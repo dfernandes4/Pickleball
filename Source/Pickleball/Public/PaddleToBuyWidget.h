@@ -24,9 +24,6 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Image", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UImage> CoinImage;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Image", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UImage> PaddleImage;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Text", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UTextBlock> PaddleAmountTextBlock;
