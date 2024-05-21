@@ -19,22 +19,15 @@ class PICKLEBALL_API UShopScreenWidget : public UUserWidget
 public:
 
 	virtual void NativeConstruct() override;
-
-	UFUNCTION()
-	void OnAddCoinsBtnClicked();
 	
 	UFUNCTION()
 	void OnBackButtonClicked();
-
-	UFUNCTION()
-	void HandleChildClosed();
 	
 	UPROPERTY()
 	FOnShopClosedDelegate OnShopClosed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundBase* BackSoundEffect;
-
 
 private:
 
@@ -44,22 +37,14 @@ private:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCanvasPanel> InternalCanvasPanel;
-
+	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UButton> AddCoinsBtn;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UButton>	TotalCoinAmountBtn;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UButton>	BackButton;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UTextBlock> CoinAmountText;
+	TObjectPtr<class UButton>	BackButton;
+	
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UBackgroundBlur> BackgroundBlur;
-
+	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UImage> BackroundImage;
 
@@ -76,16 +61,16 @@ private:
 	TObjectPtr<UImage> LegendaryImage;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr< UTextBlock> CommonTextBlock;
+	TObjectPtr<class UTextBlock> CommonTextBlock;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr< UTextBlock> RareTextBlock;
+	TObjectPtr<UTextBlock> RareTextBlock;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr< UTextBlock> EpicTextBlock;
+	TObjectPtr<UTextBlock> EpicTextBlock;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr< UTextBlock> LegendaryTextBlock;
+	TObjectPtr<UTextBlock> LegendaryTextBlock;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UScrollBox> ScrollBox;
