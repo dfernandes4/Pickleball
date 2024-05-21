@@ -23,7 +23,7 @@ public:
 	virtual void NativeConstruct() override;
 	
 	UFUNCTION()
-	void OnExitButtonClicked();
+	void OnBackButtonClicked();
 
 	UPROPERTY()
 	FOnSettingsClosedDelegate OnSettingsClosed;
@@ -62,19 +62,10 @@ private:
 	TObjectPtr<USlider> MusicSlider;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UButton> ExitButton;
+	TObjectPtr<class UButton> BackButton;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UTextBlock> VolumeTextBlock;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UTextBlock> MasterTextBlock;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UTextBlock> SoundFxTextBlock;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UTextBlock> MusicTextBlock;
+	TObjectPtr<UButton> RemoveAdsButton;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UBackgroundBlur> BackgroundBlur;

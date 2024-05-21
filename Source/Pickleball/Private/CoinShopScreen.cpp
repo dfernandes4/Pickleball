@@ -11,46 +11,56 @@ void UCoinShopScreen::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if(ExitBtn != nullptr)
+	if(BackButton != nullptr)
 	{
-		ExitBtn->OnPressed.AddDynamic(this, &UCoinShopScreen::OnExitButtonPressed);
+		BackButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnBackButtonPressed);
 	}
 
-	if(SomeGoldBtn != nullptr)
+	if(SomeGoldButton != nullptr)
 	{
-		SomeGoldBtn->OnPressed.AddDynamic(this, &UCoinShopScreen::OnSomeGoldBtnPressed);
+		SomeGoldButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnSomeGoldButtonPressed);
+
+	}
+	if(FistOGoldButton != nullptr)
+	{
+		FistOGoldButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnFistOGoldButtonPressed);
 
 	}
 
-	if(LotsofGoldBtn != nullptr)
+	if(LotsOGoldButton != nullptr)
 	{
-		LotsofGoldBtn->OnPressed.AddDynamic(this, &UCoinShopScreen::OnLotsofGoldBtnPressed);
+		LotsOGoldButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnLotsOGoldButtonPressed);
 	}
 
-	if(TonsofGoldBtn != nullptr)
+	if(PilesOGoldButton != nullptr)
 	{
-		TonsofGoldBtn->OnPressed.AddDynamic(this, &UCoinShopScreen::OnTonsofBtnPressed);
+		PilesOGoldButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnPilesOGoldButtonPressed);
 	}
 }
 
-void UCoinShopScreen::OnExitButtonPressed()
+void UCoinShopScreen::OnBackButtonPressed()
 {
 	RemoveFromParent();
 	OnCoinShopClosed.Broadcast();
 	UGameplayStatics::PlaySound2D(GetWorld(), BackSoundEffect);
 }
 
-void UCoinShopScreen::OnSomeGoldBtnPressed()
+void UCoinShopScreen::OnSomeGoldButtonPressed()
 {
 	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("");
 }
 
-void UCoinShopScreen::OnLotsofGoldBtnPressed()
+void UCoinShopScreen::OnFistOGoldButtonPressed()
 {
 	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("");
 }
 
-void UCoinShopScreen::OnTonsofBtnPressed()
+void UCoinShopScreen::OnLotsOGoldButtonPressed()
+{
+	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("");
+}
+
+void UCoinShopScreen::OnPilesOGoldButtonPressed()
 {
 	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("");
 }
