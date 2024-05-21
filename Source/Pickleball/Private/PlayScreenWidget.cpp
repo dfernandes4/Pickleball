@@ -77,7 +77,7 @@ void UPlayScreenWidget::HandleGameOver()
 		{
 			// Should play an Out or Bounced Twice Screen like kitchen
 			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-			WidgetLoader->LoadWidget(FName("GameOverScreen"), GetWorld());
+			WidgetLoader->LoadWidget(FName("FaultWidgetScreen"), GetWorld());
 		}
 	}
 }
