@@ -21,16 +21,19 @@ public:
 	virtual void NativeConstruct() override;
 	
 	UFUNCTION()
-	void OnExitButtonPressed();
+	void OnBackButtonPressed();
 
 	UFUNCTION()
-	void OnSomeGoldBtnPressed();
+	void OnSomeGoldButtonPressed();
+
+	UFUNCTION()
+	void OnFistOGoldButtonPressed();
 	
 	UFUNCTION()
-	void OnLotsofGoldBtnPressed();
+	void OnLotsOGoldButtonPressed();
 	
 	UFUNCTION()
-	void OnTonsofBtnPressed();
+	void OnPilesOGoldButtonPressed();
 	
 	FOnCoinShopClosedDelegate OnCoinShopClosed;
 	
@@ -44,22 +47,22 @@ private:
 	TObjectPtr<class UImage> BackBoxImage;
 
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UButton> SomeGoldBtn;
+	TObjectPtr<class UButton> SomeGoldButton;
 
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UButton> LotsofGoldBtn;
+	TObjectPtr<UButton> FistOGoldButton;
+	
+	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UButton> LotsOGoldButton;
 
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UButton> TonsofGoldBtn;
+	TObjectPtr<UButton> PilesOGoldButton;
 
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UBackgroundBlur> BackgroundBlur;
-	
-	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UTextBlock> AddCoinsText;
 
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UButton> ExitBtn;
+	TObjectPtr<UButton> BackButton;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio", meta = (AllowPrivateAccess = "true"))
 	USoundBase* BackSoundEffect;

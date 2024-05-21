@@ -23,9 +23,9 @@ void USettingScreenWidget::NativeConstruct()
 		MusicSlider->SetValue(MusicSoundClass->Properties.Volume);
 	}
 	
-	if(ExitButton != nullptr)
+	if(BackButton != nullptr)
 	{
-		ExitButton->OnClicked.AddDynamic(this, &USettingScreenWidget::OnExitButtonClicked);
+		BackButton->OnClicked.AddDynamic(this, &USettingScreenWidget::OnBackButtonClicked);
 	}
 	if(MasterSlider != nullptr)
 	{
@@ -45,7 +45,7 @@ void USettingScreenWidget::NativeConstruct()
 	
 }
 
-void USettingScreenWidget::OnExitButtonClicked()
+void USettingScreenWidget::OnBackButtonClicked()
 {
 	RemoveFromParent();
 	OnSettingsClosed.Broadcast();
