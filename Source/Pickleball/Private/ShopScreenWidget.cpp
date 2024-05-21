@@ -24,8 +24,6 @@ void UShopScreenWidget::NativeConstruct()
 	}
 }
 
-
-
 void UShopScreenWidget::OnBackButtonClicked()
 {
 	RemoveFromParent();
