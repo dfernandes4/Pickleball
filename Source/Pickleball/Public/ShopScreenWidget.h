@@ -24,7 +24,7 @@ public:
 	void OnAddCoinsBtnClicked();
 	
 	UFUNCTION()
-	void OnExitButtonClicked();
+	void OnBackButtonClicked();
 
 	UFUNCTION()
 	void HandleChildClosed();
@@ -46,13 +46,13 @@ private:
 	TObjectPtr<UCanvasPanel> InternalCanvasPanel;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UButton> ExitBtn;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UButton> AddCoinsBtn;
+	TObjectPtr<class UButton> AddCoinsBtn;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UButton>	TotalCoinAmountBtn;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UButton>	BackButton;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UTextBlock> CoinAmountText;
@@ -74,9 +74,6 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UImage> LegendaryImage;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UImage> OverlayBackroundImage;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr< UTextBlock> CommonTextBlock;

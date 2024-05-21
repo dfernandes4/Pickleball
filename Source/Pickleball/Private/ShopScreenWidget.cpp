@@ -13,9 +13,9 @@
 void UShopScreenWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	if(ExitBtn != nullptr)
+	if(BackButton != nullptr)
 	{
-		ExitBtn->OnClicked.AddDynamic(this, &UShopScreenWidget::OnExitButtonClicked);
+		BackButton->OnClicked.AddDynamic(this, &UShopScreenWidget::OnBackButtonClicked);
 	}
 
 	if(AddCoinsBtn != nullptr)
@@ -26,7 +26,7 @@ void UShopScreenWidget::NativeConstruct()
 
 
 
-void UShopScreenWidget::OnExitButtonClicked()
+void UShopScreenWidget::OnBackButtonClicked()
 {
 	RemoveFromParent();
 	OnShopClosed.Broadcast();
