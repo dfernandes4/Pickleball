@@ -127,5 +127,17 @@ void AEnemyPaddle::FlipPaddle()
 
 void AEnemyPaddle::IncrementForceMultiplier(int NewScore)
 {
-	ForceMultiplier += .1;
+	if (ForceMultiplier <= 4.5)
+	{
+		ForceMultiplier += .1;
+	}
+	else
+	{
+		AMainGamemode* MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
+
+		if(MainGamemode)
+		{
+			MainGamemode->OnScoreUpdated.Clear();
+		}
+	}
 }
