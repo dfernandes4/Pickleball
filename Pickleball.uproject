@@ -31,6 +31,11 @@
 				"IOS",
 				"TVOS"
 			]
+		},
+		{
+			"Name": "GoogleAdmobBlueprint",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/c67d7774d421479f8efed663f477d6ec"
 		}
 	],
 	"TargetPlatforms": [
