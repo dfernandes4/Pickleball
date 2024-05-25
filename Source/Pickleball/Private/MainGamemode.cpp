@@ -22,7 +22,6 @@ AMainGamemode::AMainGamemode()
 	{
 		MusicSoundClass->Properties.Volume = .8;
 	}
-	
 }
 
 void AMainGamemode::BeginPlay()

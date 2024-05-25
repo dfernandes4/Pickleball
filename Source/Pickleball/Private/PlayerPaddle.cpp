@@ -146,7 +146,7 @@ void APlayerPaddle::OnGameOver()
 	int32 HundredsCount = FMath::FloorToInt(CurrentScore / 100.f);
 	int32 ThousandsCount = FMath::FloorToInt(CurrentScore / 1000.f);
 	
-	CoinsEarnedFromLastMatch = FMath::Floor(CurrentScore / 10) + (HundredsCount * 5) + (ThousandsCount * 100);
+	CoinsEarnedFromLastMatch = FMath::Floor(CurrentScore / 4) + (HundredsCount * 10) + (ThousandsCount * 150);
 	CurrentCoinCount += CoinsEarnedFromLastMatch;
 
 	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());

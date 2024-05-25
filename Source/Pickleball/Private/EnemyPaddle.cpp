@@ -137,7 +137,7 @@ void AEnemyPaddle::IncrementForceMultiplier(int NewScore)
 
 		if(MainGamemode)
 		{
-			MainGamemode->OnScoreUpdated.Clear();
+			MainGamemode->OnScoreUpdated.RemoveDynamic(this, &AEnemyPaddle::IncrementForceMultiplier);
 		}
 	}
 }
