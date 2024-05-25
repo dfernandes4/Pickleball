@@ -92,19 +92,22 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 				
 				const float ForceXDistance = FMath::Clamp(ScaledPaddleVelocity.X, 32, 176);
 				const float ForceYDistance = FMath::Clamp(ScaledPaddleVelocity.Y, -15.0f, 15.0f);
+
 				
 				// Interpolation for Z
 				const float MinZ =  (1.854 * (FMath::Pow(10.f, -5.f) * FMath::Pow(-ForceXDistance, 3.f))) +
 									(7.416 * (FMath::Pow(10.f, -3.f) * FMath::Pow(-ForceXDistance, 2.f))) + (1.092 * -ForceXDistance) + 54.61;
-		
+	
 				const float MaxZ =  (7.065 * (FMath::Pow(10.f, -13.f) * FMath::Pow(-ForceXDistance, 7.f))) + 
 									(5.7551 * (FMath::Pow(10.f, -10.f) * FMath::Pow(-ForceXDistance, 6.f))) + 
 									(1.9777 * (FMath::Pow(10.f, -7.f) * FMath::Pow(-ForceXDistance, 5.f))) + 
 									(.0000373143f * FMath::Pow(-ForceXDistance, 4.f)) + 
 									(.00421209 * FMath::Pow(-ForceXDistance, 3.f)) + 
 									(0.290215 * FMath::Pow(-ForceXDistance, 2.f)) + (11.9063 * -ForceXDistance) + 262.738;
-
+				
 				const float ForceZDistance = .5 * (MinZ + ((MaxZ-MinZ) * PercentageOfXDistanceFromFarthestHittingLocation));
+
+				
 				
 				const FVector Force = FVector(ForceXDistance, ForceYDistance, ForceZDistance);
 				UE_LOG(LogTemp, Warning, TEXT("Force: %s"), *Force.ToString());
@@ -143,7 +146,7 @@ void APlayerPaddle::OnGameOver()
 	int32 HundredsCount = FMath::FloorToInt(CurrentScore / 100.f);
 	int32 ThousandsCount = FMath::FloorToInt(CurrentScore / 1000.f);
 	
-	CoinsEarnedFromLastMatch = FMath::Floor(CurrentScore / 10) + (HundredsCount * 5) + (ThousandsCount * 100);
+	CoinsEarnedFromLastMatch = FMath::Floor(CurrentScore / 4) + (HundredsCount * 10) + (ThousandsCount * 150);
 	CurrentCoinCount += CoinsEarnedFromLastMatch;
 
 	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
