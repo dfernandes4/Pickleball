@@ -4,9 +4,17 @@
 #include "EnemyPaddle.h"
 #include "NiagaraComponent.h"
 #include "Ball.h"
+#include "EnemyAttributes.h"
 #include "MainGamemode.h"
 #include "PaperSpriteComponent.h"
+#include "PickleBallGameInstance.h"
+#include "PlayScreenWidget.h"
+#include "Components/AudioComponent.h"
+#include "Components/Image.h"
+#include "Components/TextBlock.h"
+#include "Engine/StaticMeshActor.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -38,6 +46,12 @@ void AEnemyPaddle::BeginPlay()
 	if(MainGamemode)
 	{
 		MainGamemode->OnScoreUpdated.AddDynamic(this, &AEnemyPaddle::IncrementForceMultiplier);
+	}
+
+	UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if(!PickleBallGameInstance->GetIsFirstTimePlaying())
+	{
+		SetRandomEnemyAttributes();
 	}
 }
 
@@ -138,6 +152,37 @@ void AEnemyPaddle::IncrementForceMultiplier(int NewScore)
 		if(MainGamemode)
 		{
 			MainGamemode->OnScoreUpdated.RemoveDynamic(this, &AEnemyPaddle::IncrementForceMultiplier);
+		}
+	}
+}
+
+void AEnemyPaddle::SetRandomEnemyAttributes()
+{
+	int32 RandomRow = FMath::RandRange(1,15);
+	FName CurrentRandomRowName = FName(*FString::Printf(TEXT("%d"), RandomRow)); // Convert index to FName
+    
+	if (EnemyAttributes != nullptr)
+	{
+		CurrentEnemyAttributes =  EnemyAttributes->FindRow<FEnemyAttributes>(CurrentRandomRowName, TEXT("LookupEnemyAttributes"));
+		if (CurrentEnemyAttributes)
+		{
+			if(PaddleSprite != nullptr)
+			{
+				PaddleSprite->SetSprite(CurrentEnemyAttributes->PaddleSprite);
+			}
+			if(PaddleHitSoundEffect != nullptr)
+			{
+				PaddleHitSoundEffect->SetSound(CurrentEnemyAttributes->PaddleSoundEffect);
+			}
+			
+			TArray<AActor*> FoundActors;
+			UGameplayStatics::GetAllActorsOfClassWithTag(GetWorld(), AStaticMeshActor::StaticClass(), FName("Background"), FoundActors);
+			if(FoundActors.Num() > 0)
+			{
+				Cast<AStaticMeshActor>(FoundActors[0])->GetStaticMeshComponent()->SetMaterial(0, CurrentEnemyAttributes->BackgroundMaterial);
+			}
+			
+	
 		}
 	}
 }

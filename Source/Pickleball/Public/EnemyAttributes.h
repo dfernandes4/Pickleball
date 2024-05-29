@@ -20,6 +20,11 @@ struct FEnemyAttributes : public FTableRowBase
 	TObjectPtr<USoundBase> PaddleSoundEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<UUserWidget> WidgetClass;
+	TObjectPtr<UTexture2D> EnemyIconTexture;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString  EnemyName;
+
+	
 	
 };

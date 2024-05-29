@@ -25,6 +25,8 @@ public:
 	void PauseButtonClicked();
 	UFUNCTION()
 	void HandleGameOver();
+	UFUNCTION()
+	void SetRandomEnemyAttributes();
 	
 	virtual void NativeConstruct() override;
 	
@@ -34,7 +36,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundBase* PauseSoundEffect;
 	
-private:
+
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "PlayingHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCanvasPanel> CanvasPanel;
@@ -53,5 +55,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
 	AMainGamemode* MainGamemode;
+	
 	
 };

@@ -4,11 +4,14 @@
 #include "PlayScreenWidget.h"
 
 #include "Ball.h"
+#include "EnemyPaddle.h"
 #include "MainGamemode.h"
+#include "PickleBallGameInstance.h"
 #include "PlayerPaddle.h"
 #include "SettingScreenWidget.h"
 #include "UserWidgetLoader.h"
 #include "Components/Button.h"
+#include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -36,7 +39,11 @@ void UPlayScreenWidget::NativeConstruct()
 			ScoreText->SetText(FText::FromString(FString::FromInt(PlayerPaddle->GetCurrentScore())));
 		}
 	}
-
+	UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if(!PickleBallGameInstance->GetIsFirstTimePlaying())
+	{
+		SetRandomEnemyAttributes();
+	}
 }
 
 void UPlayScreenWidget::UpdateScore(int NewScore)
@@ -79,6 +86,16 @@ void UPlayScreenWidget::HandleGameOver()
 			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 			WidgetLoader->LoadWidget(FName("FaultWidgetScreen"), GetWorld());
 		}
+	}
+}
+
+void UPlayScreenWidget::SetRandomEnemyAttributes()
+{
+	 AEnemyPaddle* EnemyPaddle = Cast<AEnemyPaddle>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyPaddle::StaticClass()));
+	if(EnemyPaddle->CurrentEnemyAttributes != nullptr)
+	{
+		EnemyNameText->SetText(FText::FromString(EnemyPaddle->CurrentEnemyAttributes->EnemyName));
+		EnemyIconImage->SetBrushFromTexture(EnemyPaddle->CurrentEnemyAttributes->EnemyIconTexture);
 	}
 }
 

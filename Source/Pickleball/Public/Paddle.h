@@ -63,5 +63,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
 	bool bIsFacingLeft;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Swiping, meta = (AllowPrivateAccess))
+	UAudioComponent* PaddleHitSoundEffect;
+	
 	
 };

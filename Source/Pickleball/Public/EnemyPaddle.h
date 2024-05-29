@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EnemyAttributes.h"
 #include "Paddle.h"
 #include "EnemyPaddle.generated.h"
 
+class UPlayScreenWidget;
 class UFloatingPawnMovement;
 class UNiagaraComponent;
 
@@ -25,8 +27,12 @@ public:
 
 	UFUNCTION()
 	void IncrementForceMultiplier(int NewScore);
-
+	
+	UFUNCTION()
+	void SetRandomEnemyAttributes();
+	
 	virtual void BeginPlay() override;
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	UFloatingPawnMovement* MovementComponent;
@@ -34,6 +40,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	UNiagaraComponent* SwingEffect;
 
+	
+	FEnemyAttributes* CurrentEnemyAttributes;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	UDataTable* EnemyAttributes;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	//UStaticMeshComponent* BackgroundPlane;
 	
 	
 private:
