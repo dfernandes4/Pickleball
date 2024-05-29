@@ -14,6 +14,11 @@ class PICKLEBALL_API UPaddleToBuyWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+	virtual void NativeConstruct() override;
+	
+	UFUNCTION()
+	void OnPaddleButtonClicked();
+	
 private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SizeBox", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
@@ -30,4 +35,7 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SizeBox", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class USizeBox> PaddleSizeBox;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio", meta = (AllowPrivateAccess = "true"))
+	USoundBase* MenuSoundEffect;
 };

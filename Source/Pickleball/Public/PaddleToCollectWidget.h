@@ -9,11 +9,17 @@
 /**
  * 
  */
+
 UCLASS()
 class PICKLEBALL_API UPaddleToCollectWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
+	
+	virtual void NativeConstruct() override;
+	
+	UFUNCTION()
+	void OnPaddleButtonClicked();
+	
 private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Canvas", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
@@ -27,4 +33,7 @@ private:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Image", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UImage> CheckImage;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio", meta = (AllowPrivateAccess = "true"))
+	USoundBase* MenuSoundEffect;
 };

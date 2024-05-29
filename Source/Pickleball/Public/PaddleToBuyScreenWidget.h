@@ -9,11 +9,23 @@
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPaddleToBuyScreenClosedDelegate);
+
 UCLASS()
 class PICKLEBALL_API UPaddleToBuyScreenWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+
+	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void OnBackButtonClicked();
+	
+	UFUNCTION()
+	void SetPaddleAttributes(UObject* ResourceObject, const FVector2D& ImageSize, const FString& PaddleName);
+	
 private:
 
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
@@ -21,6 +33,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Images, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UImage> BackgroundImage;
+
+	UPROPERTY(EditAnywhere, Category = Image, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UImage> PaddleToBuyImage;
 
 	UPROPERTY(EditAnywhere, Category = Buttons, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UButton> BackButton;
@@ -34,5 +49,7 @@ private:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UTextBlock> PaddleNameTextBlock;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio", meta = (AllowPrivateAccess = "true"))
+	USoundBase* MenuSoundEffect;
 	
 };
