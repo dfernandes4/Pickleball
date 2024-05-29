@@ -8,6 +8,7 @@
 #include "MainGamemode.h"
 #include "PaperSpriteComponent.h"
 #include "PickleBallGameInstance.h"
+#include "PlayerPaddle.h"
 #include "PlayScreenWidget.h"
 #include "Components/AudioComponent.h"
 #include "Components/Image.h"
@@ -52,6 +53,12 @@ void AEnemyPaddle::BeginPlay()
 	if(!PickleBallGameInstance->GetIsFirstTimePlaying())
 	{
 		SetRandomEnemyAttributes();
+	}
+
+	int32 PlayersLastScore = PickleBallGameInstance->GetSaveGamePlayerData().PlayersLastScore;
+	if(PlayersLastScore > 0 && PlayersLastScore <= 20)
+	{
+		ForceMultiplier += PlayersLastScore / 10;
 	}
 }
 
@@ -141,7 +148,7 @@ void AEnemyPaddle::FlipPaddle()
 
 void AEnemyPaddle::IncrementForceMultiplier(int NewScore)
 {
-	if (ForceMultiplier <= 4.5)
+	if (ForceMultiplier <= 3.5)
 	{
 		ForceMultiplier += .1;
 	}
