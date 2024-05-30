@@ -7,22 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4831c04b-8a09-4d4a-86f1-c7f47b55290a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Pickleball.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Pickleball.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/BP_PaddleToBuyScreenWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/BP_PaddleToBuyScreenWidget.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/BP_PaddleToSelectWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/BP_PaddleToSelectWidget.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Textures/Paddles/Camo.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Textures/Paddles/Camo.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Textures/Paddles/Green.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Textures/Paddles/Green.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Textures/Paddles/Orange.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Textures/Paddles/Orange.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Textures/Paddles/Polka.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Textures/Paddles/Polka.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Textures/Paddles/Red.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Textures/Paddles/Red.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Textures/Paddles/Yellow.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Textures/Paddles/Yellow.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/PaddleToBuyScreenWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/PaddleToBuyScreenWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/PaddleToBuyWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/PaddleToBuyWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/PaddleToSelectScreenWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/PaddleToSelectScreenWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/PaddleToBuyScreenWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/PaddleToBuyScreenWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/PaddleToSelectScreenWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/PaddleToSelectScreenWidget.h" afterDir="false" />
-    </list>
+    <list default="true" id="4831c04b-8a09-4d4a-86f1-c7f47b55290a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -211,7 +196,7 @@
       <workItem from="1713577470558" duration="432000" />
       <workItem from="1713578117800" duration="790000" />
       <workItem from="1713578931680" duration="308000" />
-      <workItem from="1717037493675" duration="4109000" />
+      <workItem from="1717037493675" duration="4167000" />
     </task>
     <servers />
   </component>
