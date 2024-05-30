@@ -88,6 +88,8 @@ private:
 	UNiagaraComponent* SwingEffect;
 
 #pragma endregion Swiping
+
+#pragma region PlayerStats
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
 	int32 CurrentCoinCount;
@@ -102,8 +104,10 @@ private:
 	int32 CurrentScore;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
-	TMap<FString, bool> PaddleUnlockStatuses;
+	TMap<FName, bool> PaddleUnlockStatuses;
 
+#pragma endregion PlayerStats
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ClassVariables, meta = (AllowPrivateAccess))
 	AMainGamemode* MainGamemode;
 

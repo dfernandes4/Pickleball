@@ -21,7 +21,7 @@ struct FPlayerData
 
 	// String : Paddle ID In DT, bool : Unlock Status
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerStats, meta = (AllowPrivateAccess))
-	TMap<FString, bool> PaddleUnlockStatuses;
+	TMap<FName, bool> PaddleUnlockStatuses;
 
 #pragma endregion PlayerStats
 

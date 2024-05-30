@@ -1,8 +1,10 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "PaddleRarity.h"
+#include "PaddleAbility.h"
 #include "PaddleInfo.generated.h"
+
+class UPaperSprite;
 
 USTRUCT(BlueprintType)
 struct FPaddleInfo : public FTableRowBase
@@ -10,14 +12,11 @@ struct FPaddleInfo : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UTexture2D* PaddleTexture;
+	TObjectPtr<UPaperSprite> PaddleSprite;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<USoundBase> PaddleSoundEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Price;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bIsUnlocked;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	EPaddleRarity Rarity;
+	EPaddleAbility PaddleAbility;
 };
