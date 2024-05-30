@@ -22,6 +22,9 @@ public:
 
 	UFUNCTION()
 	void OnBackButtonClicked();
+
+	UFUNCTION()
+	void OnBuyButtonClicked();
 	
 	UFUNCTION()
 	void SetPaddleAttributes(UObject* ResourceObject, const FVector2D& ImageSize, const FString& PaddleName);
