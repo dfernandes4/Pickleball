@@ -48,13 +48,20 @@ void UCountDownUserWidget::CountdownTimerFinished()
 	}
 	else
 	{
-		AEnemyAIController* EnemyAIController = Cast<AEnemyAIController>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyAIController::StaticClass()));
-		EnemyAIController->StartBehaviorTree();
-		
 		RemoveFromParent();
 
+		UGameplayStatics::PlaySound2D(GetWorld(), CountDownSoundKickoffEffect);
+		float CountDownKickOffEffectDuration = CountDownSoundKickoffEffect->Duration;
+		FTimerHandle KickOffTimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(KickOffTimerHandle, [this]()
+		{
+			AEnemyAIController* EnemyAIController = Cast<AEnemyAIController>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyAIController::StaticClass()));
+			EnemyAIController->StartBehaviorTree();
+		}, CountDownKickOffEffectDuration, false);
+		
 		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 		WidgetLoader->LoadWidget(FName("PlayScreen"), GetWorld());
+		
 		
 	}
 }

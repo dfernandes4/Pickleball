@@ -22,7 +22,9 @@ public:
 	void CountdownTimerFinished();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
-	USoundWave* CountDownSoundEffect; 
+	USoundWave* CountDownSoundEffect;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundWave* CountDownSoundKickoffEffect;
 	
 private:
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
