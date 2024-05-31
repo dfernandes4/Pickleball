@@ -19,9 +19,41 @@ APlayerPaddle::APlayerPaddle()
 	
 	bIsFirstSwing = true;
 
-	CurrentScore = 0;
+	CurrentCoinCount = 0;
 	CoinsEarnedFromLastMatch = 0;
-
+	HighScore = 0;
+	CurrentScore = 0;
+	PaddleUnlockStatuses = {
+		// Common
+		{FName("Green"), true},
+		{FName("Orange"), false},
+		{FName("Purple"), false},
+		{FName("Red"), false},
+		{FName("Yellow"), false},
+		{FName("Blue"), false},
+		{FName("Polka"), false},
+		{FName("Pride"), false},
+		// Rare
+		{FName("Webbed"), false},
+		{FName("Camo"), false},
+		{FName("Lightning"), false},
+		{FName("The_Patriot"), false},
+		{FName("Pizza"), false},
+		// Epic
+		{FName("Doggy"), false},
+		{FName("Whiskers"), false},
+		{FName("Bonehead"), false},
+		{FName("Lovestruck"), false},
+		// Legendary
+		{FName("Tomahawk"), false},
+		{FName("Rattle"), false},
+		{FName("Shredder"), false},
+		// Mythic
+		{FName("Money_Bag"), false},
+		{FName("Punchin_"), false},
+		{FName("Pickle"), false}
+	};
+	
 	bIsPlayersTurn = true;
 
 	SwingEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Hiteffect"));

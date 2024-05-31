@@ -39,12 +39,4 @@ void UPaddleToBuyWidget::OnPaddleButtonClicked()
 	PaddleToBuyScreenWidget->SetPaddleAttributes(ResourceObject, ImageSize, PaddleName);
 	
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
-
-	// User clicks confirm once that happens the paddle that is displayed is either selected or is "bought" and added to the player's inventory
-	// If the paddle is selected, the paddle that was previously selected is deselected and the new paddle is selected
-	// If the paddle is "bought" the paddle is added to the player's inventory and the player's coin count is decremented by the cost of the paddle
-	
-	// The player's inventory is saved to the player's save file
-	// The player's coin count is saved to the player's save file
-	// The player's selected paddle is saved to the player's save file
 }
