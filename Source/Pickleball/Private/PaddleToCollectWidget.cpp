@@ -7,6 +7,7 @@
 #include "PaddleToSelectScreenWidget.h"
 #include "UserWidgetLoader.h"
 #include "Components/Button.h"
+#include "Components/Image.h"
 #include "Kismet/GameplayStatics.h"
 
 void UPaddleToCollectWidget::NativeConstruct()
@@ -41,5 +42,23 @@ void UPaddleToCollectWidget::OnPaddleButtonClicked()
 	PaddleToSelectScreenWidget->SetPaddleAttributes(ResourceObject, ImageSize, PaddleName);
 	
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+}
+
+void UPaddleToCollectWidget::SetPaddleAttributes(bool bIsPaddleUnlocked)
+{
+	if(bIsPaddleUnlocked)
+	{
+		PaddleToCollectBtn->SetIsEnabled(true);
+		
+	}
+	else
+	{
+		PaddleToCollectBtn->SetIsEnabled(false);
+	}
+}
+
+TTuple<UObject*, const FVector2D&> UPaddleToCollectWidget::GetPaddleImageInfo()
+{
+	return TTuple<UObject*, const FVector2D&>(CheckImage->GetBrush().GetResourceObject(), CheckImage->GetBrush().GetImageSize());
 }
 

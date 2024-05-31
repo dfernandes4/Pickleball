@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "PaddleAbility.h"
+#include "PaddleRarity.h"
 #include "PaddleInfo.generated.h"
 
 class UPaperSprite;
@@ -19,4 +20,7 @@ struct FPaddleInfo : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EPaddleAbility PaddleAbility;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EPaddleRarity PaddleRarity;
 };

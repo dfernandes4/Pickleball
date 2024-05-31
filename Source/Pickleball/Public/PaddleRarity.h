@@ -10,10 +10,10 @@ UENUM(BlueprintType, Meta = (ScriptName="PaddleRarityEnum"))
 enum class EPaddleRarity : uint8
 {
 	Common,
-	Uncommon,
 	Rare,
 	Epic,
-	Legendary
+	Legendary,
+	Mythic
 };
 
 UCLASS(BlueprintType, Meta = (ScriptName="PaddleRarityObject"))

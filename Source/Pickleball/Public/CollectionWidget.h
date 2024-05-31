@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PaddleToCollectWidget.h"
+#include "PaddleToSelectScreenWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "CollectionWidget.generated.h"
 
@@ -12,6 +14,7 @@
 
 class UBackgroundBlur;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCollectionClosedDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPaddleSelectedDelegate, UPaddleToCollectWidget*, PaddleSelected, UPaddleToCollectWidget*, PaddleBefore, UPaddleToCollectWidget*, PaddleAfter);
 
 UCLASS()
 class PICKLEBALL_API UCollectionWidget : public UUserWidget
@@ -24,8 +27,15 @@ public:
 	
 	UFUNCTION()
 	void OnBackButtonClicked();
+
+	UFUNCTION()
+	void SetupPaddleWidgets();
 	
+	UFUNCTION()
+	void SelectNewPaddle(UPaddleToCollectWidget* NewPaddleToCollectWidgetSelected);
+
 	FOnCollectionClosedDelegate OnCollectionClosed;
+	FOnPaddleSelectedDelegate OnPaddleSelected;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundBase* BackSoundEffect;
@@ -91,4 +101,12 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UWrapBox> MythicWrapBox;
+
+	//Class Vars
+
+	UPROPERTY()
+	UPaddleToCollectWidget* CurrentPaddleToCollectWidgetSelected;
+
+	UPROPERTY()
+	TArray<UPaddleToCollectWidget*> CollectedPaddles;
 };

@@ -6,6 +6,7 @@
 #include "Paddle.h"
 #include "PlayerData.h"
 #include "PlayerPaddle.generated.h"
+class ISaveGameInterface;
 class UPickleballSaveGame;
 class UNiagaraComponent;
 class AMainGamemode;
@@ -35,6 +36,12 @@ public:
 	void OnGameOver();
 
 	UFUNCTION()
+	void OnPaddleBought(FName PaddleName);
+
+	UFUNCTION()
+	void OnPaddleSelected(FName PaddleName);
+	
+	UFUNCTION()
 	void SetIsPlayersTurn(bool bIsPlayersTurnIn);
 	
 	virtual void FlipPaddle() override;
@@ -56,6 +63,9 @@ public:
 
 	UFUNCTION()
 	int32 GetCoinsEarnedFromLastMatch() const;
+
+	UFUNCTION()
+	TMap<FName, bool> GetPaddleUnlockStatuses () const;
 
 	UFUNCTION()
 	void AddCoins(int32 CoinsToAdd);
@@ -106,6 +116,12 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
 	TMap<FName, bool> PaddleUnlockStatuses;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = DataTable, meta = (AllowPrivateAccess))
+	UDataTable* PaddleDataTable;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = DataTable, meta = (AllowPrivateAccess))
+	int32 CoinMultiplier;
+
 #pragma endregion PlayerStats
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ClassVariables, meta = (AllowPrivateAccess))
@@ -114,4 +130,5 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ClassVariables, meta = (AllowPrivateAccess))
 	bool bIsPlayersTurn;
 	
+	ISaveGameInterface* SaveGameInterface;
 };

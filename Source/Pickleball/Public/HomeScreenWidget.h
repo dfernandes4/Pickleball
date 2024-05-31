@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PaddleToCollectWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "HomeScreenWidget.generated.h"
 
@@ -22,6 +23,8 @@ public:
 	void OnPlayButtonClicked();
 	UFUNCTION()
 	void OnSettingsButtonClicked();
+	UFUNCTION()
+	void DisplayPaddles(UPaddleToCollectWidget* PaddleSelected, UPaddleToCollectWidget* PaddleBefore, UPaddleToCollectWidget* PaddleAfter);
 	UFUNCTION()
 	void OnCollectionButtonClicked();
 	UFUNCTION()

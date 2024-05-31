@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "PaddleToSelectScreenWidget.generated.h"
 
+class UPaddleToCollectWidget;
 /**
  * 
  */
@@ -28,6 +29,9 @@ public:
 	
 	UFUNCTION()
 	void SetPaddleAttributes(UObject* ResourceObject, const FVector2D& ImageSize, const FString& PaddleName);
+
+	UPROPERTY()
+	UPaddleToCollectWidget* PaddleToCollectWidgetSelected;
 	
 private:
 

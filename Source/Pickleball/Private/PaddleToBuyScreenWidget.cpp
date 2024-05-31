@@ -3,6 +3,7 @@
 
 #include "PaddleToBuyScreenWidget.h"
 
+#include "PlayerPaddle.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
@@ -29,14 +30,11 @@ void UPaddleToBuyScreenWidget::OnBuyButtonClicked()
 	// Maybe play a different noise for buying a paddle
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 
-	/*
-	 * The paddle is added to the player's inventory and the player's coin count is decremented by the cost of the paddle
-	 * Do this by check if PaddleUnlockStatuses.Contains(PaddleName), if so then PaddleUnlockStatuses[PaddleName] = true
-	 * Then take the number in the PaddleCoinAmount and subtract it from the player's coin count
-	 * 
-	 * The player's inventory is saved to the player's save file
-	 * The player's coin count is saved to the player's save file
-	 */
+	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	PlayerPaddle->OnPaddleBought(PaddleToBuyImage->GetBrush().GetResourceName());
+	
+	// TODO: Either the paddle to buy icon is removed from wrap box or its opacity is set to 0.5 and coin amount is hidden and button cant be pressed
+	// Play a sound effect for buying a paddle
 	
 	RemoveFromParent();
 }

@@ -3,6 +3,9 @@
 
 #include "PaddleToSelectScreenWidget.h"
 
+#include "CollectionWidget.h"
+#include "PaddleToCollectWidget.h"
+#include "PlayerPaddle.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
@@ -26,11 +29,14 @@ void UPaddleToSelectScreenWidget::OnBackButtonClicked()
 void UPaddleToSelectScreenWidget::OnUseButtonClicked()
 {
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+
+	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	PlayerPaddle->OnPaddleSelected(PaddleToSelectImage->GetBrush().GetResourceName());
 	
-	// The paddle that was previously selected is deselected (hiding the green check) and the new paddle is selected (showing the green check)
-	// Player's Paddle Sprite, Paddle Sound effect, and Paddle Ability (if applicable) are updated
+	Cast<UCollectionWidget>(GetParent())->SelectNewPaddle(PaddleToCollectWidgetSelected);
 	// Home screen's paddle selection is updated to reflect the player's new paddle, and paddle position updates on screen as well
-	// The player's selected paddle is saved to the player's save file
+	
+	// TODO: The player's selected paddle is saved to the player's save file
 
 	RemoveFromParent();
 }

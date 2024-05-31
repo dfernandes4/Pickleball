@@ -10,6 +10,8 @@
  * 
  */
 
+class UImage;
+
 UCLASS()
 class PICKLEBALL_API UPaddleToCollectWidget : public UUserWidget
 {
@@ -19,7 +21,15 @@ class PICKLEBALL_API UPaddleToCollectWidget : public UUserWidget
 	
 	UFUNCTION()
 	void OnPaddleButtonClicked();
+
+public:
+	UFUNCTION()
+	void SetPaddleAttributes(bool bIsPaddleUnlocked);
 	
+	TTuple<UObject*, const FVector2D&> GetPaddleImageInfo();
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Image", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UImage> CheckImage;
 private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Canvas", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
@@ -30,9 +40,6 @@ private:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Button", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UButton> PaddleToCollectBtn;
-	
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Image", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UImage> CheckImage;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio", meta = (AllowPrivateAccess = "true"))
 	USoundBase* MenuSoundEffect;

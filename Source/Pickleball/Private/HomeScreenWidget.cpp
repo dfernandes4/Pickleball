@@ -11,6 +11,7 @@
 #include "ShopScreenWidget.h"
 #include "UserWidgetLoader.h"
 #include "Components/Button.h"
+#include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -76,7 +77,25 @@ void UHomeScreenWidget::OnCollectionButtonClicked()
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	UCollectionWidget* CollectionWidget = Cast<UCollectionWidget>(WidgetLoader->LoadWidget(FName("CollectionScreen"), GetWorld(),  1));
 	CollectionWidget->OnCollectionClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+	CollectionWidget->OnPaddleSelected.AddDynamic(this, &UHomeScreenWidget::DisplayPaddles);
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+}
+
+void UHomeScreenWidget::DisplayPaddles(UPaddleToCollectWidget* PaddleSelected, UPaddleToCollectWidget* PaddleBefore,
+	UPaddleToCollectWidget* PaddleAfter)
+{
+	TTuple<UObject*, const FVector2D&> PaddleBeforeImageInfo = PaddleBefore->GetPaddleImageInfo();
+	TTuple<UObject*, const FVector2D&> PaddleSelectedImageInfo = PaddleSelected->GetPaddleImageInfo();
+	TTuple<UObject*, const FVector2D&> PaddleAfterImageInfo = PaddleAfter->GetPaddleImageInfo();
+
+	PaddleLeft->SetBrushFromTexture(Cast<UTexture2D>(PaddleBeforeImageInfo.Key));
+	PaddleLeft->SetDesiredSizeOverride(PaddleBeforeImageInfo.Value * 2);
+
+	PaddleLeft->SetBrushFromTexture(Cast<UTexture2D>(PaddleSelectedImageInfo.Key));
+	PaddleLeft->SetDesiredSizeOverride(PaddleSelectedImageInfo.Value * 2);
+
+	PaddleLeft->SetBrushFromTexture(Cast<UTexture2D>(PaddleAfterImageInfo.Key));
+	PaddleLeft->SetDesiredSizeOverride(PaddleAfterImageInfo.Value * 2);
 }
 
 void UHomeScreenWidget::OnShopButtonClicked()

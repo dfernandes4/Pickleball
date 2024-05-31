@@ -6,6 +6,7 @@
 #include "Ball.h"
 #include "MainGamemode.h"
 #include "MainPlayerController.h"
+#include "PaddleInfo.h"
 #include "PaperSpriteComponent.h"
 #include "PickleBallGameInstance.h"
 #include "PickleballSaveGame.h"
@@ -79,7 +80,7 @@ void APlayerPaddle::BeginPlay()
 	}
 
 	// Load Player Data
-	ISaveGameInterface* SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
+	SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
 	if (SaveGameInterface)
 	{
 		FPlayerData PlayerData = SaveGameInterface->GetSaveGamePlayerData();
@@ -178,13 +179,70 @@ void APlayerPaddle::OnGameOver()
 	int32 HundredsCount = FMath::FloorToInt(CurrentScore / 100.f);
 	int32 ThousandsCount = FMath::FloorToInt(CurrentScore / 1000.f);
 	
-	CoinsEarnedFromLastMatch = FMath::Floor(CurrentScore / 2) + (HundredsCount * 10) + (ThousandsCount * 150);
+	CoinsEarnedFromLastMatch = CoinMultiplier * (FMath::Floor(CurrentScore / 2) + (HundredsCount * 10) + (ThousandsCount * 150));
 	CurrentCoinCount += CoinsEarnedFromLastMatch;
-
-	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
-	GameInstance->SavePlayerData(GetCurrentPlayerData());
+	
+	SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
 
 	// Could Play Sound
+}
+
+void APlayerPaddle::OnPaddleBought(FName PaddleName)
+{
+	if(PaddleUnlockStatuses.Contains(PaddleName))
+	{
+		FPaddleInfo* PaddleInfoFound = PaddleDataTable->FindRow<FPaddleInfo>(PaddleName, TEXT(""), true);
+		if(PaddleInfoFound != nullptr)
+		{
+			switch (PaddleInfoFound->PaddleRarity)
+			{
+				case EPaddleRarity::Common:
+					CurrentCoinCount -= 200;
+					break;
+				case EPaddleRarity::Rare:
+					CurrentCoinCount -= 400;
+					break;
+				case EPaddleRarity::Epic:
+					CurrentCoinCount -= 800;
+					break;
+				case EPaddleRarity::Legendary:
+					CurrentCoinCount -= 1500;
+					break;
+				case EPaddleRarity::Mythic:
+					CurrentCoinCount -= 2000;
+					break;
+				default:
+					break;
+			}
+		}
+		
+		PaddleUnlockStatuses[PaddleName] = true;
+	}
+	SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+}
+
+void APlayerPaddle::OnPaddleSelected(FName PaddleName)
+{
+	FPaddleInfo* PaddleInfoFound = PaddleDataTable->FindRow<FPaddleInfo>(PaddleName, TEXT(""), true);
+	if(PaddleInfoFound != nullptr)
+	{
+		PaddleSprite->SetSprite(PaddleInfoFound->PaddleSprite);
+		
+		// Set Paddle Sound Effect
+		if(PaddleInfoFound->PaddleSoundEffect != nullptr)
+		{
+			//PaddleSoundEffect = PaddleInfoFound->PaddleSoundEffect;
+		}
+		
+		if(PaddleInfoFound->PaddleAbility == EPaddleAbility::CoinMultiplier)
+		{
+			CoinMultiplier = 2;
+		}
+		else
+		{
+			CoinMultiplier = 1;
+		}
+	}
 }
 
 void APlayerPaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -252,6 +310,11 @@ int APlayerPaddle::GetPlayerCoins() const
 int32 APlayerPaddle::GetCoinsEarnedFromLastMatch() const
 {
 	return CoinsEarnedFromLastMatch;
+}
+
+TMap<FName, bool> APlayerPaddle::GetPaddleUnlockStatuses() const
+{
+	return PaddleUnlockStatuses;
 }
 
 void APlayerPaddle::AddCoins(int32 CoinsToAdd)
