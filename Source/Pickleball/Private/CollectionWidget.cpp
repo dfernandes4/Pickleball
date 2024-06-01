@@ -3,6 +3,7 @@
 
 #include "CollectionWidget.h"
 
+#include "MainGamemode.h"
 #include "PaddleToCollectWidget.h"
 #include "PlayerPaddle.h"
 #include "Components/Button.h"
@@ -20,8 +21,11 @@ void UCollectionWidget::NativeConstruct()
 	{
 		BackButton->OnClicked.AddDynamic(this, &UCollectionWidget::OnBackButtonClicked);
 	}
-	
+
 	CurrentPaddleToCollectWidgetSelected = Cast<UPaddleToCollectWidget>(CommonWrapBox->GetChildAt(0));
+	
+	AMainGamemode* MainGamemode = Cast<AMainGamemode>(UGameplayStatics::GetGameMode(GetWorld()));
+	MainGamemode->OnPaddleSelected.AddDynamic(this, &UCollectionWidget::SelectNewPaddle);
 	SetupPaddleWidgets();
 }
 
@@ -35,6 +39,7 @@ void UCollectionWidget::OnBackButtonClicked()
 void UCollectionWidget::SetupPaddleWidgets()
 {
 	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	// Not Finding PaddleUnlockStatuses
 	TMap<FName, bool> PaddleUnlockStatuses = PlayerPaddle->GetPaddleUnlockStatuses();
 	
 	for(UWidget* Widget : CommonWrapBox->GetAllChildren())
@@ -106,25 +111,38 @@ void UCollectionWidget::SetupPaddleWidgets()
 
 void UCollectionWidget::SelectNewPaddle(UPaddleToCollectWidget* NewPaddleToCollectWidgetSelected)
 {
-	CurrentPaddleToCollectWidgetSelected->CheckImage->SetVisibility(ESlateVisibility::Hidden);
-	NewPaddleToCollectWidgetSelected->CheckImage->SetVisibility(ESlateVisibility::Visible);
-
-	CurrentPaddleToCollectWidgetSelected = NewPaddleToCollectWidgetSelected;
-
-	int32 CurrentPaddleSelectedIndex = CollectedPaddles.Find(CurrentPaddleToCollectWidgetSelected);
-	int32 RandomIndex;
-	do {
-		RandomIndex = FMath::RandRange(0, CollectedPaddles.Num() - 1);
-	} while (RandomIndex == CurrentPaddleSelectedIndex);
-	
-	if(CollectedPaddles.Num() >= 3)
+	if(CurrentPaddleToCollectWidgetSelected != NewPaddleToCollectWidgetSelected)
 	{
-		int32 SecondRandomIndex;
-		do {
-			SecondRandomIndex = FMath::RandRange(0, CollectedPaddles.Num() - 1);
-		} while (SecondRandomIndex == RandomIndex || SecondRandomIndex == CurrentPaddleSelectedIndex);
-		OnPaddleSelected.Broadcast(CurrentPaddleToCollectWidgetSelected, CollectedPaddles[RandomIndex], CollectedPaddles[SecondRandomIndex]);
-	}
+		CurrentPaddleToCollectWidgetSelected->CheckImage->SetVisibility(ESlateVisibility::Hidden);
+		NewPaddleToCollectWidgetSelected->CheckImage->SetVisibility(ESlateVisibility::Visible);
+
+		CurrentPaddleToCollectWidgetSelected = NewPaddleToCollectWidgetSelected;
+
+		int32 CurrentPaddleSelectedIndex = CollectedPaddles.Find(CurrentPaddleToCollectWidgetSelected);
+
+		if(CollectedPaddles.Num() == 1)
+		{
+			OnPaddleSelected.Broadcast(CurrentPaddleToCollectWidgetSelected, nullptr, nullptr);
+		}
+		else
+		{
+			int32 RandomIndex;
+			do {
+				RandomIndex = FMath::RandRange(0, CollectedPaddles.Num() - 1);
+			} while (RandomIndex == CurrentPaddleSelectedIndex);
 	
-	OnPaddleSelected.Broadcast(CurrentPaddleToCollectWidgetSelected, CollectedPaddles[RandomIndex], nullptr);
+			if(CollectedPaddles.Num() >= 3)
+			{
+				int32 SecondRandomIndex;
+				do {
+					SecondRandomIndex = FMath::RandRange(0, CollectedPaddles.Num() - 1);
+				} while (SecondRandomIndex == RandomIndex || SecondRandomIndex == CurrentPaddleSelectedIndex);
+				OnPaddleSelected.Broadcast(CurrentPaddleToCollectWidgetSelected, CollectedPaddles[RandomIndex], CollectedPaddles[SecondRandomIndex]);
+			}
+			else
+			{
+				OnPaddleSelected.Broadcast(CurrentPaddleToCollectWidgetSelected, CollectedPaddles[RandomIndex], nullptr);
+			}
+		}
+	}
 }

@@ -20,6 +20,7 @@ APlayerPaddle::APlayerPaddle()
 	
 	bIsFirstSwing = true;
 
+	CoinMultiplier = 1;
 	CurrentCoinCount = 0;
 	CoinsEarnedFromLastMatch = 0;
 	HighScore = 0;

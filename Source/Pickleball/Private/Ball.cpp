@@ -126,8 +126,7 @@ void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPr
 			// Each Bounce + 2 to the count ...?
 			if(CurrentBounceCount == 3)
 			{
-				 
-				
+				MainGamemode->OnGameOver.Broadcast();
 			}
 		}
 	// Can Reflect the ball's direction and modify speed

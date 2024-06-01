@@ -11,6 +11,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnScoreUpdated, int, NewScore);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameOverDelegate);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNewPaddleSelectedDelegate, UPaddleToCollectWidget*, PaddleToCollectWidgetSelected);
+
 UCLASS()
 class PICKLEBALL_API AMainGamemode : public AGameModeBase
 {
@@ -33,4 +35,6 @@ public:
 	USoundClass* MusicSoundClass;
 	
 	FOnScoreUpdated OnScoreUpdated;
+
+	FOnNewPaddleSelectedDelegate OnPaddleSelected;
 };

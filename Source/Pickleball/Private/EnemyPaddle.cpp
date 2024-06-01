@@ -88,8 +88,8 @@ void AEnemyPaddle::HitBall()
 		RandomForce.X = (-32 * ForceMultiplier);
 
 		// Based on position from center
-		constexpr float MinYVal = -10.f;
-		constexpr float MaxYVal = 10.f;
+		constexpr float MinYVal = -25.f;
+		constexpr float MaxYVal = 25.f;
 		RandomForce.Y = FMath::RandRange(MinYVal * (.5 + PercentageOfYDistanceFromCenter), MaxYVal * (.5 - PercentageOfYDistanceFromCenter));
 
 		// Interpolation for Z

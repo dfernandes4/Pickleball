@@ -10,7 +10,7 @@ class UPaddleToCollectWidget;
 /**
  * 
  */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPaddleToSelectScreenClosedDelegate);
+
 
 UCLASS()
 class PICKLEBALL_API UPaddleToSelectScreenWidget : public UUserWidget

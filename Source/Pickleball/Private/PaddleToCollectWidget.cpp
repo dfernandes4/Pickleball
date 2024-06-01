@@ -40,6 +40,7 @@ void UPaddleToCollectWidget::OnPaddleButtonClicked()
 	UWidgetLoader* WidgetLoader = NewObject<UWidgetLoader>(this);
 	UPaddleToSelectScreenWidget* PaddleToSelectScreenWidget = Cast<UPaddleToSelectScreenWidget>(WidgetLoader->LoadWidget(FName("PaddleToSelectScreen"), GetWorld(), 5));
 	PaddleToSelectScreenWidget->SetPaddleAttributes(ResourceObject, ImageSize, PaddleName);
+	PaddleToSelectScreenWidget->PaddleToCollectWidgetSelected = this;
 	
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 }
@@ -49,7 +50,6 @@ void UPaddleToCollectWidget::SetPaddleAttributes(bool bIsPaddleUnlocked)
 	if(bIsPaddleUnlocked)
 	{
 		PaddleToCollectBtn->SetIsEnabled(true);
-		
 	}
 	else
 	{
@@ -59,6 +59,10 @@ void UPaddleToCollectWidget::SetPaddleAttributes(bool bIsPaddleUnlocked)
 
 TTuple<UObject*, const FVector2D&> UPaddleToCollectWidget::GetPaddleImageInfo()
 {
-	return TTuple<UObject*, const FVector2D&>(CheckImage->GetBrush().GetResourceObject(), CheckImage->GetBrush().GetImageSize());
+	FButtonStyle ButtonStyle = PaddleToCollectBtn->GetStyle();
+	FVector2D ImageSize = ButtonStyle.Normal.GetImageSize();
+	UObject* ResourceObject = ButtonStyle.Normal.GetResourceObject();
+	
+	return TTuple<UObject*, const FVector2D&>(ResourceObject, ImageSize);
 }
 

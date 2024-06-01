@@ -4,6 +4,7 @@
 #include "PaddleToSelectScreenWidget.h"
 
 #include "CollectionWidget.h"
+#include "MainGamemode.h"
 #include "PaddleToCollectWidget.h"
 #include "PlayerPaddle.h"
 #include "Components/Button.h"
@@ -33,7 +34,7 @@ void UPaddleToSelectScreenWidget::OnUseButtonClicked()
 	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	PlayerPaddle->OnPaddleSelected(PaddleToSelectImage->GetBrush().GetResourceName());
 	
-	Cast<UCollectionWidget>(GetParent())->SelectNewPaddle(PaddleToCollectWidgetSelected);
+	Cast<AMainGamemode>(UGameplayStatics::GetGameMode(GetWorld()))->OnPaddleSelected.Broadcast(PaddleToCollectWidgetSelected);
 	// Home screen's paddle selection is updated to reflect the player's new paddle, and paddle position updates on screen as well
 	
 	// TODO: The player's selected paddle is saved to the player's save file

@@ -50,6 +50,7 @@ void UHomeScreenWidget::NativeConstruct()
 	{
 		MainGamemode->OnGameOver.AddDynamic(this, &UHomeScreenWidget::DisplayPlayerValues);
 	}
+	
 }
 
 void UHomeScreenWidget::OnPlayButtonClicked()
@@ -84,18 +85,26 @@ void UHomeScreenWidget::OnCollectionButtonClicked()
 void UHomeScreenWidget::DisplayPaddles(UPaddleToCollectWidget* PaddleSelected, UPaddleToCollectWidget* PaddleBefore,
 	UPaddleToCollectWidget* PaddleAfter)
 {
-	TTuple<UObject*, const FVector2D&> PaddleBeforeImageInfo = PaddleBefore->GetPaddleImageInfo();
-	TTuple<UObject*, const FVector2D&> PaddleSelectedImageInfo = PaddleSelected->GetPaddleImageInfo();
-	TTuple<UObject*, const FVector2D&> PaddleAfterImageInfo = PaddleAfter->GetPaddleImageInfo();
+	if(PaddleSelected != nullptr)
+	{
+		TTuple<UObject*, const FVector2D&> PaddleSelectedImageInfo = PaddleSelected->GetPaddleImageInfo();
+		PaddleMiddle->SetBrushFromTexture(Cast<UTexture2D>(PaddleSelectedImageInfo.Key));
+		PaddleMiddle->SetDesiredSizeOverride(PaddleSelectedImageInfo.Value * 1.5);
+	}
 
-	PaddleLeft->SetBrushFromTexture(Cast<UTexture2D>(PaddleBeforeImageInfo.Key));
-	PaddleLeft->SetDesiredSizeOverride(PaddleBeforeImageInfo.Value * 2);
+	if(PaddleBefore != nullptr)
+	{
+		TTuple<UObject*, const FVector2D&> PaddleBeforeImageInfo = PaddleBefore->GetPaddleImageInfo();
+		PaddleLeft->SetBrushFromTexture(Cast<UTexture2D>(PaddleBeforeImageInfo.Key));
+		PaddleLeft->SetDesiredSizeOverride(PaddleBeforeImageInfo.Value * .75);
+	}
 
-	PaddleLeft->SetBrushFromTexture(Cast<UTexture2D>(PaddleSelectedImageInfo.Key));
-	PaddleLeft->SetDesiredSizeOverride(PaddleSelectedImageInfo.Value * 2);
-
-	PaddleLeft->SetBrushFromTexture(Cast<UTexture2D>(PaddleAfterImageInfo.Key));
-	PaddleLeft->SetDesiredSizeOverride(PaddleAfterImageInfo.Value * 2);
+	if(PaddleAfter != nullptr)
+	{
+		TTuple<UObject*, const FVector2D&> PaddleAfterImageInfo = PaddleAfter->GetPaddleImageInfo();
+		PaddleRight->SetBrushFromTexture(Cast<UTexture2D>(PaddleAfterImageInfo.Key));
+		PaddleRight->SetDesiredSizeOverride(PaddleAfterImageInfo.Value * .75);
+	}
 }
 
 void UHomeScreenWidget::OnShopButtonClicked()

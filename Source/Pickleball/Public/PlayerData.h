@@ -11,17 +11,46 @@ struct FPlayerData
 #pragma region PlayerStats
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerStats, meta = (AllowPrivateAccess))
-	int32 PlayerCoins;
+	int32 PlayerCoins = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerStats, meta = (AllowPrivateAccess))
-	int32 PlayerHighScore;
+	int32 PlayerHighScore = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerStats, meta = (AllowPrivateAccess))
-	int32 PlayersLastScore;
+	int32 PlayersLastScore = 0;
 
 	// String : Paddle ID In DT, bool : Unlock Status
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerStats, meta = (AllowPrivateAccess))
-	TMap<FName, bool> PaddleUnlockStatuses;
+	TMap<FName, bool> PaddleUnlockStatuses = {
+		// Common
+		{FName("Green"), true},
+		{FName("Orange"), false},
+		{FName("Purple"), false},
+		{FName("Red"), false},
+		{FName("Yellow"), false},
+		{FName("Blue"), false},
+		{FName("Polka"), false},
+		{FName("Pride"), false},
+		// Rare
+		{FName("Webbed"), false},
+		{FName("Camo"), false},
+		{FName("Lightning"), false},
+		{FName("The_Patriot"), false},
+		{FName("Pizza"), false},
+		// Epic
+		{FName("Doggy"), false},
+		{FName("Whiskers"), false},
+		{FName("Bonehead"), false},
+		{FName("Lovestruck"), false},
+		// Legendary
+		{FName("Tomahawk"), false},
+		{FName("Rattle"), false},
+		{FName("Shredder"), false},
+		// Mythic
+		{FName("Money_Bag"), false},
+		{FName("Punchin_"), false},
+		{FName("Pickle"), false}
+	};
 
 #pragma endregion PlayerStats
 
