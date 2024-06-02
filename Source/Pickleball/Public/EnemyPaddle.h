@@ -17,6 +17,8 @@ class PICKLEBALL_API AEnemyPaddle : public APaddle
 	GENERATED_BODY()
 
 public:
+	UFUNCTION()
+	void StopHitting();
 	// Sets default values for this pawn's properties
 	AEnemyPaddle();
 
@@ -30,6 +32,11 @@ public:
 	
 	UFUNCTION()
 	void SetRandomEnemyAttributes();
+
+	UFUNCTION()
+	void SetIsEnemiesTurn(bool bIsTurn);
+
+	virtual void OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 	
 	virtual void BeginPlay() override;
 	
@@ -55,6 +62,9 @@ private:
 	// With current equations max is 5.5x
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitting", meta = (AllowPrivateAccess = "true"))
 	float ForceMultiplier;
+
+	UPROPERTY()
+	bool bIsEnemiesTurn;
 
 	
 };
