@@ -93,6 +93,7 @@ void APlayerPaddle::BeginPlay()
 		PaddleUnlockStatuses = PlayerData.PaddleUnlockStatuses;
 		CurrrentPaddleName = PlayerData.CurrentPaddleName;
 	}
+	OnPaddleSelected(CurrrentPaddleName);
 	
 }
 
