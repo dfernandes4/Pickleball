@@ -71,7 +71,6 @@ void AMainGamemode::BeginPlay()
 void AMainGamemode::GameOver()
 {
 	BattleMusic->Stop();
-	UGameplayStatics::PlaySound2D(GetWorld(),GameoverSoundEffect);
 	
 	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
 	if(GameInstance->GetIsFirstTimePlaying())

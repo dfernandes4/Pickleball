@@ -120,7 +120,7 @@ void ABall::ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor)
 void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
-		if(OtherActor->ActorHasTag("Court"))
+		if(OtherActor->ActorHasTag("Court") || OtherActor->ActorHasTag("Background"))
 		{
 			if(CurrentPaddle->IsA(APlayerPaddle::StaticClass()))
 			{

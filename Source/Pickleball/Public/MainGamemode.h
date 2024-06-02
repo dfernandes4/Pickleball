@@ -49,9 +49,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	UAudioComponent* BattleMusic;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
-	USoundBase* GameoverSoundEffect;
 	
 	
 	FOnScoreUpdated OnScoreUpdated;

@@ -16,6 +16,8 @@ void UGameOverScreenWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	UGameplayStatics::PlaySound2D(GetWorld(),GameoverSoundEffect);
+	
 	if(ReplayButton!= nullptr)
 	{
 		ReplayButton->OnClicked.AddDynamic(this,&UGameOverScreenWidget::OnReplayButtonClicked);
