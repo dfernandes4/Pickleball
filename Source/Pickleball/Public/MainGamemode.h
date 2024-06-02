@@ -19,6 +19,10 @@ class PICKLEBALL_API AMainGamemode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	
+	UFUNCTION()
+	void GameOver();
+	
 	AMainGamemode();
 	
 	FOnGameOverDelegate OnGameOver;

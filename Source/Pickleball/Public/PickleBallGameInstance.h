@@ -38,7 +38,9 @@ public:
 	bool GetShouldLaunchStarterScreen() const;
 	UFUNCTION()
 	void SetShouldLaunchStarterScreen(bool bIShouldLaunchStarterScreenIn);
-	
+
+	UFUNCTION()
+	void SetIsFirstTimePlaying(bool bIsFirstTimePlayingIn);
 
 private:
 

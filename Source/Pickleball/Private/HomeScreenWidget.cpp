@@ -53,6 +53,23 @@ void UHomeScreenWidget::NativeConstruct()
 	
 }
 
+void UHomeScreenWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
+
+	if(CollectionWidget != nullptr)
+	{
+		CollectionWidget->RemoveFromParent();
+		CollectionWidget->OnCollectionClosed.RemoveDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+		CollectionWidget->OnPaddleSelected.RemoveDynamic(this, &UHomeScreenWidget::DisplayPaddles);
+	}
+	if(ShopWidget != nullptr)
+	{
+		ShopWidget->RemoveFromParent();
+		ShopWidget->OnShopClosed.RemoveDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+	}
+}
+
 void UHomeScreenWidget::OnPlayButtonClicked()
 {
 	RemoveFromParent();
@@ -75,10 +92,15 @@ void UHomeScreenWidget::OnSettingsButtonClicked()
 void UHomeScreenWidget::OnCollectionButtonClicked()
 {
 	SetVisibility(ESlateVisibility::HitTestInvisible);
-	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-	UCollectionWidget* CollectionWidget = Cast<UCollectionWidget>(WidgetLoader->LoadWidget(FName("CollectionScreen"), GetWorld(),  1));
-	CollectionWidget->OnCollectionClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
-	CollectionWidget->OnPaddleSelected.AddDynamic(this, &UHomeScreenWidget::DisplayPaddles);
+	if(CollectionWidget == nullptr)
+	{
+		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+		CollectionWidget = Cast<UCollectionWidget>(WidgetLoader->LoadWidget(FName("CollectionScreen"), GetWorld(),  1));
+		CollectionWidget->OnCollectionClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+		CollectionWidget->OnPaddleSelected.AddDynamic(this, &UHomeScreenWidget::DisplayPaddles);
+	}
+	CollectionWidget->SetVisibility(ESlateVisibility::Visible);
+	
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 }
 
@@ -110,9 +132,15 @@ void UHomeScreenWidget::DisplayPaddles(UPaddleToCollectWidget* PaddleSelected, U
 void UHomeScreenWidget::OnShopButtonClicked()
 {
 	SetVisibility(ESlateVisibility::HitTestInvisible);
-	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-	UShopScreenWidget* ShopScreenWidget = Cast<UShopScreenWidget>(WidgetLoader->LoadWidget(FName("PaddleShopScreen"), GetWorld(),  1));
-	ShopScreenWidget->OnShopClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+
+	if(ShopWidget == nullptr)
+	{
+		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+		ShopWidget = Cast<UShopScreenWidget>(WidgetLoader->LoadWidget(FName("PaddleShopScreen"), GetWorld(),  1));
+		ShopWidget->OnShopClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+	}
+
+	ShopWidget->SetVisibility(ESlateVisibility::Visible);
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 }
 

@@ -36,7 +36,7 @@ public:
 	void OnGameOver();
 
 	UFUNCTION()
-	void OnPaddleBought(FName PaddleName);
+	bool OnPaddleBought(FName PaddleName);
 
 	UFUNCTION()
 	void OnPaddleSelected(FName PaddleName);

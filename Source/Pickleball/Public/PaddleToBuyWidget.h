@@ -18,7 +18,11 @@ class PICKLEBALL_API UPaddleToBuyWidget : public UUserWidget
 	
 	UFUNCTION()
 	void OnPaddleButtonClicked();
+
+public:
 	
+	void SetPaddleAttributes(bool bIsUnlocked);
+
 private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SizeBox", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))

@@ -31,7 +31,8 @@ void UCollectionWidget::NativeConstruct()
 
 void UCollectionWidget::OnBackButtonClicked()
 {
-	RemoveFromParent();
+	SetVisibility(ESlateVisibility::Collapsed);
+	
 	OnCollectionClosed.Broadcast();
 	UGameplayStatics::PlaySound2D(GetWorld(), BackSoundEffect);
 }
@@ -39,7 +40,6 @@ void UCollectionWidget::OnBackButtonClicked()
 void UCollectionWidget::SetupPaddleWidgets()
 {
 	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	// Not Finding PaddleUnlockStatuses
 	TMap<FName, bool> PaddleUnlockStatuses = PlayerPaddle->GetPaddleUnlockStatuses();
 	
 	for(UWidget* Widget : CommonWrapBox->GetAllChildren())

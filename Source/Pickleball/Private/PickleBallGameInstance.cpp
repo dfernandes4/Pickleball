@@ -67,6 +67,11 @@ void UPickleBallGameInstance::SetShouldLaunchStarterScreen(bool bIShouldLaunchSt
 	bShouldLaunchStarterScreen = bIShouldLaunchStarterScreenIn;
 }
 
+void UPickleBallGameInstance::SetIsFirstTimePlaying(bool bIsFirstTimePlayingIn)
+{
+	bIsFirstTimePlaying = bIsFirstTimePlayingIn;
+}
+
 bool UPickleBallGameInstance::GetShouldLaunchStarterScreen() const
 {
 	return bShouldLaunchStarterScreen;

@@ -7,7 +7,6 @@
 #include "Sound/SoundClass.h"
 #include "UserWidgetLoader.h"
 
-
 AMainGamemode::AMainGamemode()
 {
 	if(MasterSoundClass != nullptr)
@@ -22,6 +21,7 @@ AMainGamemode::AMainGamemode()
 	{
 		MusicSoundClass->Properties.Volume = .8;
 	}
+	OnGameOver.AddDynamic(this, &AMainGamemode::GameOver);
 }
 
 void AMainGamemode::BeginPlay()
@@ -52,4 +52,14 @@ void AMainGamemode::BeginPlay()
 		WidgetLoader->LoadWidget(FName("Countdown"), GetWorld());
 		PlayerController->EnableInput(PlayerController);
 	}
+}
+
+void AMainGamemode::GameOver()
+{
+	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
+	if(GameInstance->GetIsFirstTimePlaying())
+	{
+		GameInstance->SetIsFirstTimePlaying(false);
+	}
+	OnGameOver.RemoveDynamic(this, &AMainGamemode::GameOver);
 }

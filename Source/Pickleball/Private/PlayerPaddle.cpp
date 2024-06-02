@@ -188,7 +188,7 @@ void APlayerPaddle::OnGameOver()
 	// Could Play Sound
 }
 
-void APlayerPaddle::OnPaddleBought(FName PaddleName)
+bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 {
 	if(PaddleUnlockStatuses.Contains(PaddleName))
 	{
@@ -197,29 +197,57 @@ void APlayerPaddle::OnPaddleBought(FName PaddleName)
 		{
 			switch (PaddleInfoFound->PaddleRarity)
 			{
-				case EPaddleRarity::Common:
+			case EPaddleRarity::Common:
+				if(CurrentCoinCount >= 200)
+				{
 					CurrentCoinCount -= 200;
-					break;
-				case EPaddleRarity::Rare:
+					PaddleUnlockStatuses[PaddleName] = true;
+					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+					return true;
+				}
+				break;
+			case EPaddleRarity::Rare:
+				if(CurrentCoinCount >= 400)
+				{
 					CurrentCoinCount -= 400;
-					break;
-				case EPaddleRarity::Epic:
+					PaddleUnlockStatuses[PaddleName] = true;
+					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+					return true;
+				}
+				break;
+			case EPaddleRarity::Epic:
+				if(CurrentCoinCount >= 800)
+				{
 					CurrentCoinCount -= 800;
-					break;
-				case EPaddleRarity::Legendary:
+					PaddleUnlockStatuses[PaddleName] = true;
+					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+					return true;
+				}
+				break;
+			case EPaddleRarity::Legendary:
+				if(CurrentCoinCount >= 1500)
+				{
 					CurrentCoinCount -= 1500;
-					break;
-				case EPaddleRarity::Mythic:
+					PaddleUnlockStatuses[PaddleName] = true;
+					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+					return true;
+				}
+				break;
+			case EPaddleRarity::Mythic:
+				if(CurrentCoinCount >= 2000)
+				{
 					CurrentCoinCount -= 2000;
-					break;
-				default:
-					break;
+					PaddleUnlockStatuses[PaddleName] = true;
+					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+					return true;
+				}
+				break;
+			default:
+				break;
 			}
 		}
-		
-		PaddleUnlockStatuses[PaddleName] = true;
 	}
-	SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+	return false;
 }
 
 void APlayerPaddle::OnPaddleSelected(FName PaddleName)

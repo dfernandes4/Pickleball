@@ -22,7 +22,8 @@ public:
 	
 	UFUNCTION()
 	void OnBackButtonClicked();
-	
+	void SetupPaddleWidgets();
+
 	UPROPERTY()
 	FOnShopClosedDelegate OnShopClosed;
 

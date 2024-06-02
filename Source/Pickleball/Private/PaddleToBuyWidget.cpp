@@ -6,6 +6,8 @@
 #include "PaddleToBuyScreenWidget.h"
 #include "UserWidgetLoader.h"
 #include "Components/Button.h"
+#include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
 void UPaddleToBuyWidget::NativeConstruct()
@@ -39,4 +41,14 @@ void UPaddleToBuyWidget::OnPaddleButtonClicked()
 	PaddleToBuyScreenWidget->SetPaddleAttributes(ResourceObject, ImageSize, PaddleName);
 	
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+}
+
+void UPaddleToBuyWidget::SetPaddleAttributes(bool bIsUnlocked)
+{
+	if(bIsUnlocked)
+	{
+		PaddleToBuyBtn->SetIsEnabled(false);
+		CoinImage->SetVisibility(ESlateVisibility::Collapsed);
+		PaddleAmountTextBlock->SetVisibility(ESlateVisibility::Collapsed);
+	}
 }

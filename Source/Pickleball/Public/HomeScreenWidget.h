@@ -7,6 +7,8 @@
 #include "Blueprint/UserWidget.h"
 #include "HomeScreenWidget.generated.h"
 
+class UShopScreenWidget;
+class UCollectionWidget;
 /**
  * 
  */
@@ -18,6 +20,7 @@ class PICKLEBALL_API UHomeScreenWidget : public UUserWidget
 public:
 	
 	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 
 	UFUNCTION()
 	void OnPlayButtonClicked();
@@ -87,6 +90,12 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UBackgroundBlur> BackroundBlur;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCollectionWidget> CollectionWidget;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UShopScreenWidget> ShopWidget;
 	
 };
 

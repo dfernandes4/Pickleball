@@ -31,7 +31,10 @@ void UPaddleToBuyScreenWidget::OnBuyButtonClicked()
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 
 	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	PlayerPaddle->OnPaddleBought(PaddleToBuyImage->GetBrush().GetResourceName());
+	if(!PlayerPaddle->OnPaddleBought(PaddleToBuyImage->GetBrush().GetResourceName()))
+	{
+		// Play UI Error Sound and display a message that the player does not have enough coins
+	}
 	
 	// TODO: Either the paddle to buy icon is removed from wrap box or its opacity is set to 0.5 and coin amount is hidden and button cant be pressed
 	// Play a sound effect for buying a paddle
