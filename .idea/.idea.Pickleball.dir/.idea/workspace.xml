@@ -9,10 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4831c04b-8a09-4d4a-86f1-c7f47b55290a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Pickleball.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Pickleball.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Enemy/BT_EnemyAI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Enemy/BT_EnemyAI.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/Ball.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/Ball.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/EnemyPaddle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/EnemyPaddle.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Public/EnemyPaddle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Public/EnemyPaddle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Pickleball/Private/PlayerPaddle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Pickleball/Private/PlayerPaddle.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,6 +101,7 @@
     <setting file="file://$PROJECT_DIR$/Source/Pickleball/Private/HomeScreenWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Pickleball/Private/MainPlayerController.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/Pickleball/Public/MainPlayerController.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/Pickleball/Public/Paddle.h" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiProvider">{}</component>
   <component name="MarkdownSettingsMigration">
@@ -272,7 +270,7 @@
       <workItem from="1717180604943" duration="21211000" />
       <workItem from="1717225919076" duration="5253000" />
       <workItem from="1717285046170" duration="26067000" />
-      <workItem from="1717357035110" duration="6495000" />
+      <workItem from="1717357035110" duration="7754000" />
     </task>
     <servers />
   </component>
