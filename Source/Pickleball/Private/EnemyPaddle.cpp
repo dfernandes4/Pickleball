@@ -4,15 +4,13 @@
 #include "EnemyPaddle.h"
 #include "NiagaraComponent.h"
 #include "Ball.h"
+#include "EnemyAIController.h"
 #include "EnemyAttributes.h"
 #include "MainGamemode.h"
 #include "PaperSpriteComponent.h"
 #include "PickleBallGameInstance.h"
 #include "PlayerPaddle.h"
-#include "PlayScreenWidget.h"
 #include "Components/AudioComponent.h"
-#include "Components/Image.h"
-#include "Components/TextBlock.h"
 #include "Engine/StaticMeshActor.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Kismet/GameplayStatics.h"
@@ -36,6 +34,8 @@ AEnemyPaddle::AEnemyPaddle()
 	
 
 	ForceMultiplier = 1.5;
+	
+	bIsEnemiesTurn = true;
 }
 
 void AEnemyPaddle::BeginPlay()
@@ -47,6 +47,7 @@ void AEnemyPaddle::BeginPlay()
 	if(MainGamemode)
 	{
 		MainGamemode->OnScoreUpdated.AddDynamic(this, &AEnemyPaddle::IncrementForceMultiplier);
+		MainGamemode->OnGameOver.AddDynamic(this, &AEnemyPaddle::StopHitting);
 	}
 
 	UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
@@ -111,8 +112,9 @@ void AEnemyPaddle::HitBall()
 		// Apply force
 		BallInScene->ApplySwipeForce(RandomForce, this);
 	}
-	
-	
+
+	bIsEnemiesTurn = false;
+	Cast<AEnemyAIController>(GetController())->SetIdleState();
 }
 
 void AEnemyPaddle::FlipPaddle()
@@ -188,8 +190,29 @@ void AEnemyPaddle::SetRandomEnemyAttributes()
 			{
 				Cast<AStaticMeshActor>(FoundActors[0])->GetStaticMeshComponent()->SetMaterial(0, CurrentEnemyAttributes->BackgroundMaterial);
 			}
-			
-	
 		}
 	}
+}
+
+void AEnemyPaddle::SetIsEnemiesTurn(bool bIsTurn)
+{
+	bIsEnemiesTurn = bIsTurn;
+}
+
+void AEnemyPaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+                                        UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	Super::OnPaddleBeginOverlap(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+
+	// Only hit once and don't if player lost
+	if(bIsEnemiesTurn && OtherActor->IsA(ABall::StaticClass()))
+	{
+		HitBall();
+	}
+}
+
+void AEnemyPaddle::StopHitting()
+{
+	bIsEnemiesTurn = false;
+	Cast<AEnemyAIController>(GetController())->SetIdleState();
 }
