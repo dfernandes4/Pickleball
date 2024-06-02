@@ -6,6 +6,7 @@
 #include "CoinShopScreen.h"
 #include "CollectionWidget.h"
 #include "MainGamemode.h"
+#include "PlayerPaddle.h"
 #include "SaveGameInterface.h"
 #include "SettingScreenWidget.h"
 #include "ShopScreenWidget.h"
@@ -42,6 +43,14 @@ void UHomeScreenWidget::NativeConstruct()
 	{
 		PlusCoinButton->OnClicked.AddDynamic(this, &UHomeScreenWidget::UHomeScreenWidget::OnPlusCoinClicked);
 	}
+	if(LeftArrowButton != nullptr)
+	{
+		LeftArrowButton->OnClicked.AddDynamic(this, &UHomeScreenWidget::OnLeftArrowClicked);
+	}
+	if(RightArrowButton != nullptr)
+	{
+		RightArrowButton->OnClicked.AddDynamic(this, &UHomeScreenWidget::OnRightArrowClicked);
+	}
 
 	DisplayPlayerValues();
 	
@@ -50,6 +59,9 @@ void UHomeScreenWidget::NativeConstruct()
 	{
 		MainGamemode->OnGameOver.AddDynamic(this, &UHomeScreenWidget::DisplayPlayerValues);
 	}
+
+	MainGamemode->OnCoinAmountChanged.AddDynamic(this, &UHomeScreenWidget::UpdateCoins);
+
 	
 }
 
@@ -91,15 +103,11 @@ void UHomeScreenWidget::OnSettingsButtonClicked()
 
 void UHomeScreenWidget::OnCollectionButtonClicked()
 {
-	SetVisibility(ESlateVisibility::HitTestInvisible);
-	if(CollectionWidget == nullptr)
+	if(CollectionWidget != nullptr)
 	{
-		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-		CollectionWidget = Cast<UCollectionWidget>(WidgetLoader->LoadWidget(FName("CollectionScreen"), GetWorld(),  1));
-		CollectionWidget->OnCollectionClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
-		CollectionWidget->OnPaddleSelected.AddDynamic(this, &UHomeScreenWidget::DisplayPaddles);
+		SetVisibility(ESlateVisibility::HitTestInvisible);
+		CollectionWidget->SetVisibility(ESlateVisibility::Visible);
 	}
-	CollectionWidget->SetVisibility(ESlateVisibility::Visible);
 	
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 }
@@ -109,39 +117,58 @@ void UHomeScreenWidget::DisplayPaddles(UPaddleToCollectWidget* PaddleSelected, U
 {
 	if(PaddleSelected != nullptr)
 	{
+		PaddleMiddle->SetVisibility(ESlateVisibility::Visible);
+		
 		TTuple<UObject*, const FVector2D&> PaddleSelectedImageInfo = PaddleSelected->GetPaddleImageInfo();
 		PaddleMiddle->SetBrushFromTexture(Cast<UTexture2D>(PaddleSelectedImageInfo.Key));
 		PaddleMiddle->SetDesiredSizeOverride(PaddleSelectedImageInfo.Value * 1.5);
 	}
+	else
+	{
+		PaddleMiddle->SetVisibility(ESlateVisibility::Hidden);
+	}
 
 	if(PaddleBefore != nullptr)
 	{
+		PaddleLeft->SetVisibility(ESlateVisibility::Visible);
+		
 		TTuple<UObject*, const FVector2D&> PaddleBeforeImageInfo = PaddleBefore->GetPaddleImageInfo();
 		PaddleLeft->SetBrushFromTexture(Cast<UTexture2D>(PaddleBeforeImageInfo.Key));
 		PaddleLeft->SetDesiredSizeOverride(PaddleBeforeImageInfo.Value * .75);
+
+		LeftArrowButton->SetVisibility(ESlateVisibility::Visible);
+	}
+	else
+	{
+		PaddleLeft->SetVisibility(ESlateVisibility::Hidden);
+		LeftArrowButton->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	if(PaddleAfter != nullptr)
 	{
+		PaddleRight->SetVisibility(ESlateVisibility::Visible);
+		RightArrowButton->SetVisibility(ESlateVisibility::Visible);
+		
 		TTuple<UObject*, const FVector2D&> PaddleAfterImageInfo = PaddleAfter->GetPaddleImageInfo();
 		PaddleRight->SetBrushFromTexture(Cast<UTexture2D>(PaddleAfterImageInfo.Key));
 		PaddleRight->SetDesiredSizeOverride(PaddleAfterImageInfo.Value * .75);
+	}
+	else
+	{
+		PaddleRight->SetVisibility(ESlateVisibility::Hidden);
+		RightArrowButton->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
 void UHomeScreenWidget::OnShopButtonClicked()
 {
-	SetVisibility(ESlateVisibility::HitTestInvisible);
-
-	if(ShopWidget == nullptr)
+	if(ShopWidget != nullptr)
 	{
-		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-		ShopWidget = Cast<UShopScreenWidget>(WidgetLoader->LoadWidget(FName("PaddleShopScreen"), GetWorld(),  1));
-		ShopWidget->OnShopClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
-	}
+		SetVisibility(ESlateVisibility::HitTestInvisible);
 
-	ShopWidget->SetVisibility(ESlateVisibility::Visible);
-	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+		ShopWidget->SetVisibility(ESlateVisibility::Visible);
+		UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+	}
 }
 
 void UHomeScreenWidget::OnPlusCoinClicked()
@@ -151,6 +178,20 @@ void UHomeScreenWidget::OnPlusCoinClicked()
 	UCoinShopScreen* CoinShopScreenWidget = Cast<UCoinShopScreen>(WidgetLoader->LoadWidget(FName("CoinShopScreen"), GetWorld(),  1));
 	CoinShopScreenWidget->OnCoinShopClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+}
+
+void UHomeScreenWidget::OnLeftArrowClicked()
+{
+	CollectionWidget->SelectNewPaddle(CollectionWidget->CollectedPaddles[CollectionWidget->CollectedPaddles.Find(CollectionWidget->CurrentPaddleToCollectWidgetSelected) - 1]);
+	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	PlayerPaddle->OnPaddleSelected(*CollectionWidget->CurrentPaddleToCollectWidgetSelected->GetName());
+}
+
+void UHomeScreenWidget::OnRightArrowClicked()
+{
+	CollectionWidget->SelectNewPaddle(CollectionWidget->CollectedPaddles[CollectionWidget->CollectedPaddles.Find(CollectionWidget->CurrentPaddleToCollectWidgetSelected) + 1]);
+	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	PlayerPaddle->OnPaddleSelected(*CollectionWidget->CurrentPaddleToCollectWidgetSelected->GetName());
 }
 
 void UHomeScreenWidget::HandleChildClosed()
@@ -175,4 +216,48 @@ void UHomeScreenWidget::DisplayPlayerValues()
 			CoinAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerData.PlayerCoins)));
 		}
 	}
+}
+
+void UHomeScreenWidget::DisplayBasePaddles()
+{
+	int32 CurrentPaddleSelectedIndex = CollectionWidget->CollectedPaddles.Find(CollectionWidget->CurrentPaddleToCollectWidgetSelected);
+
+	if(CollectionWidget->CollectedPaddles.Num() == 1)
+	{
+		DisplayPaddles(CollectionWidget->CurrentPaddleToCollectWidgetSelected, nullptr, nullptr);
+	}
+	else
+	{
+		if(CurrentPaddleSelectedIndex == 0)
+		{
+			DisplayPaddles(CollectionWidget->CurrentPaddleToCollectWidgetSelected, nullptr, CollectionWidget->CollectedPaddles[CurrentPaddleSelectedIndex + 1]);
+		}
+		else if(CurrentPaddleSelectedIndex == CollectionWidget->CollectedPaddles.Num() - 1 || CollectionWidget->CollectedPaddles.Num() == 2)
+		{
+			DisplayPaddles(CollectionWidget->CurrentPaddleToCollectWidgetSelected, CollectionWidget->CollectedPaddles[CurrentPaddleSelectedIndex - 1], nullptr);
+		}
+		else
+		{
+			DisplayPaddles(CollectionWidget->CurrentPaddleToCollectWidgetSelected, CollectionWidget->CollectedPaddles[CurrentPaddleSelectedIndex - 1], CollectionWidget->CollectedPaddles[CurrentPaddleSelectedIndex + 1]);
+		}
+	}
+}
+
+void UHomeScreenWidget::SetUpCollectionDelegates()
+{
+	CollectionWidget->OnCollectionClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+	CollectionWidget->OnPaddleSelected.AddDynamic(this, &UHomeScreenWidget::DisplayPaddles);
+}
+
+void UHomeScreenWidget::SetUpShopDelegates()
+{
+	if(ShopWidget != nullptr)
+	{
+		ShopWidget->OnShopClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+	}
+}
+
+void UHomeScreenWidget::UpdateCoins(int32 NewCoinAmount)
+{
+	CoinAmountTextBlock->SetText(FText::FromString(FString::FromInt(NewCoinAmount)));
 }

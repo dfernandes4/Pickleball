@@ -3,6 +3,7 @@
 
 #include "PaddleToBuyScreenWidget.h"
 
+#include "MainGamemode.h"
 #include "PlayerPaddle.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
@@ -34,6 +35,11 @@ void UPaddleToBuyScreenWidget::OnBuyButtonClicked()
 	if(!PlayerPaddle->OnPaddleBought(PaddleToBuyImage->GetBrush().GetResourceName()))
 	{
 		// Play UI Error Sound and display a message that the player does not have enough coins
+	}
+	else
+	{
+		AMainGamemode* MainGamemode = Cast<AMainGamemode>(UGameplayStatics::GetGameMode(GetWorld()));
+		MainGamemode->OnPaddleBought.Broadcast();
 	}
 	
 	// TODO: Either the paddle to buy icon is removed from wrap box or its opacity is set to 0.5 and coin amount is hidden and button cant be pressed

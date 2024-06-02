@@ -1,7 +1,9 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "PaddleToCollectWidget.h"
 #include "PlayerData.generated.h"
+
 
 USTRUCT(BlueprintType)
 struct FPlayerData
@@ -54,6 +56,8 @@ struct FPlayerData
 
 #pragma endregion PlayerStats
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerItems")
+	FName CurrentPaddleName = FName("Green");
 // Volume Settings
 #pragma region Settings
 #pragma endregion Settings

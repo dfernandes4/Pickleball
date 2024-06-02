@@ -13,6 +13,10 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameOverDelegate);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNewPaddleSelectedDelegate, UPaddleToCollectWidget*, PaddleToCollectWidgetSelected);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPaddleBoughtDelegate);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoinAmountChangedDelegate, int32 , NewCoinAmount);
+
 UCLASS()
 class PICKLEBALL_API AMainGamemode : public AGameModeBase
 {
@@ -41,4 +45,8 @@ public:
 	FOnScoreUpdated OnScoreUpdated;
 
 	FOnNewPaddleSelectedDelegate OnPaddleSelected;
+
+	FPaddleBoughtDelegate OnPaddleBought;
+	
+	FOnCoinAmountChangedDelegate OnCoinAmountChanged;
 };

@@ -22,6 +22,7 @@ public:
 	
 	UFUNCTION()
 	void OnBackButtonClicked();
+	UFUNCTION()
 	void SetupPaddleWidgets();
 
 	UPROPERTY()

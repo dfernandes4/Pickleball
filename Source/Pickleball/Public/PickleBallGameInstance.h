@@ -54,4 +54,6 @@ private:
 	bool bIsFirstTimePlaying;
 	
 	bool bShouldLaunchStarterScreen = true;
+
+	bool bIsFirstHomeScreenLaunch = true;
 };

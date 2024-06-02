@@ -31,6 +31,7 @@ public:
 	UFUNCTION()
 	void SetupPaddleWidgets();
 	
+	
 	UFUNCTION()
 	void SelectNewPaddle(UPaddleToCollectWidget* NewPaddleToCollectWidgetSelected);
 
@@ -39,6 +40,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundBase* BackSoundEffect;
+
+	UPROPERTY()
+	UPaddleToCollectWidget* CurrentPaddleToCollectWidgetSelected;
+
+	UPROPERTY()
+	TArray<UPaddleToCollectWidget*> CollectedPaddles;
+
+	UPROPERTY()
+	FName PaddleNameSelected;
 
 private:
 
@@ -101,12 +111,4 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "ShopHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UWrapBox> MythicWrapBox;
-
-	//Class Vars
-
-	UPROPERTY()
-	UPaddleToCollectWidget* CurrentPaddleToCollectWidgetSelected;
-
-	UPROPERTY()
-	TArray<UPaddleToCollectWidget*> CollectedPaddles;
 };

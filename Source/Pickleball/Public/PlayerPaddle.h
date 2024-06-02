@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Paddle.h"
+#include "PaddleToCollectWidget.h"
 #include "PlayerData.h"
 #include "PlayerPaddle.generated.h"
 class ISaveGameInterface;
@@ -75,7 +76,9 @@ public:
 
 	UFUNCTION()
 	void SetCurrentScore(int32 ScoreToSet);
-	
+	UFUNCTION()
+	void SetCurrentPaddle(FName CurrrentPaddleNameIn);
+
 #pragma endregion Save/Load
 	
 private:
@@ -131,4 +134,7 @@ private:
 	bool bIsPlayersTurn;
 	
 	ISaveGameInterface* SaveGameInterface;
+
+	UPROPERTY()
+	FName CurrrentPaddleName;
 };

@@ -7,6 +7,7 @@
 #include "MainGamemode.h"
 #include "MainPlayerController.h"
 #include "PaddleInfo.h"
+#include "PaddleToCollectWidget.h"
 #include "PaperSpriteComponent.h"
 #include "PickleBallGameInstance.h"
 #include "PickleballSaveGame.h"
@@ -57,7 +58,7 @@ APlayerPaddle::APlayerPaddle()
 	};
 	
 	bIsPlayersTurn = true;
-
+	
 	SwingEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Hiteffect"));
 	SwingEffect->SetupAttachment(SceneComponent);
 	
@@ -90,6 +91,7 @@ void APlayerPaddle::BeginPlay()
 		CurrentCoinCount = PlayerData.PlayerCoins;
 		HighScore = PlayerData.PlayerHighScore;
 		PaddleUnlockStatuses = PlayerData.PaddleUnlockStatuses;
+		CurrrentPaddleName = PlayerData.CurrentPaddleName;
 	}
 	
 }
@@ -201,8 +203,10 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 				if(CurrentCoinCount >= 200)
 				{
 					CurrentCoinCount -= 200;
+					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
 					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+					
 					return true;
 				}
 				break;
@@ -210,6 +214,7 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 				if(CurrentCoinCount >= 400)
 				{
 					CurrentCoinCount -= 400;
+					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
 					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
 					return true;
@@ -219,6 +224,7 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 				if(CurrentCoinCount >= 800)
 				{
 					CurrentCoinCount -= 800;
+					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
 					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
 					return true;
@@ -228,6 +234,7 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 				if(CurrentCoinCount >= 1500)
 				{
 					CurrentCoinCount -= 1500;
+					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
 					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
 					return true;
@@ -237,6 +244,7 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 				if(CurrentCoinCount >= 2000)
 				{
 					CurrentCoinCount -= 2000;
+					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
 					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
 					return true;
@@ -253,8 +261,10 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 void APlayerPaddle::OnPaddleSelected(FName PaddleName)
 {
 	FPaddleInfo* PaddleInfoFound = PaddleDataTable->FindRow<FPaddleInfo>(PaddleName, TEXT(""), true);
+	
 	if(PaddleInfoFound != nullptr)
 	{
+		
 		PaddleSprite->SetSprite(PaddleInfoFound->PaddleSprite);
 		
 		// Set Paddle Sound Effect
@@ -271,7 +281,10 @@ void APlayerPaddle::OnPaddleSelected(FName PaddleName)
 		{
 			CoinMultiplier = 1;
 		}
+
+		SetCurrentPaddle(PaddleName);
 	}
+	
 }
 
 void APlayerPaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -323,7 +336,7 @@ void APlayerPaddle::FlipPaddle()
 
 FPlayerData APlayerPaddle::GetCurrentPlayerData()
 {
-	return FPlayerData(CurrentCoinCount, HighScore, CurrentScore, PaddleUnlockStatuses);
+	return FPlayerData(CurrentCoinCount, HighScore, CurrentScore, PaddleUnlockStatuses, CurrrentPaddleName);
 }
 
 int APlayerPaddle::GetHighScore() const
@@ -359,5 +372,14 @@ int32 APlayerPaddle::GetCurrentScore() const
 void APlayerPaddle::SetCurrentScore(int32 ScoreToSet)
 {
 	CurrentScore = ScoreToSet;
+}
+
+void APlayerPaddle::SetCurrentPaddle(FName CurrrentPaddleNameIn)
+{
+	CurrrentPaddleName = CurrrentPaddleNameIn;
+	if(SaveGameInterface != nullptr)
+	{
+		SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+	}
 }
 

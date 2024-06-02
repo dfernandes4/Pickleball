@@ -3,7 +3,10 @@
 
 #include "MainGamemode.h"
 
+#include "CollectionWidget.h"
+#include "HomeScreenWidget.h"
 #include "PickleBallGameInstance.h"
+#include "ShopScreenWidget.h"
 #include "Sound/SoundClass.h"
 #include "UserWidgetLoader.h"
 
@@ -41,7 +44,12 @@ void AMainGamemode::BeginPlay()
 		}
 		else
 		{
-			WidgetLoader->LoadWidget(FName("HomeScreen"), GetWorld());
+			UHomeScreenWidget* HomeScreenWidget = Cast<UHomeScreenWidget>(WidgetLoader->LoadWidget(FName("HomeScreen"), GetWorld()));
+			HomeScreenWidget->CollectionWidget	= Cast<UCollectionWidget>(WidgetLoader->LoadWidget(FName("CollectionScreen"), GetWorld()));
+			HomeScreenWidget->DisplayBasePaddles();
+			HomeScreenWidget->SetUpCollectionDelegates();
+			HomeScreenWidget->ShopWidget		= Cast<UShopScreenWidget>(WidgetLoader->LoadWidget(FName("PaddleShopScreen"), GetWorld()));
+			HomeScreenWidget->SetUpShopDelegates();
 			GameInstance->SetShouldLaunchStarterScreen(false);
 		}
 

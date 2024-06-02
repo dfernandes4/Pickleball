@@ -34,15 +34,37 @@ public:
 	void OnShopButtonClicked();
 	UFUNCTION()
 	void OnPlusCoinClicked();
-
+	UFUNCTION()
+	void OnLeftArrowClicked();
+	UFUNCTION()
+	void OnRightArrowClicked();
+	
 	UFUNCTION()
 	void HandleChildClosed();
+	
 	UFUNCTION()
 	void DisplayPlayerValues();
-	
+	UFUNCTION()
+	void DisplayBasePaddles();
+
+	UFUNCTION()
+	void SetUpCollectionDelegates();
+
+	UFUNCTION()
+	void SetUpShopDelegates();
+
+	UFUNCTION()
+	void UpdateCoins(int32 NewCoinAmount);
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundBase* MenuSoundEffect;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCollectionWidget> CollectionWidget;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UShopScreenWidget> ShopWidget;
 
 private:
 	
@@ -77,6 +99,12 @@ private:
 	TObjectPtr<UButton> PlusCoinButton;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UButton> LeftArrowButton;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UButton> RightArrowButton;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UHorizontalBox>  HorizontalBox;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
@@ -90,12 +118,6 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UBackgroundBlur> BackroundBlur;
-	
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UCollectionWidget> CollectionWidget;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UShopScreenWidget> ShopWidget;
 	
 };
 

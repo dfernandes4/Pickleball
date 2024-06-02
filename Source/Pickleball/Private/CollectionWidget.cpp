@@ -5,7 +5,9 @@
 
 #include "MainGamemode.h"
 #include "PaddleToCollectWidget.h"
+#include "PickleBallGameInstance.h"
 #include "PlayerPaddle.h"
+#include "SaveGameInterface.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/WrapBox.h"
@@ -15,17 +17,25 @@ void UCollectionWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	SetVisibility(ESlateVisibility::Hidden);
 	// TODO: This is going to take some time to load so implement a loading screen here and do this this screen in beginning of game
 	
 	if(BackButton != nullptr)
 	{
 		BackButton->OnClicked.AddDynamic(this, &UCollectionWidget::OnBackButtonClicked);
 	}
-
-	CurrentPaddleToCollectWidgetSelected = Cast<UPaddleToCollectWidget>(CommonWrapBox->GetChildAt(0));
 	
 	AMainGamemode* MainGamemode = Cast<AMainGamemode>(UGameplayStatics::GetGameMode(GetWorld()));
 	MainGamemode->OnPaddleSelected.AddDynamic(this, &UCollectionWidget::SelectNewPaddle);
+	MainGamemode->OnPaddleBought.AddDynamic(this, &UCollectionWidget::SetupPaddleWidgets);
+
+	ISaveGameInterface* SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (SaveGameInterface)
+	{
+		FPlayerData PlayerData = SaveGameInterface->GetSaveGamePlayerData();
+		PaddleNameSelected = PlayerData.CurrentPaddleName;
+	}
+	
 	SetupPaddleWidgets();
 }
 
@@ -39,71 +49,111 @@ void UCollectionWidget::OnBackButtonClicked()
 
 void UCollectionWidget::SetupPaddleWidgets()
 {
-	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	TMap<FName, bool> PaddleUnlockStatuses = PlayerPaddle->GetPaddleUnlockStatuses();
+	ISaveGameInterface* SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (SaveGameInterface)
+	{
+		CollectedPaddles.Empty();
+		
+		TMap<FName, bool> PaddleUnlockStatuses = SaveGameInterface->GetSaveGamePlayerData().PaddleUnlockStatuses;
 	
-	for(UWidget* Widget : CommonWrapBox->GetAllChildren())
-	{
-		FString WidgetName = Cast<UPaddleToCollectWidget>(Widget)->GetName();
-		if(PaddleUnlockStatuses.Contains(*WidgetName))
+		for(UWidget* Widget : CommonWrapBox->GetAllChildren())
 		{
-			UPaddleToCollectWidget* PaddleCollectWidget = Cast<UPaddleToCollectWidget>(Widget);
-			PaddleCollectWidget->SetPaddleAttributes(PaddleUnlockStatuses[*WidgetName]);
-			if(PaddleUnlockStatuses[*WidgetName])
+			FString WidgetName = Cast<UPaddleToCollectWidget>(Widget)->GetName();
+			if(PaddleUnlockStatuses.Contains(*WidgetName))
 			{
-				CollectedPaddles.Add(PaddleCollectWidget);
+				UPaddleToCollectWidget* PaddleCollectWidget = Cast<UPaddleToCollectWidget>(Widget);
+				PaddleCollectWidget->SetPaddleAttributes(PaddleUnlockStatuses[*WidgetName]);
+				if(PaddleUnlockStatuses[*WidgetName])
+				{
+					CollectedPaddles.Add(PaddleCollectWidget);
+					
+					if(WidgetName == PaddleNameSelected)
+					{
+						SelectNewPaddle(Cast<UPaddleToCollectWidget>(Widget));
+						APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+						PlayerPaddle->OnPaddleSelected(*WidgetName);
+					}
+				}
 			}
 		}
-	}
-	for(UWidget* Widget : RareWrapBox->GetAllChildren())
-	{
-		FString WidgetName = Cast<UPaddleToCollectWidget>(Widget)->GetName();
-		if(PaddleUnlockStatuses.Contains(*WidgetName))
+		for(UWidget* Widget : RareWrapBox->GetAllChildren())
 		{
-			UPaddleToCollectWidget* PaddleCollectWidget = Cast<UPaddleToCollectWidget>(Widget);
-			PaddleCollectWidget->SetPaddleAttributes(PaddleUnlockStatuses[*WidgetName]);
-			if(PaddleUnlockStatuses[*WidgetName])
+			FString WidgetName = Cast<UPaddleToCollectWidget>(Widget)->GetName();
+			if(PaddleUnlockStatuses.Contains(*WidgetName))
 			{
-				CollectedPaddles.Add(PaddleCollectWidget);
+				UPaddleToCollectWidget* PaddleCollectWidget = Cast<UPaddleToCollectWidget>(Widget);
+				PaddleCollectWidget->SetPaddleAttributes(PaddleUnlockStatuses[*WidgetName]);
+				if(PaddleUnlockStatuses[*WidgetName])
+				{
+					CollectedPaddles.Add(PaddleCollectWidget);
+					
+					if(WidgetName == PaddleNameSelected)
+					{
+						SelectNewPaddle(Cast<UPaddleToCollectWidget>(Widget));
+						APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+						PlayerPaddle->OnPaddleSelected(*WidgetName);
+					}
+				}
 			}
 		}
-	}
-	for(UWidget* Widget : EpicWrapBox->GetAllChildren())
-	{
-		FString WidgetName = Cast<UPaddleToCollectWidget>(Widget)->GetName();
-		if(PaddleUnlockStatuses.Contains(*WidgetName))
+		for(UWidget* Widget : EpicWrapBox->GetAllChildren())
 		{
-			UPaddleToCollectWidget* PaddleCollectWidget = Cast<UPaddleToCollectWidget>(Widget);
-			PaddleCollectWidget->SetPaddleAttributes(PaddleUnlockStatuses[*WidgetName]);
-			if(PaddleUnlockStatuses[*WidgetName])
+			FString WidgetName = Cast<UPaddleToCollectWidget>(Widget)->GetName();
+			if(PaddleUnlockStatuses.Contains(*WidgetName))
 			{
-				CollectedPaddles.Add(PaddleCollectWidget);
+				UPaddleToCollectWidget* PaddleCollectWidget = Cast<UPaddleToCollectWidget>(Widget);
+				PaddleCollectWidget->SetPaddleAttributes(PaddleUnlockStatuses[*WidgetName]);
+				if(PaddleUnlockStatuses[*WidgetName])
+				{
+					CollectedPaddles.Add(PaddleCollectWidget);
+
+					if(WidgetName == PaddleNameSelected)
+					{
+						SelectNewPaddle(Cast<UPaddleToCollectWidget>(Widget));
+						APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+						PlayerPaddle->OnPaddleSelected(*WidgetName);
+					}
+				}
 			}
 		}
-	}
-	for(UWidget* Widget : LegendaryWrapBox->GetAllChildren())
-	{
-		FString WidgetName = Cast<UPaddleToCollectWidget>(Widget)->GetName();
-		if(PaddleUnlockStatuses.Contains(*WidgetName))
+		for(UWidget* Widget : LegendaryWrapBox->GetAllChildren())
 		{
-			UPaddleToCollectWidget* PaddleCollectWidget = Cast<UPaddleToCollectWidget>(Widget);
-			PaddleCollectWidget->SetPaddleAttributes(PaddleUnlockStatuses[*WidgetName]);
-			if(PaddleUnlockStatuses[*WidgetName])
+			FString WidgetName = Cast<UPaddleToCollectWidget>(Widget)->GetName();
+			if(PaddleUnlockStatuses.Contains(*WidgetName))
 			{
-				CollectedPaddles.Add(PaddleCollectWidget);
+				UPaddleToCollectWidget* PaddleCollectWidget = Cast<UPaddleToCollectWidget>(Widget);
+				PaddleCollectWidget->SetPaddleAttributes(PaddleUnlockStatuses[*WidgetName]);
+				if(PaddleUnlockStatuses[*WidgetName])
+				{
+					CollectedPaddles.Add(PaddleCollectWidget);
+					
+					if(WidgetName == PaddleNameSelected)
+					{
+						SelectNewPaddle(Cast<UPaddleToCollectWidget>(Widget));
+						APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+						PlayerPaddle->OnPaddleSelected(*WidgetName);
+					}
+				}
 			}
 		}
-	}
-	for(UWidget* Widget : MythicWrapBox->GetAllChildren())
-	{
-		FString WidgetName = Cast<UPaddleToCollectWidget>(Widget)->GetName();
-		if(PaddleUnlockStatuses.Contains(*WidgetName))
+		for(UWidget* Widget : MythicWrapBox->GetAllChildren())
 		{
-			UPaddleToCollectWidget* PaddleCollectWidget = Cast<UPaddleToCollectWidget>(Widget);
-			PaddleCollectWidget->SetPaddleAttributes(PaddleUnlockStatuses[*WidgetName]);
-			if(PaddleUnlockStatuses[*WidgetName])
+			FString WidgetName = Cast<UPaddleToCollectWidget>(Widget)->GetName();
+			if(PaddleUnlockStatuses.Contains(*WidgetName))
 			{
-				CollectedPaddles.Add(PaddleCollectWidget);
+				UPaddleToCollectWidget* PaddleCollectWidget = Cast<UPaddleToCollectWidget>(Widget);
+				PaddleCollectWidget->SetPaddleAttributes(PaddleUnlockStatuses[*WidgetName]);
+				if(PaddleUnlockStatuses[*WidgetName])
+				{
+					CollectedPaddles.Add(PaddleCollectWidget);
+					
+					if(WidgetName == PaddleNameSelected)
+					{
+						SelectNewPaddle(Cast<UPaddleToCollectWidget>(Widget));
+						APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+						PlayerPaddle->OnPaddleSelected(*WidgetName);
+					}
+				}
 			}
 		}
 	}
@@ -113,7 +163,10 @@ void UCollectionWidget::SelectNewPaddle(UPaddleToCollectWidget* NewPaddleToColle
 {
 	if(CurrentPaddleToCollectWidgetSelected != NewPaddleToCollectWidgetSelected)
 	{
-		CurrentPaddleToCollectWidgetSelected->CheckImage->SetVisibility(ESlateVisibility::Hidden);
+		if(CurrentPaddleToCollectWidgetSelected != nullptr)
+		{
+			CurrentPaddleToCollectWidgetSelected->CheckImage->SetVisibility(ESlateVisibility::Hidden);
+		}
 		NewPaddleToCollectWidgetSelected->CheckImage->SetVisibility(ESlateVisibility::Visible);
 
 		CurrentPaddleToCollectWidgetSelected = NewPaddleToCollectWidgetSelected;
@@ -126,23 +179,22 @@ void UCollectionWidget::SelectNewPaddle(UPaddleToCollectWidget* NewPaddleToColle
 		}
 		else
 		{
-			int32 RandomIndex;
-			do {
-				RandomIndex = FMath::RandRange(0, CollectedPaddles.Num() - 1);
-			} while (RandomIndex == CurrentPaddleSelectedIndex);
-	
-			if(CollectedPaddles.Num() >= 3)
+			if(CurrentPaddleSelectedIndex == 0)
 			{
-				int32 SecondRandomIndex;
-				do {
-					SecondRandomIndex = FMath::RandRange(0, CollectedPaddles.Num() - 1);
-				} while (SecondRandomIndex == RandomIndex || SecondRandomIndex == CurrentPaddleSelectedIndex);
-				OnPaddleSelected.Broadcast(CurrentPaddleToCollectWidgetSelected, CollectedPaddles[RandomIndex], CollectedPaddles[SecondRandomIndex]);
+				OnPaddleSelected.Broadcast(CurrentPaddleToCollectWidgetSelected, nullptr, CollectedPaddles[CurrentPaddleSelectedIndex + 1]);
+			}
+			else if(CurrentPaddleSelectedIndex == CollectedPaddles.Num() - 1 || CollectedPaddles.Num() == 2)
+			{
+				OnPaddleSelected.Broadcast(CurrentPaddleToCollectWidgetSelected, CollectedPaddles[CurrentPaddleSelectedIndex - 1], nullptr);
 			}
 			else
 			{
-				OnPaddleSelected.Broadcast(CurrentPaddleToCollectWidgetSelected, CollectedPaddles[RandomIndex], nullptr);
+				OnPaddleSelected.Broadcast(CurrentPaddleToCollectWidgetSelected, CollectedPaddles[CurrentPaddleSelectedIndex - 1], CollectedPaddles[CurrentPaddleSelectedIndex + 1]);
 			}
 		}
+	}
+	else
+	{
+		// TODO: Play Error Sound and maybe text
 	}
 }
