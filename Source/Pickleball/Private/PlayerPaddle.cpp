@@ -132,9 +132,9 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 				float ForceXDistance = 0;
 				float ForceZDistance = 0;
 				
-				if(ScaledPaddleVelocity.X < 32)
+				if(ScaledPaddleVelocity.X < 5)
 				{
-					ForceXDistance = FMath::Clamp(ScaledPaddleVelocity.X, 15, 176);
+					ForceXDistance = 10;
 					ForceZDistance = ForceXDistance;
 				}
 				else
