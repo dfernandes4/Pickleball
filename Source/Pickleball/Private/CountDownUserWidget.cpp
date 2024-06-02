@@ -5,6 +5,7 @@
 
 
 #include "EnemyAIController.h"
+#include "MainGamemode.h"
 #include "UserWidgetLoader.h"
 #include "Animation/WidgetAnimation.h"
 #include "Components/TextBlock.h"
@@ -21,6 +22,7 @@ void UCountDownUserWidget::NativeConstruct()
 	
 	CurrentCount = 3;
 	PlayCountDownAnimation();
+	
 }
 
 void UCountDownUserWidget::PlayCountDownAnimation()
@@ -57,6 +59,8 @@ void UCountDownUserWidget::CountdownTimerFinished()
 		{
 			AEnemyAIController* EnemyAIController = Cast<AEnemyAIController>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyAIController::StaticClass()));
 			EnemyAIController->StartBehaviorTree();
+			AMainGamemode* MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
+			MainGamemode->OnCountdownKickoffFinished.Broadcast();
 		}, CountDownKickOffEffectDuration, false);
 		
 		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);

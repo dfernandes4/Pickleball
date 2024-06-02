@@ -11,6 +11,7 @@
 #include "SettingScreenWidget.h"
 #include "ShopScreenWidget.h"
 #include "UserWidgetLoader.h"
+#include "Components/AudioComponent.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
@@ -61,8 +62,11 @@ void UHomeScreenWidget::NativeConstruct()
 	}
 
 	MainGamemode->OnCoinAmountChanged.AddDynamic(this, &UHomeScreenWidget::UpdateCoins);
-
 	
+	if(HomeScreenMusic)
+	{
+		HomeScreenMusicComponent = UGameplayStatics::SpawnSound2D(this,HomeScreenMusic);
+	}
 }
 
 void UHomeScreenWidget::NativeDestruct()
@@ -79,6 +83,10 @@ void UHomeScreenWidget::NativeDestruct()
 	{
 		ShopWidget->RemoveFromParent();
 		ShopWidget->OnShopClosed.RemoveDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+	}
+	if(HomeScreenMusicComponent)
+	{
+		HomeScreenMusicComponent->Stop();
 	}
 }
 

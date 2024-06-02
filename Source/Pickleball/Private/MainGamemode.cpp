@@ -9,6 +9,8 @@
 #include "ShopScreenWidget.h"
 #include "Sound/SoundClass.h"
 #include "UserWidgetLoader.h"
+#include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 AMainGamemode::AMainGamemode()
 {
@@ -25,6 +27,10 @@ AMainGamemode::AMainGamemode()
 		MusicSoundClass->Properties.Volume = .8;
 	}
 	OnGameOver.AddDynamic(this, &AMainGamemode::GameOver);
+	OnCountdownKickoffFinished.AddDynamic(this, &AMainGamemode::OnGameStart);
+
+	BattleMusic = CreateDefaultSubobject<UAudioComponent>(TEXT("BattleMusic"));
+	BattleMusic->SetupAttachment(RootComponent);
 }
 
 void AMainGamemode::BeginPlay()
@@ -64,10 +70,18 @@ void AMainGamemode::BeginPlay()
 
 void AMainGamemode::GameOver()
 {
+	BattleMusic->Stop();
+	UGameplayStatics::PlaySound2D(GetWorld(),GameoverSoundEffect);
+	
 	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
 	if(GameInstance->GetIsFirstTimePlaying())
 	{
 		GameInstance->SetIsFirstTimePlaying(false);
 	}
 	OnGameOver.RemoveDynamic(this, &AMainGamemode::GameOver);
+}
+
+void AMainGamemode::OnGameStart()
+{
+	BattleMusic->Play();
 }

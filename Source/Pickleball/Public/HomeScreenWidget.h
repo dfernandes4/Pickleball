@@ -66,6 +66,12 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UShopScreenWidget> ShopWidget;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+	USoundBase* HomeScreenMusic;
+
+	UPROPERTY()
+	UAudioComponent* HomeScreenMusicComponent;
+
 private:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))

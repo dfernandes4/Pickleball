@@ -17,6 +17,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPaddleBoughtDelegate);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoinAmountChangedDelegate, int32 , NewCoinAmount);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCountdownKickoffFinishedDelegate);
+
 UCLASS()
 class PICKLEBALL_API AMainGamemode : public AGameModeBase
 {
@@ -26,6 +28,9 @@ public:
 	
 	UFUNCTION()
 	void GameOver();
+
+	UFUNCTION()
+	void OnGameStart();
 	
 	AMainGamemode();
 	
@@ -41,6 +46,13 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundClass* MusicSoundClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	UAudioComponent* BattleMusic;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundBase* GameoverSoundEffect;
+	
 	
 	FOnScoreUpdated OnScoreUpdated;
 
@@ -49,4 +61,6 @@ public:
 	FPaddleBoughtDelegate OnPaddleBought;
 	
 	FOnCoinAmountChangedDelegate OnCoinAmountChanged;
+
+	FOnCountdownKickoffFinishedDelegate  OnCountdownKickoffFinished;
 };
