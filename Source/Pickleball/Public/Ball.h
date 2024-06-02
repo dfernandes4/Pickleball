@@ -55,10 +55,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	UStaticMeshComponent* BallMesh;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = components, meta = (AllowPrivateAccess))
-	UAudioComponent* AudioComponent;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = components)
 	USoundBase* HitSound;
 	

@@ -28,10 +28,6 @@ ABall::ABall()
 	
 	BallCollider = CreateDefaultSubobject<USphereComponent>(TEXT("BallCollider"));
 	BallCollider->SetupAttachment(BallMesh);
-
-	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
-	AudioComponent->SetupAttachment(RootComponent);
-	AudioComponent->bAutoActivate = false;
 	
 	Trail = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Trail"));
 	Trail->SetupAttachment(BallMesh);
@@ -95,10 +91,7 @@ void ABall::ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor)
 			BallMesh->WakeRigidBody();
 			BallMesh->AddImpulse(Force);
 		}, .08, false);
-
 		
-			AudioComponent->SetSound(HitSound);
-			AudioComponent->Play();
 		
 		
 		CurrentPaddle = const_cast<APaddle*>(PaddleActor);

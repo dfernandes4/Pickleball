@@ -137,4 +137,7 @@ private:
 
 	UPROPERTY()
 	FName CurrrentPaddleName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components, meta = (AllowPrivateAccess))
+	USoundBase* PaddleSoundEffect;
 };

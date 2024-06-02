@@ -11,6 +11,7 @@
 #include "PaperSpriteComponent.h"
 #include "PickleBallGameInstance.h"
 #include "PickleballSaveGame.h"
+#include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -61,7 +62,6 @@ APlayerPaddle::APlayerPaddle()
 	
 	SwingEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Hiteffect"));
 	SwingEffect->SetupAttachment(SceneComponent);
-	
 }
 
 void APlayerPaddle::BeginPlay()
@@ -117,6 +117,8 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 		{
 			if (IsValid(BallInScene))
 			{
+				UGameplayStatics::PlaySoundAtLocation(GetWorld(), PaddleSoundEffect, GetActorLocation());
+				
 				FVector ScaledPaddleVelocity = (Cast<AMainPlayerController>(GetController())->GetPaddleVelocity());
 				ScaledPaddleVelocity.X *= .02;
 				ScaledPaddleVelocity.Y *= .01;
@@ -280,7 +282,7 @@ void APlayerPaddle::OnPaddleSelected(FName PaddleName)
 		// Set Paddle Sound Effect
 		if(PaddleInfoFound->PaddleSoundEffect != nullptr)
 		{
-			//PaddleSoundEffect = PaddleInfoFound->PaddleSoundEffect;
+			PaddleSoundEffect = PaddleInfoFound->PaddleSoundEffect;
 		}
 		
 		if(PaddleInfoFound->PaddleAbility == EPaddleAbility::CoinMultiplier)
