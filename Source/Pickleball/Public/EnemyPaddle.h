@@ -46,7 +46,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	UNiagaraComponent* SwingEffect;
-
 	
 	FEnemyAttributes* CurrentEnemyAttributes;
 
@@ -65,6 +64,8 @@ private:
 
 	UPROPERTY()
 	bool bIsEnemiesTurn;
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components, meta = (AllowPrivateAccess))
+	USoundBase* PaddleSoundEffect;
 	
 };
