@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PaddleRarity.h"
 #include "Blueprint/UserWidget.h"
 #include "PaddleToBuyWidget.generated.h"
 
@@ -25,6 +26,9 @@ public:
 
 private:
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SizeBox", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	EPaddleRarity PaddleRarity;
+	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SizeBox", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCanvasPanel> Canvas;
 	

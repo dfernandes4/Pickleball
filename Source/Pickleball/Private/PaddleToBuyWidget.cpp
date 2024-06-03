@@ -38,7 +38,7 @@ void UPaddleToBuyWidget::OnPaddleButtonClicked()
 	
 	UWidgetLoader* WidgetLoader = NewObject<UWidgetLoader>(this);
 	UPaddleToBuyScreenWidget* PaddleToBuyScreenWidget = Cast<UPaddleToBuyScreenWidget>(WidgetLoader->LoadWidget(FName("PaddleToBuyScreen"), GetWorld(), 5));
-	PaddleToBuyScreenWidget->SetPaddleAttributes(ResourceObject, ImageSize, PaddleName);
+	PaddleToBuyScreenWidget->SetPaddleAttributes(ResourceObject, ImageSize, PaddleName, PaddleRarity);
 	
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 }
