@@ -111,6 +111,7 @@ void UHomeScreenWidget::OnSettingsButtonClicked()
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	USettingScreenWidget* SettingScreenWidget = Cast<USettingScreenWidget>(WidgetLoader->LoadWidget(FName("SettingScreen"), GetWorld(),  1));
 	SettingScreenWidget->OnSettingsClosed.AddDynamic(this, &UHomeScreenWidget::HandleChildClosed);
+	SettingScreenWidget->OnHowToPlayButtonClickedDelegate.AddDynamic(this, &UHomeScreenWidget::OnHowToPlayButtonClicked);
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 }
 
@@ -279,4 +280,9 @@ void UHomeScreenWidget::SetUpShopDelegates()
 void UHomeScreenWidget::UpdateCoins(int32 NewCoinAmount)
 {
 	CoinAmountTextBlock->SetText(FText::FromString(FString::FromInt(NewCoinAmount)));
+}
+
+void UHomeScreenWidget::OnHowToPlayButtonClicked()
+{
+	RemoveFromParent();
 }

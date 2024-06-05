@@ -60,4 +60,6 @@ public:
 	FOnCoinAmountChangedDelegate OnCoinAmountChanged;
 
 	FOnCountdownKickoffFinishedDelegate  OnCountdownKickoffFinished;
+
+	bool bIsGameActive;
 };

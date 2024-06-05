@@ -31,6 +31,8 @@ AMainGamemode::AMainGamemode()
 
 	BattleMusic = CreateDefaultSubobject<UAudioComponent>(TEXT("BattleMusic"));
 	BattleMusic->SetupAttachment(RootComponent);
+
+	bIsGameActive = false;
 }
 
 void AMainGamemode::BeginPlay()
@@ -78,9 +80,12 @@ void AMainGamemode::GameOver()
 		GameInstance->SetIsFirstTimePlaying(false);
 	}
 	OnGameOver.RemoveDynamic(this, &AMainGamemode::GameOver);
+
+	bIsGameActive = false;
 }
 
 void AMainGamemode::OnGameStart()
 {
 	BattleMusic->Play();
+	bIsGameActive = true;
 }
