@@ -1,10 +1,12 @@
 #include "MainPlayerController.h"
 
 #include "MainGamemode.h"
-#include "OnlineSubsystem.h"
-#include "GameFramework/Pawn.h"
 #include "Interfaces/OnlineStoreInterfaceV2.h"
 #include "Interfaces/OnlineIdentityInterface.h"
+#include "Interfaces/OnlineExternalUIInterface.h"
+#include "OnlineSubsystem.h"
+#include "GameFramework/Pawn.h"
+
 
 
 AMainPlayerController::AMainPlayerController()
@@ -34,6 +36,7 @@ void AMainPlayerController::BeginPlay()
     {
         MainGamemode->OnGameOver.AddDynamic(this, &AMainPlayerController::OnGameOver);
     }
+    LoginToGameCenter();
 }
 
 void AMainPlayerController::PlayerTick(float DeltaTime)
@@ -93,14 +96,12 @@ FVector AMainPlayerController::GetPaddleVelocity() const
 
  void AMainPlayerController::InitiatePurchaseRequest(const FString& ProductId)
 {
-
     IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
     if (OnlineSub)
     {
         IOnlineStoreV2Ptr StoreInterface = OnlineSub->GetStoreV2Interface();
         if (StoreInterface.IsValid())
         {
-            
             // Get the identity interface to obtain the user ID
             IOnlineIdentityPtr IdentityInterface = OnlineSub->GetIdentityInterface();
             if (!IdentityInterface.IsValid())
@@ -135,11 +136,15 @@ void AMainPlayerController::HandlePurchaseCompletion(bool bWasSuccessful, const 
         int32 CoinsAmount = 0;
         if(OfferId == "")
         {
-            CoinsAmount = 100;
+            CoinsAmount = 200;
         }
         else if(OfferId == "")
         {
-            CoinsAmount = 500;
+            CoinsAmount = 400;
+        }
+        else if(OfferId == "")
+        {
+            CoinsAmount = 650;
         }
         else if(OfferId == "")
         {
@@ -158,6 +163,95 @@ void AMainPlayerController::HandlePurchaseCompletion(bool bWasSuccessful, const 
     }
 }
 
+void AMainPlayerController::LoginToGameCenter()
+{
+    IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
+    if (OnlineSub)
+    {
+        IOnlineIdentityPtr Identity = OnlineSub->GetIdentityInterface();
+        if (Identity.IsValid())
+        {
+            FOnLoginCompleteDelegate Delegate = FOnLoginCompleteDelegate::CreateUObject(this, &AMainPlayerController::OnLoginComplete);
+            Identity->AddOnLoginCompleteDelegate_Handle(0, Delegate);
+
+            FOnlineAccountCredentials AccountCredentials;
+            Identity->Login(0, AccountCredentials);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Identity interface is not valid"));
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("OnlineSubsystem IOS is not available"));
+    }
+}
+
+void AMainPlayerController::OnLoginComplete(int32 LocalUserNum, bool bWasSuccessful, const FUniqueNetId& UserId, const FString& Error)
+{
+    IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
+    if (OnlineSub)
+    {
+        IOnlineIdentityPtr Identity = OnlineSub->GetIdentityInterface();
+        if (Identity.IsValid())
+        {
+            Identity->ClearOnLoginCompleteDelegate_Handle(LocalUserNum, DelegateHandle);
+
+            if (bWasSuccessful)
+            {
+                
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Login to Game Center failed: %s"), *Error);
+                // Handle login failure
+            }
+        }
+    }
+}
+
+void AMainPlayerController::ShowLeaderboard(FName CategoryName)
+{
+    if(IsLoggedInToGameCenter())
+    {
+        IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get();
+        if (OnlineSub)
+        {
+            IOnlineExternalUIPtr ExternalUI = OnlineSub->GetExternalUIInterface();
+            if (ExternalUI.IsValid())
+            {
+                ExternalUI->ShowLeaderboardUI(CategoryName.ToString());
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("External UI interface is not valid"));
+            }
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("OnlineSubsystem is not available"));
+        }
+    }
+    else
+    {
+        LoginToGameCenter();
+    }
+}
+
+bool AMainPlayerController::IsLoggedInToGameCenter()
+{
+    IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
+    if (OnlineSub)
+    {
+        IOnlineIdentityPtr Identity = OnlineSub->GetIdentityInterface();
+        if (Identity.IsValid())
+        {
+            return Identity->GetLoginStatus(0) == ELoginStatus::LoggedIn;
+        }
+    }
+    return false;
+}
 void AMainPlayerController::OnGameOver()
 {
     DisableInput(this);

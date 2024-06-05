@@ -3,7 +3,10 @@
 
 #include "PickleBallGameInstance.h"
 
+#include "MainPlayerController.h"
+#include "OnlineSubsystem.h"
 #include "PickleballSaveGame.h"
+#include "Interfaces/OnlineIdentityInterface.h"
 #include "Kismet/GameplayStatics.h"
 
 

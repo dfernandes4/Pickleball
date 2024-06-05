@@ -74,7 +74,7 @@ void UPaddleToBuyScreenWidget::SetPaddleAttributes(UObject* ResourceObject, cons
 {
 	PaddleToBuyImage->SetBrushFromTexture(Cast<UTexture2D>(ResourceObject));
 	PaddleToBuyImage->SetDesiredSizeOverride(ImageSize * 2.4);
-
+ 
 	PaddleNameTextBlock->SetText(FText::FromString(PaddleName));
 	UnlockedPaddleNameTextBlock->SetText(FText::FromString(PaddleName));
 	switch (PaddleRarity)

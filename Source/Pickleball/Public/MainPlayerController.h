@@ -31,13 +31,20 @@ public:
 	UFUNCTION()
 	void InitiatePurchaseRequest(const FString& ProductId);
 	void HandlePurchaseCompletion(bool bWasSuccessful, const TArray<FUniqueOfferId>& Offers, const FString& ErrorMsg);
+	UFUNCTION()
+	void LoginToGameCenter();
+	void OnLoginComplete(int32 LocalUserNum, bool bWasSuccessful, const FUniqueNetId& UserId, const FString& Error);
+	UFUNCTION()
+	void ShowLeaderboard(FName CategoryName);
+	UFUNCTION()
+	bool IsLoggedInToGameCenter();
 
 	UFUNCTION()
 	void OnGameOver();
 	
 	FOnPurchaseCompletedDelegate  OnPurchaseCompleted;
 	FOnFirstTouchDelegate OnFirstTouch;
-	
+	FDelegateHandle DelegateHandle;
 
 protected:
 	
