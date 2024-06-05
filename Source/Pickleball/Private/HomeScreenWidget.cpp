@@ -6,6 +6,7 @@
 #include "CoinShopScreen.h"
 #include "CollectionWidget.h"
 #include "MainGamemode.h"
+#include "MainPlayerController.h"
 #include "PlayerPaddle.h"
 #include "SaveGameInterface.h"
 #include "SettingScreenWidget.h"
@@ -51,6 +52,10 @@ void UHomeScreenWidget::NativeConstruct()
 	if(RightArrowButton != nullptr)
 	{
 		RightArrowButton->OnClicked.AddDynamic(this, &UHomeScreenWidget::OnRightArrowClicked);
+	}
+	if(LeaderboardButton != nullptr)
+	{
+		LeaderboardButton->OnClicked.AddDynamic(this, &UHomeScreenWidget::OnLeaderboardButtonClicked);
 	}
 
 	DisplayPlayerValues();
@@ -200,6 +205,12 @@ void UHomeScreenWidget::OnRightArrowClicked()
 	CollectionWidget->SelectNewPaddle(CollectionWidget->CollectedPaddles[CollectionWidget->CollectedPaddles.Find(CollectionWidget->CurrentPaddleToCollectWidgetSelected) + 1]);
 	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	PlayerPaddle->OnPaddleSelected(*CollectionWidget->CurrentPaddleToCollectWidgetSelected->GetName());
+}
+
+void UHomeScreenWidget::OnLeaderboardButtonClicked()
+{
+	//Change category tag accordingly
+	//Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0))->ShowLeaderboard(FName("HS"));
 }
 
 void UHomeScreenWidget::HandleChildClosed()

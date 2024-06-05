@@ -38,6 +38,8 @@ public:
 	void OnLeftArrowClicked();
 	UFUNCTION()
 	void OnRightArrowClicked();
+	UFUNCTION()
+	void OnLeaderboardButtonClicked();
 	
 	UFUNCTION()
 	void HandleChildClosed();
@@ -109,6 +111,9 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UButton> RightArrowButton;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UButton> LeaderboardButton;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UHorizontalBox>  HorizontalBox;
