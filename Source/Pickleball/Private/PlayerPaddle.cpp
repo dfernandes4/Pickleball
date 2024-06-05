@@ -73,7 +73,7 @@ void APlayerPaddle::BeginPlay()
 	AMainPlayerController* PlayerController = Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController());
 	if (PlayerController)
 	{
-		PlayerController->OnPurchaseCompleted.AddDynamic(this, &APlayerPaddle::AddPlayerCoins);
+		PlayerController->OnPurchaseCompleted.AddDynamic(this, &APlayerPaddle::AddCoins);
 	}
 
 	if (MainGamemode != nullptr)
@@ -172,11 +172,6 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 			}
 		}
 	}
-}
-
-void APlayerPaddle::AddPlayerCoins(int32 CoinsAmount)
-{
-	CurrentCoinCount += CoinsAmount;
 }
 
 float APlayerPaddle::GetScore() const
@@ -296,7 +291,6 @@ void APlayerPaddle::OnPaddleSelected(FName PaddleName)
 
 		SetCurrentPaddle(PaddleName);
 	}
-	
 }
 
 void APlayerPaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -374,6 +368,7 @@ TMap<FName, bool> APlayerPaddle::GetPaddleUnlockStatuses() const
 void APlayerPaddle::AddCoins(int32 CoinsToAdd)
 {
 	CurrentCoinCount += CoinsToAdd;
+	SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
 }
 
 int32 APlayerPaddle::GetCurrentScore() const
