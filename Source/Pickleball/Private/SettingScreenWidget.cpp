@@ -2,9 +2,14 @@
 
 
 #include "SettingScreenWidget.h"
+
+#include "MainGamemode.h"
+#include "MainPlayerController.h"
+#include "UserWidgetLoader.h"
 #include "Sound/SoundClass.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
+
 
 void USettingScreenWidget::NativeConstruct()
 {
@@ -42,7 +47,32 @@ void USettingScreenWidget::NativeConstruct()
 		MusicSlider->OnValueChanged.AddDynamic(this, &USettingScreenWidget::OnMusicVolumeChanged);
 	}
 
+	if(HowToPlayButton != nullptr)
+	{
+		HowToPlayButton->OnClicked.AddDynamic(this, &USettingScreenWidget::OnHowToPlayButtonClicked);
+	}
+	if(RemoveAdsButton != nullptr)
+	{
+		RemoveAdsButton->OnClicked.AddDynamic(this, &USettingScreenWidget::OnRemoveAdsButtonClicked);
+	}
 	
+	// if home is active or not in game then this button is active if not then it is disabled
+	AMainGamemode* MainGamemode = Cast<AMainGamemode>(UGameplayStatics::GetGameMode(GetWorld()));
+	MainGamemode->bIsGameActive ? HowToPlayButton->SetIsEnabled(false) : HowToPlayButton->SetIsEnabled(true);
+}
+	
+void USettingScreenWidget::OnHowToPlayButtonClicked()
+{
+	OnHowToPlayButtonClickedDelegate.Broadcast();
+	RemoveFromParent();
+	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+	WidgetLoader->LoadWidget(FName("TutorialScreen"), GetWorld());	
+}
+
+void USettingScreenWidget::OnRemoveAdsButtonClicked()
+{
+	RemoveAdsButton->SetIsEnabled(false);
+	Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0))->InitiatePurchaseRequest("");
 }
 
 void USettingScreenWidget::OnBackButtonClicked()

@@ -25,6 +25,8 @@ public:
 	UFUNCTION()
 	void OnPlayButtonClicked();
 	UFUNCTION()
+	void OnHowToPlayButtonClicked();
+	UFUNCTION()
 	void OnSettingsButtonClicked();
 	UFUNCTION()
 	void DisplayPaddles(UPaddleToCollectWidget* PaddleSelected, UPaddleToCollectWidget* PaddleBefore, UPaddleToCollectWidget* PaddleAfter);
