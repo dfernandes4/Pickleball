@@ -36,7 +36,15 @@ void UCoinShopScreen::NativeConstruct()
 	{
 		PilesOGoldButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnPilesOGoldButtonPressed);
 	}
+	AMainPlayerController* MainPlayerController =Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController());
+	
+	if(MainPlayerController!= nullptr)
+	{
+		MainPlayerController->OnPurchaseCompleted.AddDynamic(this, &UCoinShopScreen::OnPuchaseCompleted);
+	}
+	
 }
+
 
 void UCoinShopScreen::OnBackButtonPressed()
 {
@@ -64,5 +72,12 @@ void UCoinShopScreen::OnPilesOGoldButtonPressed()
 {
 	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("");
 }
+
+void UCoinShopScreen::OnPuchaseCompleted(int32 CoinsAmount)
+{
+	UGameplayStatics::PlaySound2D(GetWorld(),CoinPurchasedSound);
+}
+
+
 
 

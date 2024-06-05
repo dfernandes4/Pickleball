@@ -31,6 +31,9 @@ public:
 
 	UFUNCTION()
 	void SetBackgroundHidden();
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	USoundBase* BoughtPaddleSound;
 	
 private:
 

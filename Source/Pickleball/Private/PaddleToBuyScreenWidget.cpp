@@ -67,6 +67,8 @@ void UPaddleToBuyScreenWidget::OnBuyButtonClicked()
 		
 		AMainGamemode* MainGamemode = Cast<AMainGamemode>(UGameplayStatics::GetGameMode(GetWorld()));
 		MainGamemode->OnPaddleBought.Broadcast();
+		
+		UGameplayStatics::PlaySound2D(GetWorld(),BoughtPaddleSound);
 	}
 }
 

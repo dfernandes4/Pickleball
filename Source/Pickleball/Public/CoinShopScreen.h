@@ -17,7 +17,7 @@ class PICKLEBALL_API UCoinShopScreen : public UUserWidget
 	GENERATED_BODY()
 
 public:
-
+	
 	virtual void NativeConstruct() override;
 	
 	UFUNCTION()
@@ -36,6 +36,9 @@ public:
 	void OnPilesOGoldButtonPressed();
 	
 	FOnCoinShopClosedDelegate OnCoinShopClosed;
+
+	UFUNCTION()
+	void OnPuchaseCompleted(int32 CoinsAmount);
 	
 
 private:
@@ -66,5 +69,8 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio", meta = (AllowPrivateAccess = "true"))
 	USoundBase* BackSoundEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio", meta = (AllowPrivateAccess = "true"))
+	USoundBase* CoinPurchasedSound;
 	
 };
