@@ -52,6 +52,7 @@ APlayerPaddle::APlayerPaddle()
 		{FName("Tomahawk"), false},
 		{FName("Rattle"), false},
 		{FName("Shredder"), false},
+		{FName("Mjolnir"), false},
 		// Mythic
 		{FName("Money_Bag"), false},
 		{FName("Punchin_"), false},
