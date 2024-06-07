@@ -25,9 +25,9 @@ AEnemyPaddle::AEnemyPaddle()
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
 
 	//Ramp up Movement based on enemies hits
-	MovementComponent->Acceleration = 800;
-	MovementComponent->Deceleration = 800;
-	MovementComponent->MaxSpeed = 2000.f;
+	MovementComponent->Acceleration = 600;
+	MovementComponent->Deceleration = 600;
+	MovementComponent->MaxSpeed = 600.f;
 
 	SwingEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Hiteffect"));
 	SwingEffect->SetupAttachment(SceneComponent);
@@ -231,4 +231,20 @@ void AEnemyPaddle::StopHitting()
 {
 	bIsEnemiesTurn = false;
 	Cast<AEnemyAIController>(GetController())->SetIdleState();
+}
+
+void AEnemyPaddle::AdjustEnemySpeed(const FVector& BallVelocity, const FVector& HittingLocation)
+{
+	FVector EnemyLocation = GetActorLocation();
+	float DistanceToTarget = FVector::Dist(EnemyLocation, HittingLocation);
+
+	
+	float BallSpeed = BallVelocity.Size();
+	float TimeToTarget = DistanceToTarget / BallSpeed;
+	
+	float RequiredSpeed = DistanceToTarget / TimeToTarget;
+	MovementComponent->Acceleration = RequiredSpeed / TimeToTarget;
+	MovementComponent->Deceleration = RequiredSpeed / TimeToTarget;
+	
+	MovementComponent->MaxSpeed = RequiredSpeed;
 }
