@@ -27,6 +27,7 @@ void UPickleBallGameInstance::Shutdown()
 	Super::Shutdown();
 
 	SaveGame->PlayerData.PlayersLastScore = 0;
+	SaveGame->EnemyLastRow = 0;
 	SaveGameData();
 }
 
@@ -60,6 +61,12 @@ void UPickleBallGameInstance::SavePlayerData(FPlayerData PlayerData)
 	SaveGameData();
 }
 
+void UPickleBallGameInstance::SaveCurrentEnemyRow(int32 EnemyRow)
+{
+	SaveGame->EnemyLastRow = EnemyRow;
+	SaveGameData();
+}
+
 bool UPickleBallGameInstance::GetIsFirstTimePlaying() const
 {
 	return bIsFirstTimePlaying;
@@ -73,6 +80,11 @@ void UPickleBallGameInstance::SetShouldLaunchStarterScreen(bool bIShouldLaunchSt
 void UPickleBallGameInstance::SetIsFirstTimePlaying(bool bIsFirstTimePlayingIn)
 {
 	bIsFirstTimePlaying = bIsFirstTimePlayingIn;
+}
+
+int32 UPickleBallGameInstance::GetSaveGameEnemyRow()
+{
+	return SaveGame->EnemyLastRow;
 }
 
 bool UPickleBallGameInstance::GetShouldLaunchStarterScreen() const

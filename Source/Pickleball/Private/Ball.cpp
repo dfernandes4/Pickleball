@@ -113,25 +113,25 @@ void ABall::ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor)
 void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
-		if(OtherActor->ActorHasTag("Court") || OtherActor->ActorHasTag("Background"))
+	if(OtherActor->ActorHasTag("Court") || OtherActor->ActorHasTag("Background"))
+	{
+		if(CurrentPaddle->IsA(APlayerPaddle::StaticClass()))
 		{
-			if(CurrentPaddle->IsA(APlayerPaddle::StaticClass()))
+			FVector BallLandingLocation = BallPositionSymbol->GetActorLocation();
+			if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -304 && BallLandingLocation.Y < 304))
 			{
-				FVector BallLandingLocation = BallPositionSymbol->GetActorLocation();
-				if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -304 && BallLandingLocation.Y < 304))
-				{
-					Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetBallLandingLocation(BallPositionSymbol->GetActorLocation());
-					Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(BallPositionSymbol->GetActorLocation());
-				}
-			}
-			
-			CurrentBounceCount++;
-			// Each Bounce + 2 to the count ...?
-			if(CurrentBounceCount == 3)
-			{
-				MainGamemode->OnGameOver.Broadcast();
+				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetBallLandingLocation(BallLandingLocation);
+				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(BallLandingLocation);
 			}
 		}
+		
+		CurrentBounceCount++;
+		// Each Bounce + 2 to the count ...?
+		if(CurrentBounceCount == 3)
+		{
+			MainGamemode->OnGameOver.Broadcast();
+		}
+	}
 	// Can Reflect the ball's direction and modify speed
 	// If not paddle play floor sound
 }
@@ -200,8 +200,9 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 				else
 				{
 					EnemyPaddle->SetIsEnemiesTurn(true);
-					Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetBallLandingLocation(BallPositionSymbol->GetActorLocation());
+					Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetBallLandingLocation(BallLandingLocation);
 					Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(HittingLocation);
+					EnemyPaddle->AdjustEnemySpeed(BallMesh->GetComponentVelocity(), HittingLocation);
 				}
 			}
 			else

@@ -23,4 +23,5 @@ public:
 	virtual void SaveGameData() = 0;
 	virtual FPlayerData GetSaveGamePlayerData() = 0;
 	virtual void SavePlayerData(FPlayerData) = 0;
+	virtual void SaveCurrentEnemyRow(int32) = 0;
 };

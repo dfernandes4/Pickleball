@@ -36,10 +36,18 @@ public:
 	UFUNCTION()
 	void SetIsEnemiesTurn(bool bIsTurn);
 
+	UFUNCTION()
+	void SetCurrentRow(int32 Row);
+
+	UFUNCTION()
+	int32 GetCurrentRow() const;
+
 	virtual void OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 	
 	virtual void BeginPlay() override;
-	
+
+	UFUNCTION()
+	void AdjustEnemySpeed(const FVector& BallVelocity, const FVector& HittingLocation);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	UFloatingPawnMovement* MovementComponent;
@@ -51,7 +59,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	UDataTable* EnemyAttributes;
-
+	
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	//UStaticMeshComponent* BackgroundPlane;
 	
@@ -67,5 +75,8 @@ private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components, meta = (AllowPrivateAccess))
 	USoundBase* PaddleSoundEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitting", meta = (AllowPrivateAccess = "true"))
+	int32 CurrentRow;
 	
 };

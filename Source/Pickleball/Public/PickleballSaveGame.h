@@ -21,4 +21,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SaveData, meta = (AllowPrivateAccess))
 	FPlayerData PlayerData;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SaveData, meta = (AllowPrivateAccess))
+	int32 EnemyLastRow;
 };
