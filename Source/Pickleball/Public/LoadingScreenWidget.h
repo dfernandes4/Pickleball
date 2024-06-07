@@ -9,10 +9,21 @@
 /**
  * 
  */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLoadingScreenFinishedDelegate);
 UCLASS()
 class PICKLEBALL_API ULoadingScreenWidget : public UUserWidget
 {
 	GENERATED_BODY()
+	
+	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
+
+public:
+	UPROPERTY()
+	FLoadingScreenFinishedDelegate LoadingScreenFinished;
+
+private:
 
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCanvasPanel> CanvasPanel;
@@ -30,9 +41,6 @@ class PICKLEBALL_API ULoadingScreenWidget : public UUserWidget
 	TObjectPtr<UImage> LoadingScreenImage3;
 
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UImage> DotImage;
-
-	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UTextBlock> TitleTextBlock;
 
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
@@ -40,5 +48,8 @@ class PICKLEBALL_API ULoadingScreenWidget : public UUserWidget
 
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 	TObjectPtr<UWidgetAnimation> LoadingAnimation;
+
+	UPROPERTY()
+	float LoadingScreenDuration;
 	
 };

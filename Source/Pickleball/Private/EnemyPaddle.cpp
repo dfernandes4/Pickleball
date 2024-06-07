@@ -246,5 +246,5 @@ void AEnemyPaddle::AdjustEnemySpeed(const FVector& BallVelocity, const FVector& 
 	MovementComponent->Acceleration = RequiredSpeed / TimeToTarget;
 	MovementComponent->Deceleration = RequiredSpeed / TimeToTarget;
 	
-	MovementComponent->MaxSpeed = RequiredSpeed;
+	MovementComponent->MaxSpeed = RequiredSpeed * 1.25;
 }

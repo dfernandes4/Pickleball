@@ -5,6 +5,7 @@
 
 #include "CollectionWidget.h"
 #include "HomeScreenWidget.h"
+#include "LoadingScreenWidget.h"
 #include "PickleBallGameInstance.h"
 #include "ShopScreenWidget.h"
 #include "Sound/SoundClass.h"
@@ -52,6 +53,7 @@ void AMainGamemode::BeginPlay()
 		}
 		else
 		{
+			WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
 			UHomeScreenWidget* HomeScreenWidget = Cast<UHomeScreenWidget>(WidgetLoader->LoadWidget(FName("HomeScreen"), GetWorld()));
 			HomeScreenWidget->CollectionWidget	= Cast<UCollectionWidget>(WidgetLoader->LoadWidget(FName("CollectionScreen"), GetWorld()));
 			HomeScreenWidget->DisplayBasePaddles();
@@ -65,9 +67,16 @@ void AMainGamemode::BeginPlay()
 	}
 	else
 	{
-		WidgetLoader->LoadWidget(FName("Countdown"), GetWorld());
-		PlayerController->EnableInput(PlayerController);
+		ULoadingScreenWidget* LoadingScreen = Cast<ULoadingScreenWidget>(WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10));
+		LoadingScreen->LoadingScreenFinished.AddDynamic(this, &AMainGamemode::OnLoadingScreenFinished);
+		
 	}
+}
+
+void AMainGamemode::OnLoadingScreenFinished()
+{
+	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+	WidgetLoader->LoadWidget(FName("Countdown"), GetWorld());
 }
 
 void AMainGamemode::GameOver()

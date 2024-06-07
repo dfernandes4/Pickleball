@@ -35,8 +35,11 @@ public:
 	AMainGamemode();
 	
 	FOnGameOverDelegate OnGameOver;
-
+	
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void OnLoadingScreenFinished();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundClass* MasterSoundClass;
