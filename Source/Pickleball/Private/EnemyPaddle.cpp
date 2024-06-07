@@ -36,6 +36,8 @@ AEnemyPaddle::AEnemyPaddle()
 	ForceMultiplier = 1.5;
 	
 	bIsEnemiesTurn = true;
+	
+	CurrentRow = 10;
 }
 
 void AEnemyPaddle::BeginPlay()
@@ -51,16 +53,19 @@ void AEnemyPaddle::BeginPlay()
 	}
 
 	UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	if(!PickleBallGameInstance->GetIsFirstTimePlaying())
-	{
-		SetRandomEnemyAttributes();
-	}
-
+	CurrentRow = PickleBallGameInstance->GetSaveGameEnemyRow();
 	int32 PlayersLastScore = PickleBallGameInstance->GetSaveGamePlayerData().PlayersLastScore;
 	if(PlayersLastScore > 0 && PlayersLastScore <= 20)
 	{
 		ForceMultiplier += PlayersLastScore / 10;
 	}
+	
+	if(!PickleBallGameInstance->GetIsFirstTimePlaying())
+	{
+		SetRandomEnemyAttributes();
+	}
+
+	
 }
 
 void AEnemyPaddle::HitBall()
@@ -168,19 +173,22 @@ void AEnemyPaddle::IncrementForceMultiplier(int NewScore)
 
 void AEnemyPaddle::SetRandomEnemyAttributes()
 {
-	int32 RandomRow = FMath::RandRange(1,15);
-	FName CurrentRandomRowName = FName(*FString::Printf(TEXT("%d"), RandomRow)); // Convert index to FName
-    
+	if(CurrentRow == 0)
+	{
+		CurrentRow = FMath::RandRange(1,15);
+	}
+		
+	FName CurrentRandomRowName = FName(*FString::Printf(TEXT("%d"), CurrentRow)); // Convert index to FName
+
 	if (EnemyAttributes != nullptr)
 	{
 		CurrentEnemyAttributes =  EnemyAttributes->FindRow<FEnemyAttributes>(CurrentRandomRowName, TEXT("LookupEnemyAttributes"));
 		if (CurrentEnemyAttributes)
 		{
+	
+			PaddleSprite->SetSprite(CurrentEnemyAttributes->PaddleSprite);
+			PaddleSoundEffect = CurrentEnemyAttributes->PaddleSoundEffect;
 		
-				PaddleSprite->SetSprite(CurrentEnemyAttributes->PaddleSprite);
-				PaddleSoundEffect = CurrentEnemyAttributes->PaddleSoundEffect;
-			
-			
 			TArray<AActor*> FoundActors;
 			UGameplayStatics::GetAllActorsOfClassWithTag(GetWorld(), AStaticMeshActor::StaticClass(), FName("Background"), FoundActors);
 			if(FoundActors.Num() > 0)
@@ -189,11 +197,22 @@ void AEnemyPaddle::SetRandomEnemyAttributes()
 			}
 		}
 	}
+	
 }
 
 void AEnemyPaddle::SetIsEnemiesTurn(bool bIsTurn)
 {
 	bIsEnemiesTurn = bIsTurn;
+}
+
+void AEnemyPaddle::SetCurrentRow(int32 Row)
+{
+	CurrentRow = Row;
+}
+
+int32 AEnemyPaddle::GetCurrentRow() const
+{
+	return CurrentRow;
 }
 
 void AEnemyPaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,

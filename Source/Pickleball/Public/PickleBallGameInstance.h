@@ -31,7 +31,9 @@ public:
 	virtual FPlayerData GetSaveGamePlayerData() override;
 	UFUNCTION()
 	virtual void SavePlayerData(FPlayerData PlayerData) override;
-
+	UFUNCTION()
+	virtual void SaveCurrentEnemyRow(int32 EnemyRow) override;
+	
 	UFUNCTION()
 	bool GetIsFirstTimePlaying() const;
 	UFUNCTION()
@@ -41,6 +43,8 @@ public:
 
 	UFUNCTION()
 	void SetIsFirstTimePlaying(bool bIsFirstTimePlayingIn);
+	UFUNCTION()
+	int32 GetSaveGameEnemyRow();
 
 private:
 

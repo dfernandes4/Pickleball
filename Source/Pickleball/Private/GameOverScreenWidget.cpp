@@ -3,6 +3,7 @@
 
 #include "GameOverScreenWidget.h"
 
+#include "EnemyPaddle.h"
 #include "HomeScreenWidget.h"
 #include "PickleBallGameInstance.h"
 #include "PlayerPaddle.h"
@@ -38,6 +39,7 @@ void UGameOverScreenWidget::NativeConstruct()
 		WatchAddContinueButton->OnClicked.AddDynamic(this,&UGameOverScreenWidget::OnWatchAddContinueButtonClicked);
 	}
 
+	EnemyPaddle = Cast<AEnemyPaddle>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyPaddle::StaticClass()));
 	PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	DisplayPlayerValues();
 }
@@ -46,9 +48,11 @@ void UGameOverScreenWidget::OnReplayButtonClicked()
 {
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 	PlayerPaddle->SetCurrentScore(0);
+	EnemyPaddle->SetCurrentRow(0);
 
 	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
 	GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
+	GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
 	
 	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
 }
@@ -58,9 +62,11 @@ void UGameOverScreenWidget::OnHomeButtonClicked()
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 	Cast<UPickleBallGameInstance>(GetGameInstance())->SetShouldLaunchStarterScreen(true);
 	PlayerPaddle->SetCurrentScore(0);
+	EnemyPaddle->SetCurrentRow(0);
 	
 	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
 	GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
+	GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
 	
 	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
 
@@ -81,9 +87,13 @@ void UGameOverScreenWidget::OnWatchAdd2xCoinsButtonClicked()
 
 void UGameOverScreenWidget::OnWatchAddContinueButtonClicked()
 {
+	// Create Timer, after ad then do all this
+	
+	ISaveGameInterface* SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
+	SaveGameInterface->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
+	
 	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
-
-	// Create Timer, after ad then do this
+	
 	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
 }
 
