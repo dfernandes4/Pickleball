@@ -22,6 +22,8 @@ void UCountDownUserWidget::NativeConstruct()
 	
 	CurrentCount = 3;
 	PlayCountDownAnimation();
+	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+	WidgetLoader->LoadWidget(FName("PlayScreen"), GetWorld());
 	
 }
 
@@ -62,10 +64,6 @@ void UCountDownUserWidget::CountdownTimerFinished()
 			AMainGamemode* MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
 			MainGamemode->OnCountdownKickoffFinished.Broadcast();
 		}, CountDownKickOffEffectDuration, false);
-		
-		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-		WidgetLoader->LoadWidget(FName("PlayScreen"), GetWorld());
-		
 		
 	}
 }

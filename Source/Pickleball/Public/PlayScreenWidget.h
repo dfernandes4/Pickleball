@@ -36,8 +36,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundBase* PauseSoundEffect;
 	
-
-	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "PlayingHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCanvasPanel> CanvasPanel;
 
@@ -56,5 +54,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PLayerStats, meta = (AllowPrivateAccess))
 	AMainGamemode* MainGamemode;
 	
-	
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+	TObjectPtr<UWidgetAnimation> HUDSlideInAnimation;
 };

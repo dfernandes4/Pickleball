@@ -44,6 +44,8 @@ void UPlayScreenWidget::NativeConstruct()
 	{
 		SetRandomEnemyAttributes();
 	}
+	
+	PlayAnimation(HUDSlideInAnimation);	
 }
 
 void UPlayScreenWidget::UpdateScore(int NewScore)
