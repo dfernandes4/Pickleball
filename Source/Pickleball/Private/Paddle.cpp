@@ -4,6 +4,7 @@
 #include "Paddle.h"
 
 #include "Ball.h"
+#include "MainGamemode.h"
 #include "Components/BoxComponent.h"
 #include "PaperSpriteComponent.h"
 #include "Components/ArrowComponent.h"
@@ -33,6 +34,12 @@ APaddle::APaddle()
 
 	bIsFirstSwing = true;
 	bIsFacingLeft = true;
+
+	AMainGamemode* MainGamemode = Cast<AMainGamemode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if(MainGamemode)
+	{
+		MainGamemode->OnGameOver.AddDynamic(this, &APaddle::OnAnyPaddleGameOver);
+	}
 }
 
 void APaddle::BeginPlay()
@@ -41,8 +48,15 @@ void APaddle::BeginPlay()
 	BallInScene = Cast<ABall>(UGameplayStatics::GetActorOfClass(GetWorld(), ABall::StaticClass()));
 }
 
+void APaddle::OnAnyPaddleGameOver()
+{
+	BoxCollider->Activate(false);
+	BoxCollider->OnComponentBeginOverlap.RemoveDynamic(this, &APaddle::OnPaddleBeginOverlap);
+	BoxCollider->OnComponentEndOverlap.RemoveDynamic(this, &APaddle::OnPaddleEndOverlap);
+}
+
 void APaddle::OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-								 int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                   int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if(OtherActor->IsA(ABall::StaticClass()))
 	{

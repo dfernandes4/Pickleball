@@ -24,7 +24,8 @@ void UCountDownUserWidget::NativeConstruct()
 	PlayCountDownAnimation();
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	WidgetLoader->LoadWidget(FName("PlayScreen"), GetWorld());
-	
+
+	EnemyAIController = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode())->CachedEnemyAIController;
 }
 
 void UCountDownUserWidget::PlayCountDownAnimation()
@@ -59,8 +60,10 @@ void UCountDownUserWidget::CountdownTimerFinished()
 		FTimerHandle KickOffTimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(KickOffTimerHandle, [this]()
 		{
-			AEnemyAIController* EnemyAIController = Cast<AEnemyAIController>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyAIController::StaticClass()));
-			EnemyAIController->StartBehaviorTree();
+			if(EnemyAIController != nullptr)
+			{
+				EnemyAIController->StartBehaviorTree();
+			}
 			AMainGamemode* MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
 			MainGamemode->OnCountdownKickoffFinished.Broadcast();
 		}, CountDownKickOffEffectDuration, false);

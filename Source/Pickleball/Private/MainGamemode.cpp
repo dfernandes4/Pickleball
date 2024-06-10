@@ -4,6 +4,7 @@
 #include "MainGamemode.h"
 
 #include "CollectionWidget.h"
+#include "EnemyAIController.h"
 #include "HomeScreenWidget.h"
 #include "LoadingScreenWidget.h"
 #include "PickleBallGameInstance.h"
@@ -71,6 +72,8 @@ void AMainGamemode::BeginPlay()
 		LoadingScreen->LoadingScreenFinished.AddDynamic(this, &AMainGamemode::OnLoadingScreenFinished);
 		
 	}
+
+	CachedEnemyAIController = Cast<AEnemyAIController>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyAIController::StaticClass()));
 }
 
 void AMainGamemode::OnLoadingScreenFinished()
@@ -89,7 +92,7 @@ void AMainGamemode::GameOver()
 		GameInstance->SetIsFirstTimePlaying(false);
 	}
 	OnGameOver.RemoveDynamic(this, &AMainGamemode::GameOver);
-
+	
 	bIsGameActive = false;
 }
 

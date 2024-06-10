@@ -45,7 +45,7 @@ public:
 	void OnGameOver();
 	
 	UFUNCTION()
-	bool IsBallInKitchen();
+	bool CanBallHitInKitchen() const;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
@@ -62,8 +62,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	UNiagaraComponent* Trail;
 
-	UPROPERTY()
-	bool bLastLocationInKitchen;
 	
 protected:
 	

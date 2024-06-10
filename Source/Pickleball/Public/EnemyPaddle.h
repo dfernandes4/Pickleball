@@ -17,6 +17,7 @@ class PICKLEBALL_API AEnemyPaddle : public APaddle
 	GENERATED_BODY()
 
 public:
+	
 	UFUNCTION()
 	void StopHitting();
 	// Sets default values for this pawn's properties
@@ -60,10 +61,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	UDataTable* EnemyAttributes;
 	
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
-	//UStaticMeshComponent* BackgroundPlane;
-	
-	
 private:
 
 	// With current equations max is 5.5x
@@ -78,5 +75,4 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitting", meta = (AllowPrivateAccess = "true"))
 	int32 CurrentRow;
-	
 };

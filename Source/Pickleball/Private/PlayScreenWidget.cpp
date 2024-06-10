@@ -77,7 +77,7 @@ void UPlayScreenWidget::HandleGameOver()
 	
 	if(Ball != nullptr)
 	{
-		if(Ball->bLastLocationInKitchen)
+		if(!Ball->CanBallHitInKitchen())
 		{
 			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 			WidgetLoader->LoadWidget(FName("KitchenScreen"), GetWorld());
@@ -89,6 +89,8 @@ void UPlayScreenWidget::HandleGameOver()
 			WidgetLoader->LoadWidget(FName("FaultWidgetScreen"), GetWorld());
 		}
 	}
+
+	MainGamemode->OnGameOver.RemoveDynamic(this, &UPlayScreenWidget::HandleGameOver);
 }
 
 void UPlayScreenWidget::SetRandomEnemyAttributes()

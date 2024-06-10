@@ -48,7 +48,6 @@ ABall::ABall()
 	BallCollider->BodyInstance.SetResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 
 	CurrentBounceCount = 0;
-	bLastLocationInKitchen = false;
 }
 
 void ABall::BeginPlay()
@@ -177,8 +176,6 @@ void ABall::PredictProjectileLandingPoint()
 
 void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 {
-	CurrentBounceCount = 0;
-	
 	if(bDidBallLand)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Ball's Landing Location: %s"), *BallPositionSymbol->GetActorLocation().ToString());
@@ -189,7 +186,7 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 			FVector BallLandingLocation = BallPositionSymbol->GetActorLocation();
 			if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -304 && BallLandingLocation.Y < 304))
 			{
-				if(IsBallInKitchen() && CurrentBounceCount == 0)
+				if(!CanBallHitInKitchen())
 				{
 					if(MainGamemode)
 					{
@@ -219,6 +216,7 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 			PlayerPaddle->SetIsPlayersTurn(true);
 		}
 	}
+	CurrentBounceCount = 0;
 }
 
 int32 ABall::GetCurrentBounceCount() const
@@ -232,9 +230,9 @@ void ABall::OnGameOver()
 	//Do something on restart to rebind the hit event
 }
 
-bool ABall::IsBallInKitchen()
+bool ABall::CanBallHitInKitchen() const
 {
 	FVector BallLocation = BallMesh->GetComponentLocation();
-	bLastLocationInKitchen =  (BallLocation.X > -208 && BallLocation.Y > -304 && BallLocation.Y < 304);
-	return bLastLocationInKitchen;
+	bool bLastLocationInKitchen =  (BallLocation.X > -208 && BallLocation.Y > -304 && BallLocation.Y < 304);
+	return !(bLastLocationInKitchen && CurrentBounceCount == 0);
 }

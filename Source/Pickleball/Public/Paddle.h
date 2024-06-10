@@ -40,6 +40,9 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
+	void OnAnyPaddleGameOver();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
 

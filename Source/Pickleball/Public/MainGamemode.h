@@ -65,4 +65,7 @@ public:
 	FOnCountdownKickoffFinishedDelegate  OnCountdownKickoffFinished;
 
 	bool bIsGameActive;
+
+	UPROPERTY()
+	class AEnemyAIController* CachedEnemyAIController;
 };

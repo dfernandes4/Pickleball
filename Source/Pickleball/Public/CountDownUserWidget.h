@@ -38,7 +38,7 @@ private:
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 	TObjectPtr<UWidgetAnimation> FadeInAnimation;
 
-	
-	
+	UPROPERTY()
+	class AEnemyAIController* EnemyAIController;
 	int CurrentCount;
 };
