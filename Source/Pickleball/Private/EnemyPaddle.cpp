@@ -119,8 +119,8 @@ void AEnemyPaddle::HitBall()
 		else
 		{
 			//Occasional kitchen hits
-			RandomForce.X = -10 + (-25 * PercentageOfXDistanceFromFarthestHittingLocation);
-			RandomForce.Z = 25 + (12.5 * PercentageOfXDistanceFromFarthestHittingLocation);
+			RandomForce.X = -12 + (-25 * PercentageOfXDistanceFromFarthestHittingLocation);
+			RandomForce.Z = 26 + (13 * PercentageOfXDistanceFromFarthestHittingLocation);
 		}
 
 		// Apply force

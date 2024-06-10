@@ -10,7 +10,7 @@
 #include "PlayerPaddle.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Components/AudioComponent.h"
+#include "NiagaraFunctionLibrary.h"
 
 class AEnemyAIController;
 // Sets default values
@@ -130,9 +130,14 @@ void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPr
 		{
 			MainGamemode->OnGameOver.Broadcast();
 		}
+
+		if(BounceEffect != nullptr)
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, BounceEffect, BallMesh->GetComponentLocation());
+		}
 	}
-	// Can Reflect the ball's direction and modify speed
-	// If not paddle play floor sound
+
+	
 }
 void ABall::PredictProjectileLandingPoint()
 {

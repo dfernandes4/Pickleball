@@ -62,6 +62,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	UNiagaraComponent* Trail;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	class UNiagaraSystem* BounceEffect;
 	
 protected:
 	
