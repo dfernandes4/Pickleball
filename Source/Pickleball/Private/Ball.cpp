@@ -133,6 +133,7 @@ void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPr
 
 		if(BounceEffect != nullptr)
 		{
+			UGameplayStatics::PlaySound2D(GetWorld(),BounceSound);
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, BounceEffect, BallMesh->GetComponentLocation());
 		}
 	}
