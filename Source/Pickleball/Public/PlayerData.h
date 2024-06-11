@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "CoreMinimal.h"
 #include "PaddleToCollectWidget.h"
@@ -10,6 +10,10 @@ struct FPlayerData
 {
 	GENERATED_BODY()
 
+    explicit FPlayerData() {}
+    
+    FPlayerData(int32 InCurrentCoins, int32 InHighScore, int32 InCurrentScore, TMap<FName, bool>InUnlockStatuses, FName InCurrentPaddleName) : PlayerCoins(InCurrentCoins), PlayerHighScore(InHighScore), PlayersLastScore(InCurrentScore), PaddleUnlockStatuses(InUnlockStatuses), CurrentPaddleName(InCurrentPaddleName) {}
+    
 #pragma region PlayerStats
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerStats, meta = (AllowPrivateAccess))
