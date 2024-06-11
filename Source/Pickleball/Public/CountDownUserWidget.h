@@ -24,6 +24,8 @@ public:
 	void PlayCountDownAnimation();
 	UFUNCTION()
 	void CountdownTimerFinished();
+	UFUNCTION()
+	void KickOffFinished();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundWave* CountDownSoundEffect;

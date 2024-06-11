@@ -58,15 +58,16 @@ void UCountDownUserWidget::CountdownTimerFinished()
 		UGameplayStatics::PlaySound2D(GetWorld(), CountDownSoundKickoffEffect);
 		float CountDownKickOffEffectDuration = CountDownSoundKickoffEffect->Duration;
 		FTimerHandle KickOffTimerHandle;
-		GetWorld()->GetTimerManager().SetTimer(KickOffTimerHandle, [this]()
-		{
-			if(EnemyAIController != nullptr)
-			{
-				EnemyAIController->StartBehaviorTree();
-			}
-			AMainGamemode* MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
-			MainGamemode->OnCountdownKickoffFinished.Broadcast();
-		}, CountDownKickOffEffectDuration, false);
-		
+		GetWorld()->GetTimerManager().SetTimer(KickOffTimerHandle, this, &UCountDownUserWidget::KickOffFinished, CountDownKickOffEffectDuration, false);
 	}
+}
+
+void UCountDownUserWidget::KickOffFinished()
+{
+	if(EnemyAIController != nullptr)
+	{
+		EnemyAIController->StartBehaviorTree();
+	}
+	AMainGamemode* MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
+	MainGamemode->OnCountdownKickoffFinished.Broadcast();
 }
