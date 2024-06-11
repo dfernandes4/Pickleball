@@ -3,28 +3,28 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyD3JuvDqqY_XiicHOG_8zSu7d0eP2NKUek</string>
+	<string>AIzaSyARC1MpapiAf7lhpML19ALvxyZtGr5QER4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>542650244006</string>
+	<string>1068331654932</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.ue.admob.blueprint.plugin</string>
+	<string>games.topshelf.pickle</string>
 	<key>PROJECT_ID</key>
-	<string>pickle-21</string>
+	<string>topshelf-pickle</string>
 	<key>STORAGE_BUCKET</key>
-	<string>pickle-21.appspot.com</string>
+	<string>topshelf-pickle.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<true/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:542650244006:ios:cde8d7d2d7435607a80d67</string>
+	<string>1:1068331654932:ios:9f57bfe02db90b5fa06c01</string>
 </dict>
 </plist>
