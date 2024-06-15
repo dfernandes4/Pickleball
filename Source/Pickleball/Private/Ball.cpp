@@ -35,17 +35,7 @@ ABall::ABall()
 
 	Speed = 100;
 
-	BallMesh->SetSimulatePhysics(true);
-	BallMesh->SetEnableGravity(false);
-	BallMesh->SetMassOverrideInKg(NAME_None, 0.06f, true);
-	BallMesh->OnComponentHit.AddDynamic(this, &ABall::OnBallHit);
 	
-	BallCollider->SetCollisionProfileName(TEXT("Custom"));
-
-	// Alternatively, you can set specific collision responses
-	BallCollider->BodyInstance.SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	BallCollider->BodyInstance.SetObjectType(ECollisionChannel::ECC_WorldDynamic);
-	BallCollider->BodyInstance.SetResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 
 	CurrentBounceCount = 0;
 }
@@ -57,6 +47,18 @@ void ABall::BeginPlay()
 	// Get PlayerPaddle from GameStateClass
 	
 	BallMesh->SetUseCCD(true);
+    
+    BallMesh->SetSimulatePhysics(true);
+    BallMesh->SetEnableGravity(false);
+    BallMesh->SetMassOverrideInKg(NAME_None, 0.06f, true);
+    BallMesh->OnComponentHit.AddDynamic(this, &ABall::OnBallHit);
+    
+    BallCollider->SetCollisionProfileName(TEXT("Custom"));
+
+    // Alternatively, you can set specific collision responses
+    BallCollider->BodyInstance.SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    BallCollider->BodyInstance.SetObjectType(ECollisionChannel::ECC_WorldDynamic);
+    BallCollider->BodyInstance.SetResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	
 	PlayerPaddle = Cast<APlayerPaddle>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	EnemyPaddle = Cast<AEnemyPaddle>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyPaddle::StaticClass()));

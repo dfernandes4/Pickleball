@@ -34,12 +34,11 @@
 		},
 		{
 			"Name": "GoogleAdmobBlueprint",
-			"Enabled": true,
+			"Enabled": false,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/c67d7774d421479f8efed663f477d6ec"
 		}
 	],
 	"TargetPlatforms": [
-		"Android",
 		"IOS"
 	]
 }
