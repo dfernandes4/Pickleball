@@ -82,13 +82,7 @@ private:
 	TObjectPtr<class UCanvasPanel> CanvasPanel;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UTextBlock> TitleTextBlock;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UTextBlock> HighScoreTextBlock;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UTextBlock> HighScoreAmountTextBlock;
+	TObjectPtr<class UTextBlock> HighScoreAmountTextBlock;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UTextBlock> CoinAmountTextBlock;
@@ -129,8 +123,7 @@ private:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UImage>  PaddleRight;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "TitleHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UBackgroundBlur> BackroundBlur;
+
 	
 };
 
