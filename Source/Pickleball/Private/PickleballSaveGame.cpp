@@ -3,8 +3,7 @@
 
 #include "PickleballSaveGame.h"
 
-UPickleballSaveGame::UPickleballSaveGame()
+UPickleballSaveGame::UPickleballSaveGame() : PlayerData()
 {
 	EnemyLastRow = 10;
-    FPlayerData();
 }

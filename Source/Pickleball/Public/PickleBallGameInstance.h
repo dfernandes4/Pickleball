@@ -23,15 +23,10 @@ public:
 	virtual void Init() override;
 	virtual void Shutdown() override;
 
-	UFUNCTION()
 	virtual void LoadGameData() override;
-	UFUNCTION()
 	virtual void SaveGameData() override;
-	UFUNCTION()
 	virtual FPlayerData GetSaveGamePlayerData() override;
-	UFUNCTION()
 	virtual void SavePlayerData(FPlayerData PlayerData) override;
-	UFUNCTION()
 	virtual void SaveCurrentEnemyRow(int32 EnemyRow) override;
 	
 	UFUNCTION()
