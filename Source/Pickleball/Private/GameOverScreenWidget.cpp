@@ -59,18 +59,32 @@ void UGameOverScreenWidget::OnReplayButtonClicked()
 
 void UGameOverScreenWidget::OnHomeButtonClicked()
 {
-	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
-	Cast<UPickleBallGameInstance>(GetGameInstance())->SetShouldLaunchStarterScreen(true);
-	PlayerPaddle->SetCurrentScore(0);
-	EnemyPaddle->SetCurrentRow(0);
-	
-	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
-	GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
-	GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
-	
-	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+    // Save game data first
+       if (PlayerPaddle && EnemyPaddle)
+       {
+           UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
+           if (GameInstance)
+           {
+               GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
+               GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
+           }
+       }
 
-	RemoveFromParent();
+       // Clear all timers
+       GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
+
+       // Destroy any active components or actors causing issues
+       if (PlayerPaddle)
+       {
+           PlayerPaddle->Destroy();
+       }
+       if (EnemyPaddle)
+       {
+           EnemyPaddle->Destroy();
+       }
+
+       // Open the level
+       UGameplayStatics::OpenLevel(GetWorld(), FName(*GetWorld()->GetName()), false);
 }
 
 void UGameOverScreenWidget::OnWatchAdd2xCoinsButtonClicked()

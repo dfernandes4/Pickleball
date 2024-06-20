@@ -221,21 +221,27 @@ void UHomeScreenWidget::HandleChildClosed()
 
 void UHomeScreenWidget::DisplayPlayerValues()
 {
-	ISaveGameInterface* SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
-	if (SaveGameInterface)
-	{
-		FPlayerData PlayerData = SaveGameInterface->GetSaveGamePlayerData();
+    ISaveGameInterface* SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
+    if (SaveGameInterface)
+    {
+        FPlayerData PlayerData = SaveGameInterface->GetSaveGamePlayerData();
+        UE_LOG(LogTemp, Log, TEXT("Player High Score: %d"), PlayerData.PlayerHighScore);
+        UE_LOG(LogTemp, Log, TEXT("Player Coins: %d"), PlayerData.PlayerCoins);
 
-		if(HighScoreAmountTextBlock != nullptr )
-		{
-			HighScoreAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerData.PlayerHighScore)));
-		}
-	
-		if(CoinAmountTextBlock != nullptr)
-		{
-			CoinAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerData.PlayerCoins)));
-		}
-	}
+        if (HighScoreAmountTextBlock != nullptr)
+        {
+            HighScoreAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerData.PlayerHighScore)));
+        }
+    
+        if (CoinAmountTextBlock != nullptr)
+        {
+            CoinAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerData.PlayerCoins)));
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("SaveGameInterface is null"));
+    }
 }
 
 void UHomeScreenWidget::DisplayBasePaddles()
