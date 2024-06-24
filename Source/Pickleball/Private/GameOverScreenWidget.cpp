@@ -2,16 +2,15 @@
 
 
 #include "GameOverScreenWidget.h"
-
-#include "EnemyPaddle.h"
-#include "HomeScreenWidget.h"
 #include "PickleBallGameInstance.h"
 #include "PlayerPaddle.h"
-#include "UserWidgetLoader.h"
-#include "Components/Button.h"
-#include "Components/TextBlock.h"
+#include "EnemyPaddle.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "Engine/World.h"
+#include "TimerManager.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundBase.h"
+#include "EngineUtils.h"
 
 void UGameOverScreenWidget::NativeConstruct()
 {
@@ -59,32 +58,42 @@ void UGameOverScreenWidget::OnReplayButtonClicked()
 
 void UGameOverScreenWidget::OnHomeButtonClicked()
 {
-    // Save game data first
-       if (PlayerPaddle && EnemyPaddle)
-       {
-           UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
-           if (GameInstance)
-           {
-               GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
-               GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
-           }
-       }
+    // Stop all audio components playing in the world
+        if (GetWorld())
+        {
+            for (TActorIterator<AActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+            {
+                TArray<UAudioComponent*> AudioComponents;
+                ActorItr->GetComponents<UAudioComponent>(AudioComponents);
+                for (UAudioComponent* AudioComponent : AudioComponents)
+                {
+                    if (AudioComponent->IsPlaying())
+                    {
+                        AudioComponent->Stop();
+                    }
+                }
+            }
 
-       // Clear all timers
-       GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
+            // Clear all timers
+            GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
+        }
 
-       // Destroy any active components or actors causing issues
-       if (PlayerPaddle)
-       {
-           PlayerPaddle->Destroy();
-       }
-       if (EnemyPaddle)
-       {
-           EnemyPaddle->Destroy();
-       }
+        // Ensure player paddle and enemy paddle data are valid before accessing them
+        if (PlayerPaddle && EnemyPaddle)
+        {
+            // Save player and enemy data
+            UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
+            if (GameInstance)
+            {
+                GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
+                GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
+                GameInstance->SetShouldLaunchStarterScreen(true);
+            }
+        }
 
-       // Open the level
-       UGameplayStatics::OpenLevel(GetWorld(), FName(*GetWorld()->GetName()), false);
+    
+        // Open the current level again
+        UGameplayStatics::OpenLevel(GetWorld(), FName(*GetWorld()->GetName()), false);
 }
 
 void UGameOverScreenWidget::OnWatchAdd2xCoinsButtonClicked()

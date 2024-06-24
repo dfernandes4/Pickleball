@@ -63,10 +63,9 @@ void UHomeScreenWidget::NativeConstruct()
 	AMainGamemode* MainGamemode = Cast<AMainGamemode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if(MainGamemode)
 	{
-		MainGamemode->OnGameOver.AddDynamic(this, &UHomeScreenWidget::DisplayPlayerValues);
+        MainGamemode->OnCoinAmountChanged.AddDynamic(this, &UHomeScreenWidget::UpdateCoins);
 	}
 
-	MainGamemode->OnCoinAmountChanged.AddDynamic(this, &UHomeScreenWidget::UpdateCoins);
 	
 	if(HomeScreenMusic)
 	{

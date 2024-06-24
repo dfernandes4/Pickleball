@@ -25,7 +25,6 @@ ABall::ABall()
 	BallMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BallMesh"));
 	BallMesh->SetupAttachment(SceneComponent);
 	
-	
 	BallCollider = CreateDefaultSubobject<USphereComponent>(TEXT("BallCollider"));
 	BallCollider->SetupAttachment(BallMesh);
 	
@@ -46,29 +45,36 @@ void ABall::BeginPlay()
 
 	// Get PlayerPaddle from GameStateClass
 	
-	BallMesh->SetUseCCD(true);
-    
-    BallMesh->SetSimulatePhysics(true);
-    BallMesh->SetEnableGravity(false);
-    BallMesh->SetMassOverrideInKg(NAME_None, 0.06f, true);
-    BallMesh->OnComponentHit.AddDynamic(this, &ABall::OnBallHit);
-    
-    BallCollider->SetCollisionProfileName(TEXT("Custom"));
+    if (BallMesh && BallCollider)
+       {
+           BallMesh->SetUseCCD(true);
+           BallMesh->SetEnableGravity(false);
+           BallMesh->SetMassOverrideInKg(NAME_None, 0.06f, true);
+           BallMesh->SetSimulatePhysics(true);
+           BallMesh->BodyInstance.SetInstanceNotifyRBCollision(true);
+           BallMesh->OnComponentHit.AddDynamic(this, &ABall::OnBallHit);
+           
+           BallCollider->SetSimulatePhysics(true); // Ensure physics simulation is enabled
+           BallCollider->SetCollisionProfileName(TEXT("PhysicsActor"));
+           BallCollider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics); // Ensure proper collision enabled
 
-    // Alternatively, you can set specific collision responses
-    BallCollider->BodyInstance.SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-    BallCollider->BodyInstance.SetObjectType(ECollisionChannel::ECC_WorldDynamic);
-    BallCollider->BodyInstance.SetResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-	
-	PlayerPaddle = Cast<APlayerPaddle>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	EnemyPaddle = Cast<AEnemyPaddle>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyPaddle::StaticClass()));
+           
 
-	BallPositionSymbol = Cast<ABallPositionSymbol>(UGameplayStatics::GetActorOfClass(GetWorld(), ABallPositionSymbol::StaticClass()));
-
-	BallLandingZ = 105.f;
-	
-	MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
-	MainGamemode->OnGameOver.AddDynamic(this, &ABall::OnGameOver);
+           PlayerPaddle = Cast<APlayerPaddle>(GetWorld()->GetFirstPlayerController()->GetPawn());
+           EnemyPaddle = Cast<AEnemyPaddle>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyPaddle::StaticClass()));
+           BallPositionSymbol = Cast<ABallPositionSymbol>(UGameplayStatics::GetActorOfClass(GetWorld(), ABallPositionSymbol::StaticClass()));
+           
+           BallLandingZ = 105.f;
+           MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
+           if (MainGamemode)
+           {
+               MainGamemode->OnGameOver.AddDynamic(this, &ABall::OnGameOver);
+           }
+       }
+       else
+       {
+           UE_LOG(LogTemp, Error, TEXT("BallMesh or BallCollider is null in BeginPlay"));
+       }
 }
 
 void ABall::Tick(float DeltaSeconds)
