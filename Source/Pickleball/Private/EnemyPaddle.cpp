@@ -181,10 +181,18 @@ void AEnemyPaddle::IncrementForceMultiplier(int NewScore)
 
 void AEnemyPaddle::SetRandomEnemyAttributes()
 {
+	int32 RandomNumber = FMath::RandRange(1,10000);
+	
 	if(CurrentRow == 0)
 	{
-		CurrentRow = FMath::RandRange(1,15);
-	}
+		if(RandomNumber != 10000)
+		{
+			CurrentRow = FMath::RandRange(1,15);
+		}
+		else
+			CurrentRow = 16;
+		
+	} 
 		
 	FName CurrentRandomRowName = FName(*FString::Printf(TEXT("%d"), CurrentRow)); // Convert index to FName
 
