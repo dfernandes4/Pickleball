@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -19,9 +19,9 @@ public:
 
 	UPickleballSaveGame();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SaveData, meta = (AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SaveData)
 	FPlayerData PlayerData;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SaveData, meta = (AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SaveData)
 	int32 EnemyLastRow;
 };

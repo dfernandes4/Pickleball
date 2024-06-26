@@ -31,8 +31,14 @@ AMainGamemode::AMainGamemode()
 	OnGameOver.AddDynamic(this, &AMainGamemode::GameOver);
 	OnCountdownKickoffFinished.AddDynamic(this, &AMainGamemode::OnGameStart);
 
+    Scene = CreateDefaultSubobject<USceneComponent>(FName("Scene"));
+    SetRootComponent(Scene);
+    
 	BattleMusic = CreateDefaultSubobject<UAudioComponent>(TEXT("BattleMusic"));
-	BattleMusic->SetupAttachment(RootComponent);
+	BattleMusic->SetupAttachment(Scene);
+    
+    HomeScreenMusic = CreateDefaultSubobject<UAudioComponent>(TEXT("HomeScreenMusic"));
+    HomeScreenMusic->SetupAttachment(Scene);
 
 	bIsGameActive = false;
 }

@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PlayerPaddle.h"
@@ -118,7 +118,7 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 		{
 			if (IsValid(BallInScene))
 			{
-				UGameplayStatics::PlaySoundAtLocation(GetWorld(), PaddleSoundEffect, GetActorLocation());
+                UGameplayStatics::PlaySound2D(GetWorld(),PaddleSoundEffect);
 				
 				FVector ScaledPaddleVelocity = (Cast<AMainPlayerController>(GetController())->GetPaddleVelocity());
 				ScaledPaddleVelocity.X *= .02;

@@ -50,9 +50,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundClass* MusicSoundClass;
 
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+    USceneComponent* Scene;
+    
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	UAudioComponent* BattleMusic;
-	
+    
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+    UAudioComponent* HomeScreenMusic;
 	
 	FOnScoreUpdated OnScoreUpdated;
 

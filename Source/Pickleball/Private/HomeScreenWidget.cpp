@@ -64,12 +64,7 @@ void UHomeScreenWidget::NativeConstruct()
 	if(MainGamemode)
 	{
         MainGamemode->OnCoinAmountChanged.AddDynamic(this, &UHomeScreenWidget::UpdateCoins);
-	}
-
-	
-	if(HomeScreenMusic)
-	{
-		HomeScreenMusicComponent = UGameplayStatics::SpawnSound2D(this,HomeScreenMusic);
+        MainGamemode->HomeScreenMusic->Play();
 	}
 }
 
@@ -88,9 +83,10 @@ void UHomeScreenWidget::NativeDestruct()
 		ShopWidget->RemoveFromParent();
 		ShopWidget->OnShopClosed.RemoveDynamic(this, &UHomeScreenWidget::HandleChildClosed);
 	}
-	if(HomeScreenMusicComponent)
+    AMainGamemode* MainGamemode = Cast<AMainGamemode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if(MainGamemode)
 	{
-		HomeScreenMusicComponent->Stop();
+        MainGamemode->HomeScreenMusic->Stop();
 	}
 }
 

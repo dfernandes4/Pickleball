@@ -43,38 +43,30 @@ void ABall::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Get PlayerPaddle from GameStateClass
-	
-    if (BallMesh && BallCollider)
-       {
-           BallMesh->SetUseCCD(true);
-           BallMesh->SetEnableGravity(false);
-           BallMesh->SetMassOverrideInKg(NAME_None, 0.06f, true);
-           BallMesh->SetSimulatePhysics(true);
-           BallMesh->BodyInstance.SetInstanceNotifyRBCollision(true);
-           BallMesh->OnComponentHit.AddDynamic(this, &ABall::OnBallHit);
-           
-           BallCollider->SetSimulatePhysics(true); // Ensure physics simulation is enabled
-           BallCollider->SetCollisionProfileName(TEXT("PhysicsActor"));
-           BallCollider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics); // Ensure proper collision enabled
+    BallMesh->SetUseCCD(true);
+        
+    BallMesh->SetSimulatePhysics(true);
+    BallMesh->SetEnableGravity(false);
+    BallMesh->SetMassOverrideInKg(NAME_None, 0.06f, true);
+    //BallMesh->OnComponentHit.AddDynamic(this, &ABall::OnBallHit);
+    
+    BallCollider->SetCollisionProfileName(TEXT("Custom"));
 
-           
+    // Alternatively, you can set specific collision responses
+    BallCollider->BodyInstance.SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    BallCollider->BodyInstance.SetObjectType(ECollisionChannel::ECC_WorldDynamic);
+    BallCollider->BodyInstance.SetResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+    
+    PlayerPaddle = Cast<APlayerPaddle>(GetWorld()->GetFirstPlayerController()->GetPawn());
+    EnemyPaddle = Cast<AEnemyPaddle>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyPaddle::StaticClass()));
 
-           PlayerPaddle = Cast<APlayerPaddle>(GetWorld()->GetFirstPlayerController()->GetPawn());
-           EnemyPaddle = Cast<AEnemyPaddle>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyPaddle::StaticClass()));
-           BallPositionSymbol = Cast<ABallPositionSymbol>(UGameplayStatics::GetActorOfClass(GetWorld(), ABallPositionSymbol::StaticClass()));
-           
-           BallLandingZ = 105.f;
-           MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
-           if (MainGamemode)
-           {
-               MainGamemode->OnGameOver.AddDynamic(this, &ABall::OnGameOver);
-           }
-       }
-       else
-       {
-           UE_LOG(LogTemp, Error, TEXT("BallMesh or BallCollider is null in BeginPlay"));
-       }
+    BallPositionSymbol = Cast<ABallPositionSymbol>(UGameplayStatics::GetActorOfClass(GetWorld(), ABallPositionSymbol::StaticClass()));
+
+    BallLandingZ = 105.f;
+    
+    MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
+    MainGamemode->OnGameOver.AddDynamic(this, &ABall::OnGameOver);
+
 }
 
 void ABall::Tick(float DeltaSeconds)
@@ -122,16 +114,6 @@ void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPr
 {
 	if(OtherActor->ActorHasTag("Court") || OtherActor->ActorHasTag("Background"))
 	{
-		if(CurrentPaddle->IsA(APlayerPaddle::StaticClass()))
-		{
-			FVector BallLandingLocation = BallPositionSymbol->GetActorLocation();
-			if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -304 && BallLandingLocation.Y < 304))
-			{
-				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetBallLandingLocation(BallLandingLocation);
-				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(BallLandingLocation);
-			}
-		}
-		
 		CurrentBounceCount++;
 		// Each Bounce + 2 to the count ...?
 		if(CurrentBounceCount == 3)
@@ -145,6 +127,10 @@ void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPr
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, BounceEffect, BallMesh->GetComponentLocation());
 		}
 	}
+    else
+    {
+        PlayerPaddle->SetIsPlayersTurn(false);
+    }
 
 	
 }
@@ -240,7 +226,7 @@ int32 ABall::GetCurrentBounceCount() const
 
 void ABall::OnGameOver()
 {
-	BallMesh->OnComponentHit.Clear();
+    BallMesh->OnComponentHit.Clear();
 	//Do something on restart to rebind the hit event
 }
 

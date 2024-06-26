@@ -7,6 +7,8 @@
 #include "EnemyPaddle.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
+#include "Components/Button.h"
+#include "Components/TextBlock.h"
 #include "TimerManager.h"
 #include "Components/AudioComponent.h"
 #include "Sound/SoundBase.h"
@@ -45,20 +47,28 @@ void UGameOverScreenWidget::NativeConstruct()
 
 void UGameOverScreenWidget::OnReplayButtonClicked()
 {
-	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
-	PlayerPaddle->SetCurrentScore(0);
-	EnemyPaddle->SetCurrentRow(0);
+    UWorld* World = GetWorld();
+    
+    if(World)
+    {
+        UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+        PlayerPaddle->SetCurrentScore(0);
+        EnemyPaddle->SetCurrentRow(0);
 
-	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
-	GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
-	GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
-	
-	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+        UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
+        GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
+        GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
+        
+        FName CurrentWorldName(*World->GetName());
+        UGameplayStatics::OpenLevel(this, CurrentWorldName, false);
+    }
 }
 
 void UGameOverScreenWidget::OnHomeButtonClicked()
 {
     // Stop all audio components playing in the world
+    UWorld* World = GetWorld();
+    {
         if (GetWorld())
         {
             for (TActorIterator<AActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
@@ -91,9 +101,11 @@ void UGameOverScreenWidget::OnHomeButtonClicked()
             }
         }
 
-    
+        
         // Open the current level again
-        UGameplayStatics::OpenLevel(GetWorld(), FName(*GetWorld()->GetName()), false);
+        FName CurrentWorldName(*World->GetName());
+        UGameplayStatics::OpenLevel(GetWorld(), CurrentWorldName, false);
+    }
 }
 
 void UGameOverScreenWidget::OnWatchAdd2xCoinsButtonClicked()

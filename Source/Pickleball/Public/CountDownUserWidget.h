@@ -28,9 +28,9 @@ public:
 	void KickOffFinished();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
-	USoundWave* CountDownSoundEffect;
+    USoundBase* CountDownSoundEffect;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
-	USoundWave* CountDownSoundKickoffEffect;
+    USoundWave* CountDownSoundKickoffEffect;
 	
 private:
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))

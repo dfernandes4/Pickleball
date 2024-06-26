@@ -38,7 +38,7 @@ void UPickleBallGameInstance::LoadGameData()
 {
     if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))
     {
-        SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
+        SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("file"), 0));
         if (SaveGame)
         {
             UE_LOG(LogTemp, Log, TEXT("SaveGame loaded successfully"));
@@ -52,6 +52,7 @@ void UPickleBallGameInstance::LoadGameData()
     else
     {
         SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
+        SaveGameData();
         if (SaveGame)
         {
             UE_LOG(LogTemp, Log, TEXT("SaveGame created successfully"));
@@ -66,7 +67,7 @@ void UPickleBallGameInstance::LoadGameData()
 
 void UPickleBallGameInstance::SaveGameData()
 {
-	UGameplayStatics::SaveGameToSlot(SaveGame, SlotName, 0);
+    UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("file"), 0);
 }
 
 FPlayerData UPickleBallGameInstance::GetSaveGamePlayerData()
