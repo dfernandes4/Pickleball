@@ -57,7 +57,7 @@ void UGameOverScreenWidget::OnReplayButtonClicked()
 
         UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
         GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
-        GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
+        GameInstance->SaveCurrentEnemyRow(0);
         
         FName CurrentWorldName(*World->GetName());
         UGameplayStatics::OpenLevel(this, CurrentWorldName, false);
@@ -66,42 +66,25 @@ void UGameOverScreenWidget::OnReplayButtonClicked()
 
 void UGameOverScreenWidget::OnHomeButtonClicked()
 {
-    // Stop all audio components playing in the world
-    UWorld* World = GetWorld();
+    // Ensure player paddle and enemy paddle data are valid before accessing them
+    if (PlayerPaddle && EnemyPaddle)
     {
-        if (GetWorld())
-        {
-            for (TActorIterator<AActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
-            {
-                TArray<UAudioComponent*> AudioComponents;
-                ActorItr->GetComponents<UAudioComponent>(AudioComponents);
-                for (UAudioComponent* AudioComponent : AudioComponents)
-                {
-                    if (AudioComponent->IsPlaying())
-                    {
-                        AudioComponent->Stop();
-                    }
-                }
-            }
-
-            // Clear all timers
-            GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
-        }
-
-        // Ensure player paddle and enemy paddle data are valid before accessing them
-        if (PlayerPaddle && EnemyPaddle)
-        {
-            // Save player and enemy data
-            UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
-            if (GameInstance)
-            {
-                GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
-                GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
-                GameInstance->SetShouldLaunchStarterScreen(true);
-            }
-        }
-
+        PlayerPaddle->SetCurrentScore(0);
+        EnemyPaddle->SetCurrentRow(0);
         
+        // Save player and enemy data
+        UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
+        if (GameInstance)
+        {
+            GameInstance->SaveCurrentEnemyRow(0);
+            GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
+            GameInstance->SetShouldLaunchStarterScreen(true);
+        }
+    }
+
+    UWorld* World = GetWorld();
+    if(World)
+    {
         // Open the current level again
         FName CurrentWorldName(*World->GetName());
         UGameplayStatics::OpenLevel(GetWorld(), CurrentWorldName, false);

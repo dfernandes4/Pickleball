@@ -48,7 +48,7 @@ void ABall::BeginPlay()
     BallMesh->SetSimulatePhysics(true);
     BallMesh->SetEnableGravity(false);
     BallMesh->SetMassOverrideInKg(NAME_None, 0.06f, true);
-    //BallMesh->OnComponentHit.AddDynamic(this, &ABall::OnBallHit);
+    BallMesh->OnComponentHit.AddDynamic(this, &ABall::OnBallHit);
     
     BallCollider->SetCollisionProfileName(TEXT("Custom"));
 
@@ -126,13 +126,15 @@ void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPr
 			UGameplayStatics::PlaySound2D(GetWorld(),BounceSound);
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, BounceEffect, BallMesh->GetComponentLocation());
 		}
+        
+        FVector BallLandingLocation = BallPositionSymbol->GetActorLocation();
+        if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -304 && BallLandingLocation.Y < 304))
+        {
+            Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetBallLandingLocation(BallLandingLocation);
+            Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(BallLandingLocation);
+        }
 	}
-    else
-    {
-        PlayerPaddle->SetIsPlayersTurn(false);
-    }
-
-	
+                
 }
 void ABall::PredictProjectileLandingPoint()
 {
