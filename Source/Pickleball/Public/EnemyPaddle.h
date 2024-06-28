@@ -7,6 +7,7 @@
 #include "Paddle.h"
 #include "EnemyPaddle.generated.h"
 
+class UPickleBallGameInstance;
 class UPlayScreenWidget;
 class UFloatingPawnMovement;
 class UNiagaraComponent;
@@ -23,6 +24,9 @@ public:
 	// Sets default values for this pawn's properties
 	AEnemyPaddle();
 
+	UFUNCTION()
+	void OnGameLoaded();
+	
 	UFUNCTION()
 	void HitBall();
 	
@@ -75,4 +79,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitting", meta = (AllowPrivateAccess = "true"))
 	int32 CurrentRow;
+
+	UPROPERTY()
+	UPickleBallGameInstance* PickleBallGameInstance;
 };

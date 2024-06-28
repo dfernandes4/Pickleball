@@ -39,6 +39,9 @@ public:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
+	void OnGameLoaded();
+	
+	UFUNCTION()
 	void OnLoadingScreenFinished();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
@@ -73,4 +76,7 @@ public:
 
 	UPROPERTY()
 	class AEnemyAIController* CachedEnemyAIController;
+
+	UPROPERTY()
+	class UPickleBallGameInstance* PickleBallGameInstance;
 };

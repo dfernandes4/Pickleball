@@ -10,9 +10,7 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "TimerManager.h"
-#include "Components/AudioComponent.h"
 #include "Sound/SoundBase.h"
-#include "EngineUtils.h"
 
 void UGameOverScreenWidget::NativeConstruct()
 {
