@@ -130,7 +130,7 @@ void UHomeScreenWidget::DisplayPaddles(UPaddleToCollectWidget* PaddleSelected, U
 		
 		TTuple<UObject*, const FVector2D&> PaddleSelectedImageInfo = PaddleSelected->GetPaddleImageInfo();
 		PaddleMiddle->SetBrushFromTexture(Cast<UTexture2D>(PaddleSelectedImageInfo.Key));
-		PaddleMiddle->SetDesiredSizeOverride(PaddleSelectedImageInfo.Value * 1.5);
+		PaddleMiddle->SetDesiredSizeOverride(PaddleSelectedImageInfo.Value * 2);
 	}
 	else
 	{
