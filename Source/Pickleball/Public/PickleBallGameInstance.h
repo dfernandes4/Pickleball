@@ -44,7 +44,11 @@ public:
 	void SetIsFirstTimePlayingEver(bool bIsFirstTimePlayingEverIn);
 	UFUNCTION()
 	bool GetIsFirstTimePlayingInSession() const;
+    UFUNCTION()
 	void SetIsFirstTimePlayingInSession(bool bIsFirstTimePlayingInSessionIn);
+    UFUNCTION()
+    bool GetIsGameLoaded() const;
+    
 	UFUNCTION()
 	int32 GetSaveGameEnemyRow();
 	
@@ -69,6 +73,8 @@ private:
 	bool bShouldLaunchStarterScreen;
 
 	bool bIsFirstHomeScreenLaunch;
+    
+    bool bIsGameLoaded;
 
 	int32 RetryCount;
 	int32 MaxRetries;

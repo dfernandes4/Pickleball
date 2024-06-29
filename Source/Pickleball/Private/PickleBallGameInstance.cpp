@@ -8,6 +8,7 @@
 #include "PickleballSaveGame.h"
 #include "Interfaces/OnlineIdentityInterface.h"
 #include "Kismet/GameplayStatics.h"
+#include "TimerManager.h"
 
 
 UPickleBallGameInstance::UPickleBallGameInstance()
@@ -16,6 +17,7 @@ UPickleBallGameInstance::UPickleBallGameInstance()
     bIsFirstTimePlayingEver = true;
     bIsFirstTimePlayingInSession = true;
     bShouldLaunchStarterScreen = true;
+    bIsGameLoaded = false;
     RetryCount = 0;
     MaxRetries = 3;
     RetryDelay = .2f;
@@ -55,6 +57,7 @@ void UPickleBallGameInstance::LoadGameData()
         SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
         SaveGameData();
         bIsFirstTimePlayingEver = true;
+        bIsGameLoaded = true;
         LoadFinished.Broadcast();
     }
     bIsFirstTimePlayingInSession = true;
@@ -115,6 +118,10 @@ void UPickleBallGameInstance::SetIsFirstTimePlayingInSession(bool bIsFirstTimePl
     bIsFirstTimePlayingInSession = bIsFirstTimePlayingInSessionIn;
 }
 
+bool UPickleBallGameInstance::GetIsGameLoaded() const
+{
+    return bIsGameLoaded;
+}
 int32 UPickleBallGameInstance::GetSaveGameEnemyRow()
 {
     return SaveGame->EnemyLastRow;
@@ -138,6 +145,7 @@ void UPickleBallGameInstance::OnLoadFinished(const FString& SlotNameIn, const in
         {
             UE_LOG(LogTemp, Log, TEXT("SaveGame loaded successfully"));
             SaveGameData();
+            bIsGameLoaded = true;
             LoadFinished.Broadcast();
         }
         else

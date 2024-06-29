@@ -68,9 +68,18 @@ void AMainGamemode::BeginPlay()
 		}
 		else
 		{
-			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-			WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
-			PickleBallGameInstance->LoadFinished.AddDynamic(this, &AMainGamemode::OnGameLoaded);
+            const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+            WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
+            if(PickleBallGameInstance->GetIsGameLoaded())
+            {
+                OnGameLoaded();
+            }
+            else
+            {
+                PickleBallGameInstance->LoadFinished.AddDynamic(this, &AMainGamemode::OnGameLoaded);
+            }
+			
+			
 		}
 		
 		PlayerController->DisableInput(PlayerController);

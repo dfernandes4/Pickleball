@@ -81,21 +81,18 @@ void APlayerPaddle::BeginPlay()
 	{
 		MainGamemode->OnGameOver.AddDynamic(this, &APlayerPaddle::OnGameOver);
 	}
-
-	// Load Player Data
-	SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
-	if (SaveGameInterface)
-	{
-		FPlayerData PlayerData = SaveGameInterface->GetSaveGamePlayerData();
-
-		CurrentScore = PlayerData.PlayersLastScore;
-		CurrentCoinCount = PlayerData.PlayerCoins;
-		HighScore = PlayerData.PlayerHighScore;
-		PaddleUnlockStatuses = PlayerData.PaddleUnlockStatuses;
-		CurrrentPaddleName = PlayerData.CurrentPaddleName;
-	}
-	OnPaddleSelected(CurrrentPaddleName);
-	
+    
+    
+    UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
+    if(PickleBallGameInstance->GetIsGameLoaded())
+    {
+        OnGameLoaded();
+    }
+    else
+    {
+        PickleBallGameInstance->LoadFinished.AddDynamic(this, &APlayerPaddle::OnGameLoaded);
+    }
+    
 }
 
 void APlayerPaddle::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -310,6 +307,22 @@ void APlayerPaddle::SetIsPlayersTurn(bool bIsPlayersTurnIn)
 	bIsPlayersTurn = bIsPlayersTurnIn;
 }
 
+void APlayerPaddle::OnGameLoaded()
+{
+    // Load Player Data
+    SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
+    if (SaveGameInterface)
+    {
+        FPlayerData PlayerData = SaveGameInterface->GetSaveGamePlayerData();
+
+        CurrentScore = PlayerData.PlayersLastScore;
+        CurrentCoinCount = PlayerData.PlayerCoins;
+        HighScore = PlayerData.PlayerHighScore;
+        PaddleUnlockStatuses = PlayerData.PaddleUnlockStatuses;
+        CurrrentPaddleName = PlayerData.CurrentPaddleName;
+    }
+    OnPaddleSelected(CurrrentPaddleName);
+}
 
 void APlayerPaddle::FlipPaddle()
 {
