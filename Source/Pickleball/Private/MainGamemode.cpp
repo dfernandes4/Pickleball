@@ -47,19 +47,16 @@ void AMainGamemode::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
+	PickleBallGameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
+	
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 
-	if(GameInstance->GetShouldLaunchStarterScreen())
+	if(PickleBallGameInstance->GetShouldLaunchStarterScreen())
 	{
-		if(GameInstance->GetIsFirstTimePlaying())
+		if(!PickleBallGameInstance->GetIsFirstTimePlayingInSession())
 		{
-			WidgetLoader->LoadWidget(FName("TutorialScreen"), GetWorld());
-			GameInstance->SetShouldLaunchStarterScreen(false);
-		}
-		else
-		{
+			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+			
 			WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
 			UHomeScreenWidget* HomeScreenWidget = Cast<UHomeScreenWidget>(WidgetLoader->LoadWidget(FName("HomeScreen"), GetWorld()));
 			HomeScreenWidget->CollectionWidget	= Cast<UCollectionWidget>(WidgetLoader->LoadWidget(FName("CollectionScreen"), GetWorld()));
@@ -67,19 +64,49 @@ void AMainGamemode::BeginPlay()
 			HomeScreenWidget->SetUpCollectionDelegates();
 			HomeScreenWidget->ShopWidget		= Cast<UShopScreenWidget>(WidgetLoader->LoadWidget(FName("PaddleShopScreen"), GetWorld()));
 			HomeScreenWidget->SetUpShopDelegates();
-			GameInstance->SetShouldLaunchStarterScreen(false);
+			PickleBallGameInstance->SetShouldLaunchStarterScreen(false);
 		}
-
+		else
+		{
+			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+			WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
+			PickleBallGameInstance->LoadFinished.AddDynamic(this, &AMainGamemode::OnGameLoaded);
+		}
+		
 		PlayerController->DisableInput(PlayerController);
 	}
 	else
 	{
+		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 		ULoadingScreenWidget* LoadingScreen = Cast<ULoadingScreenWidget>(WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10));
 		LoadingScreen->LoadingScreenFinished.AddDynamic(this, &AMainGamemode::OnLoadingScreenFinished);
-		
 	}
 
 	CachedEnemyAIController = Cast<AEnemyAIController>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyAIController::StaticClass()));
+}
+
+void AMainGamemode::OnGameLoaded()
+{
+	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+	
+	if(PickleBallGameInstance->GetIsFirstTimePlaying())
+	{
+		WidgetLoader->LoadWidget(FName("TutorialScreen"), GetWorld());
+	}
+	else
+	{
+		WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
+		UHomeScreenWidget* HomeScreenWidget = Cast<UHomeScreenWidget>(WidgetLoader->LoadWidget(FName("HomeScreen"), GetWorld()));
+		HomeScreenWidget->CollectionWidget	= Cast<UCollectionWidget>(WidgetLoader->LoadWidget(FName("CollectionScreen"), GetWorld()));
+		HomeScreenWidget->DisplayBasePaddles();
+		HomeScreenWidget->SetUpCollectionDelegates();
+		HomeScreenWidget->ShopWidget		= Cast<UShopScreenWidget>(WidgetLoader->LoadWidget(FName("PaddleShopScreen"), GetWorld()));
+		HomeScreenWidget->SetUpShopDelegates();
+	}
+
+	PickleBallGameInstance->SetShouldLaunchStarterScreen(false);
+	PickleBallGameInstance->SetIsFirstTimePlayingInSession(false);
+	PickleBallGameInstance->LoadFinished.RemoveDynamic(this, &AMainGamemode::OnGameLoaded);
 }
 
 void AMainGamemode::OnLoadingScreenFinished()
@@ -95,7 +122,7 @@ void AMainGamemode::GameOver()
 	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
 	if(GameInstance->GetIsFirstTimePlaying())
 	{
-		GameInstance->SetIsFirstTimePlaying(false);
+		GameInstance->SetIsFirstTimePlayingEver(false);
 	}
 	OnGameOver.RemoveDynamic(this, &AMainGamemode::GameOver);
 	

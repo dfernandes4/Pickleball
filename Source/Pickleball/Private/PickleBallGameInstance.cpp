@@ -13,6 +13,12 @@
 UPickleBallGameInstance::UPickleBallGameInstance()
 {
 	SlotName = "file";
+    bIsFirstTimePlayingEver = true;
+    bIsFirstTimePlayingInSession = true;
+    bShouldLaunchStarterScreen = true;
+    RetryCount = 0;
+    MaxRetries = 3;
+    RetryDelay = .2f;
 }
 
 void UPickleBallGameInstance::Init()
@@ -38,31 +44,20 @@ void UPickleBallGameInstance::LoadGameData()
 {
     if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))
     {
-        SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("file"), 0));
-        if (SaveGame)
-        {
-            UE_LOG(LogTemp, Log, TEXT("SaveGame loaded successfully"));
-        }
-        else
-        {
-            UE_LOG(LogTemp, Error, TEXT("Failed to load SaveGame"));
-        }
-        bIsFirstTimePlaying = false;
+        FAsyncLoadGameFromSlotDelegate LoadedDelegate;
+        LoadedDelegate.BindUObject(this, &UPickleBallGameInstance::OnLoadFinished);
+
+        // Initiate the async load for the save game
+        UGameplayStatics::AsyncLoadGameFromSlot(SlotName, 0, LoadedDelegate);
     }
     else
     {
         SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
         SaveGameData();
-        if (SaveGame)
-        {
-            UE_LOG(LogTemp, Log, TEXT("SaveGame created successfully"));
-        }
-        else
-        {
-            UE_LOG(LogTemp, Error, TEXT("Failed to create SaveGame"));
-        }
-        bIsFirstTimePlaying = true;
+        bIsFirstTimePlayingEver = true;
+        LoadFinished.Broadcast();
     }
+    bIsFirstTimePlayingInSession = true;
 }
 
 void UPickleBallGameInstance::SaveGameData()
@@ -98,7 +93,11 @@ void UPickleBallGameInstance::SaveCurrentEnemyRow(int32 EnemyRow)
 
 bool UPickleBallGameInstance::GetIsFirstTimePlaying() const
 {
-	return bIsFirstTimePlaying;
+	return bIsFirstTimePlayingEver;
+}
+void UPickleBallGameInstance::SetIsFirstTimePlayingEver(bool bIsFirstTimePlayingEverIn)
+{
+    bIsFirstTimePlayingEver = bIsFirstTimePlayingEverIn;
 }
 
 void UPickleBallGameInstance::SetShouldLaunchStarterScreen(bool bIShouldLaunchStarterScreenIn)
@@ -106,17 +105,72 @@ void UPickleBallGameInstance::SetShouldLaunchStarterScreen(bool bIShouldLaunchSt
 	bShouldLaunchStarterScreen = bIShouldLaunchStarterScreenIn;
 }
 
-void UPickleBallGameInstance::SetIsFirstTimePlaying(bool bIsFirstTimePlayingIn)
+bool UPickleBallGameInstance::GetIsFirstTimePlayingInSession() const
 {
-	bIsFirstTimePlaying = bIsFirstTimePlayingIn;
+    return bIsFirstTimePlayingInSession;
+}
+
+void UPickleBallGameInstance::SetIsFirstTimePlayingInSession(bool bIsFirstTimePlayingInSessionIn)
+{
+    bIsFirstTimePlayingInSession = bIsFirstTimePlayingInSessionIn;
 }
 
 int32 UPickleBallGameInstance::GetSaveGameEnemyRow()
 {
     return SaveGame->EnemyLastRow;
 }
- 
+
 bool UPickleBallGameInstance::GetShouldLaunchStarterScreen() const
 {
 	return bShouldLaunchStarterScreen;
+}
+
+void UPickleBallGameInstance::OnLoadFinished(const FString& SlotNameIn, const int32 UserIndex, USaveGame* LoadedGame)
+{
+    if (LoadedGame)
+    {
+        // Reset retry count
+        RetryCount = 0;
+
+        // Store the loaded save game
+        SaveGame = Cast<UPickleballSaveGame>(LoadedGame);
+        if (SaveGame)
+        {
+            UE_LOG(LogTemp, Log, TEXT("SaveGame loaded successfully"));
+            SaveGameData();
+            LoadFinished.Broadcast();
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("Failed to cast LoadedGame to UPickleballSaveGame"));
+        }
+
+        bIsFirstTimePlayingEver = false;
+    }
+    
+    if(LoadedGame == nullptr || SaveGame == nullptr)
+    {
+        // Handle load failure and retry if needed
+        if (RetryCount < MaxRetries)
+        {
+            RetryCount++;
+            UE_LOG(LogTemp, Warning, TEXT("Retrying load SaveGame: Attempt %d"), RetryCount);
+            GetWorld()->GetTimerManager().SetTimerForNextTick(this, &UPickleBallGameInstance::RetryLoad);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("Failed to load SaveGame from slot: %s after %d attempts"), *SlotName, RetryCount);
+            RetryCount = 0; // Reset retry count for future attempts
+        }
+    }
+}
+
+void UPickleBallGameInstance::RetryLoad()
+{
+    FTimerHandle RetryTimerHandle;
+    GetWorld()->GetTimerManager().SetTimer(
+        RetryTimerHandle,[this]() { LoadGameData(); },
+        RetryDelay, 
+        false
+    );
 }

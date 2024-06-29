@@ -34,9 +34,7 @@ AEnemyPaddle::AEnemyPaddle()
 	
 
 	ForceMultiplier = 1.5;
-	
 	bIsEnemiesTurn = true;
-	
 	CurrentRow = 10;
 }
 
@@ -52,7 +50,12 @@ void AEnemyPaddle::BeginPlay()
 		MainGamemode->OnGameOver.AddDynamic(this, &AEnemyPaddle::StopHitting);
 	}
 
-	UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	PickleBallGameInstance = Cast<UPickleBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	PickleBallGameInstance->LoadFinished.AddDynamic(this, &AEnemyPaddle::OnGameLoaded);
+}
+
+void AEnemyPaddle::OnGameLoaded()
+{
 	CurrentRow = PickleBallGameInstance->GetSaveGameEnemyRow();
 	int32 PlayersLastScore = PickleBallGameInstance->GetSaveGamePlayerData().PlayersLastScore;
 	if(PlayersLastScore > 0 && PlayersLastScore <= 20)
@@ -65,7 +68,7 @@ void AEnemyPaddle::BeginPlay()
 		SetRandomEnemyAttributes();
 	}
 
-	
+	PickleBallGameInstance->LoadFinished.RemoveDynamic(this, &AEnemyPaddle::OnGameLoaded);
 }
 
 void AEnemyPaddle::HitBall()
