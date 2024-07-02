@@ -25,6 +25,7 @@ public:
 	virtual void Init() override;
 	virtual void Shutdown() override;
 
+	bool OnCloudLoadCompleted(const FString& FileName);
 	virtual void LoadGameData() override;
 	virtual void SaveGameData() override;
 	virtual FPlayerData GetSaveGamePlayerData() override;
@@ -48,8 +49,6 @@ public:
 	void SetIsFirstTimePlayingInSession(bool bIsFirstTimePlayingInSessionIn);
     UFUNCTION()
     bool GetIsGameLoaded() const;
-    UFUNCTION()
-    void OnCloudLoadComplete(bool bWasSuccessful, const FUniqueNetId& UserId, const FString& FileName);
     
 	UFUNCTION()
 	int32 GetSaveGameEnemyRow();

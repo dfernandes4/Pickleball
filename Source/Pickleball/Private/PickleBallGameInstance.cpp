@@ -3,15 +3,12 @@
 
 #include "PickleBallGameInstance.h"
 
-#include "MainPlayerController.h"
-#include "OnlineSubsystem.h"
+#include "IOSSaveGameSystem.h"
 #include "PickleballSaveGame.h"
-#include "Interfaces/OnlineIdentityInterface.h"
-#include "Kismet/GameplayStatics.h"
+#include "PlatformFeatures.h"
 #include "TimerManager.h"
+#include "Kismet/GameplayStatics.h"
 #include "Misc/FileHelper.h"
-#include "SaveGameSystem.h"
-#include "Paths.h"
 
 
 UPickleBallGameInstance::UPickleBallGameInstance()
@@ -42,17 +39,23 @@ void UPickleBallGameInstance::LoadGameData()
 {
     if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))
     {
-        TArray<uint8> OutSaveData;
+        TArray<uint8> Data;
         // Binary Load
-        if (UGameplayStatics::LoadDataFromSlot(OutSaveData, SlotName, 0))
+        if (UGameplayStatics::LoadDataFromSlot(Data, SlotName, 0))
         {
-            if(OutSaveData.IsEmpty())
+            if(Data.IsEmpty())
             {
-                FIOSSaveGameSystem* SaveSystem = static_cast<FIOSSaveGameSystem*>(OnlineSubsystem->GetSaveGameInterface().Get());
-                if (SaveSystem && SaveSystem->OnUpdateLocalSaveFileFromCloud.IsBound())
+                
+                ISaveGameSystem* SaveSystem = IPlatformFeaturesModule::Get().GetSaveGameSystem();
+                if (SaveSystem)
                 {
-                    SaveSystem->OnUpdateLocalSaveFileFromCloud.BindUObject(this, &UMyGameInstance::OnCloudLoadComplete);
+                    FIOSSaveGameSystem* IOSSaveSystem = static_cast<FIOSSaveGameSystem*>(SaveSystem);
+                    if (IOSSaveSystem != nullptr && IOSSaveSystem->OnUpdateLocalSaveFileFromCloud.IsBound())
+                    {
+                        IOSSaveSystem->OnUpdateLocalSaveFileFromCloud.BindUObject(this, &UPickleBallGameInstance::OnCloudLoadCompleted);
+                    }
                 }
+                
             }
             else
             {
@@ -97,25 +100,23 @@ void UPickleBallGameInstance::LoadGameData()
         LoadFinished.Broadcast();
     }
     bIsFirstTimePlayingInSession = true;
-     
 }
 
-void UPickleBallGameInstance::OnCloudLoadComplete(bool bWasSuccessful, const FUniqueNetId& UserId, const FString& FileName)
+bool UPickleBallGameInstance::OnCloudLoadCompleted(const FString& FileName)
 {
-    if (bWasSuccessful)
+    TArray<uint8> Data;
+    FFileHelper::LoadFileToArray(Data, *FileName);
+    if(!Data.IsEmpty())
     {
-        TArray<uint8> Data;
-        FFileHelper::LoadFileToArray(Data, *FileName);
-        if(!PendingDataPtr.IsEmpty())
+        SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
+        if(SaveGame)
         {
-            SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
-            if(SaveGame)
-            {
-                bIsGameLoaded = true;
-                LoadFinished.Broadcast();
-            }
+            bIsGameLoaded = true;
+            LoadFinished.Broadcast();
+            return true; // Operation was successful
         }
     }
+    return false; // Operation was not successful
 }
 
 void UPickleBallGameInstance::SaveGameData()
