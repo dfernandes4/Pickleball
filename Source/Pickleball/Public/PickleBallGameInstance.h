@@ -52,6 +52,8 @@ public:
     
 	UFUNCTION()
 	int32 GetSaveGameEnemyRow();
+    UFUNCTION()
+    bool TestSerialization(UClass* TestClass);
 	
 
 	UPROPERTY()

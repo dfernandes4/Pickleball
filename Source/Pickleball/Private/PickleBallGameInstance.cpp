@@ -3,7 +3,6 @@
 
 #include "PickleBallGameInstance.h"
 
-#include "IOSSaveGameSystem.h"
 #include "PickleballSaveGame.h"
 #include "PlatformFeatures.h"
 #include "TimerManager.h"
@@ -28,6 +27,7 @@ void UPickleBallGameInstance::Init()
 	Super::Init();
 
 	LoadGameData();
+    TestSerialization(UPickleballSaveGame::StaticClass());
 }
 
 void UPickleBallGameInstance::Shutdown()
@@ -45,16 +45,24 @@ void UPickleBallGameInstance::LoadGameData()
         {
             if(Data.IsEmpty())
             {
-                
+                /*
                 ISaveGameSystem* SaveSystem = IPlatformFeaturesModule::Get().GetSaveGameSystem();
                 if (SaveSystem)
                 {
-                    FIOSSaveGameSystem* IOSSaveSystem = static_cast<FIOSSaveGameSystem*>(SaveSystem);
+                    FIOSSaveGameSystem* IOSSaveSystem = Cast<FIOSSaveGameSystem*>(SaveSystem);
                     if (IOSSaveSystem != nullptr && IOSSaveSystem->OnUpdateLocalSaveFileFromCloud.IsBound())
                     {
                         IOSSaveSystem->OnUpdateLocalSaveFileFromCloud.BindUObject(this, &UPickleBallGameInstance::OnCloudLoadCompleted);
                     }
                 }
+                */
+                
+                FTimerHandle CloudLoadTimerHandle;
+                GetWorld()->GetTimerManager().SetTimer(CloudLoadTimerHandle, [this]()
+                {
+                    OnCloudLoadCompleted(FString(FString::Printf(TEXT("%s""SaveGames/%s.sav"), *FPaths::ProjectSavedDir(), TEXT("file"))));
+                }, 15.f, false);
+                
                 
             }
             else
@@ -102,6 +110,43 @@ void UPickleBallGameInstance::LoadGameData()
     bIsFirstTimePlayingInSession = true;
 }
 
+bool UPickleBallGameInstance::TestSerialization(UClass* TestClass)
+{
+    if (TestClass && TestClass->IsChildOf(USaveGame::StaticClass()))
+    {
+        // Create a dummy instance of the class
+        USaveGame* TestObject = NewObject<USaveGame>(GetTransientPackage(), TestClass);
+        if (auto MySaveGame = Cast<UPickleballSaveGame>(TestObject))
+        {
+            // Initialize the test object with some data
+            MySaveGame->PlayerData.PlayerHighScore = 12345;  // Example data
+
+            // Perform serialization
+            TArray<uint8> SerializedData;
+            if (UGameplayStatics::SaveGameToMemory(MySaveGame, SerializedData))
+            {
+                // Perform deserialization
+                USaveGame* DeserializedObject = UGameplayStatics::LoadGameFromMemory(SerializedData);
+                if (auto DeserializedSaveGame = Cast<UPickleballSaveGame>(DeserializedObject))
+                {
+                    // Compare the original and deserialized objects
+                    if (MySaveGame->PlayerData.PlayerHighScore == DeserializedSaveGame->PlayerData.PlayerHighScore)
+                    {
+                        UE_LOG(LogTemp, Log, TEXT("Serialization test passed for class: %s"), *TestClass->GetName());
+                        return true;
+                    }
+                    else
+                    {
+                        UE_LOG(LogTemp, Error, TEXT("Serialization test failed: Data mismatch for class: %s"), *TestClass->GetName());
+                    }
+                }
+            }
+        }
+    }
+    UE_LOG(LogTemp, Error, TEXT("Serialization test failed for class: %s"), TestClass ? *TestClass->GetName() : TEXT("Invalid Class"));
+    return false;
+}
+
 bool UPickleBallGameInstance::OnCloudLoadCompleted(const FString& FileName)
 {
     TArray<uint8> Data;
@@ -111,6 +156,7 @@ bool UPickleBallGameInstance::OnCloudLoadCompleted(const FString& FileName)
         SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
         if(SaveGame)
         {
+            UE_LOG(LogTemp, Log, TEXT("Loaded save High Score: %d"), SaveGame->PlayerData.PlayerHighScore);
             bIsGameLoaded = true;
             LoadFinished.Broadcast();
             return true; // Operation was successful
@@ -121,13 +167,25 @@ bool UPickleBallGameInstance::OnCloudLoadCompleted(const FString& FileName)
 
 void UPickleBallGameInstance::SaveGameData()
 {
-    if(UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("file"), 0))
+    // Serialize the SaveGame object to a byte array
+    TArray<uint8> SaveData;
+    if (UGameplayStatics::SaveGameToMemory(SaveGame, SaveData))
     {
-        UE_LOG(LogTemp, Log, TEXT("Game Saved Successfully"));
+        // Save the byte array to a local file
+        FString LocalSavePath = FString::Printf(TEXT("%sSaveGames/%s.sav"), *FPaths::ProjectSavedDir(), TEXT("file"));
+        if (FFileHelper::SaveArrayToFile(SaveData, *LocalSavePath))
+        {
+            UE_LOG(LogTemp, Log, TEXT("Game Saved Locally Successfully"));
+            UE_LOG(LogTemp, Log, TEXT("Saved High Score: %d"), SaveGame->PlayerData.PlayerHighScore);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("Failed to Save Game Locally"));
+        }
     }
     else
     {
-        UE_LOG(LogTemp, Log, TEXT("Game Didn't Save Successfully"));
+        UE_LOG(LogTemp, Error, TEXT("Failed to Serialize SaveGame Object"));
     }
     
 }
