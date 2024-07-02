@@ -48,6 +48,8 @@ public:
 	void SetIsFirstTimePlayingInSession(bool bIsFirstTimePlayingInSessionIn);
     UFUNCTION()
     bool GetIsGameLoaded() const;
+    UFUNCTION()
+    void OnCloudLoadComplete(bool bWasSuccessful, const FUniqueNetId& UserId, const FString& FileName);
     
 	UFUNCTION()
 	int32 GetSaveGameEnemyRow();

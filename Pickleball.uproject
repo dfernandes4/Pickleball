@@ -38,10 +38,6 @@
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/c67d7774d421479f8efed663f477d6ec"
 		},
 		{
-			"Name": "OnlineFramework",
-			"Enabled": true
-		},
-		{
 			"Name": "OnlineSubsystemGooglePlay",
 			"Enabled": false,
 			"SupportedTargetPlatforms": [
@@ -51,6 +47,10 @@
 		{
 			"Name": "OnlineSubsystemNull",
 			"Enabled": false
+		},
+		{
+			"Name": "OnlineFramework",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [

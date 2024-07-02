@@ -16,7 +16,9 @@
     <key>UIStatusBarHidden</key>
     <true />
     <key>UIFileSharingEnabled</key>
-    <false />
+    <true />
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true />
     <key>CFBundleDisplayName</key>
     <string>Pickle</string>
     <key>UIRequiresFullScreen</key>

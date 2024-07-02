@@ -9,6 +9,9 @@
 #include "Interfaces/OnlineIdentityInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
+#include "Misc/FileHelper.h"
+#include "SaveGameSystem.h"
+#include "Paths.h"
 
 
 UPickleBallGameInstance::UPickleBallGameInstance()
@@ -33,24 +36,57 @@ void UPickleBallGameInstance::Init()
 void UPickleBallGameInstance::Shutdown()
 {
 	Super::Shutdown();
-
-    if(SaveGame != nullptr)
-    {
-        SaveGame->PlayerData.PlayersLastScore = 0;
-        SaveGame->EnemyLastRow = 0;
-        SaveGameData();
-    }
 }
 
 void UPickleBallGameInstance::LoadGameData()
 {
     if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))
     {
+        TArray<uint8> OutSaveData;
+        // Binary Load
+        if (UGameplayStatics::LoadDataFromSlot(OutSaveData, SlotName, 0))
+        {
+            if(OutSaveData.IsEmpty())
+            {
+                FIOSSaveGameSystem* SaveSystem = static_cast<FIOSSaveGameSystem*>(OnlineSubsystem->GetSaveGameInterface().Get());
+                if (SaveSystem && SaveSystem->OnUpdateLocalSaveFileFromCloud.IsBound())
+                {
+                    SaveSystem->OnUpdateLocalSaveFileFromCloud.BindUObject(this, &UMyGameInstance::OnCloudLoadComplete);
+                }
+            }
+            else
+            {
+                SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
+                if(SaveGame)
+                {
+                    bIsGameLoaded = true;
+                    LoadFinished.Broadcast();
+                }
+            }
+        }
+        
+        bIsFirstTimePlayingEver = false;
+        
+        //Sync Reg
+        
+        /*
+        SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
+        if(SaveGame != nullptr)
+        {
+            bIsGameLoaded = true;
+            LoadFinished.Broadcast();
+        }
+         */
+        
+        // Async Implementation
+        
+        /*
         FAsyncLoadGameFromSlotDelegate LoadedDelegate;
         LoadedDelegate.BindUObject(this, &UPickleBallGameInstance::OnLoadFinished);
 
         // Initiate the async load for the save game
         UGameplayStatics::AsyncLoadGameFromSlot(SlotName, 0, LoadedDelegate);
+         */
     }
     else
     {
@@ -61,11 +97,38 @@ void UPickleBallGameInstance::LoadGameData()
         LoadFinished.Broadcast();
     }
     bIsFirstTimePlayingInSession = true;
+     
+}
+
+void UPickleBallGameInstance::OnCloudLoadComplete(bool bWasSuccessful, const FUniqueNetId& UserId, const FString& FileName)
+{
+    if (bWasSuccessful)
+    {
+        TArray<uint8> Data;
+        FFileHelper::LoadFileToArray(Data, *FileName);
+        if(!PendingDataPtr.IsEmpty())
+        {
+            SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
+            if(SaveGame)
+            {
+                bIsGameLoaded = true;
+                LoadFinished.Broadcast();
+            }
+        }
+    }
 }
 
 void UPickleBallGameInstance::SaveGameData()
 {
-    UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("file"), 0);
+    if(UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("file"), 0))
+    {
+        UE_LOG(LogTemp, Log, TEXT("Game Saved Successfully"));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Log, TEXT("Game Didn't Save Successfully"));
+    }
+    
 }
 
 FPlayerData UPickleBallGameInstance::GetSaveGamePlayerData()
@@ -152,8 +215,6 @@ void UPickleBallGameInstance::OnLoadFinished(const FString& SlotNameIn, const in
         {
             UE_LOG(LogTemp, Error, TEXT("Failed to cast LoadedGame to UPickleballSaveGame"));
         }
-
-        bIsFirstTimePlayingEver = false;
     }
     
     if(LoadedGame == nullptr || SaveGame == nullptr)
