@@ -121,7 +121,7 @@ void UCollectionWidget::SetupPaddleWidgets()
 		for(UWidget* Widget : LegendaryWrapBox->GetAllChildren())
 		{
 			FString WidgetName = Cast<UPaddleToCollectWidget>(Widget)->GetName();
-			if(PaddleUnlockStatuses.Contains(*WidgetName))
+			if(PaddleUnlockStatuses.Contains(*WidgetName))     
 			{
 				UPaddleToCollectWidget* PaddleCollectWidget = Cast<UPaddleToCollectWidget>(Widget);
 				PaddleCollectWidget->SetPaddleAttributes(PaddleUnlockStatuses[*WidgetName]);

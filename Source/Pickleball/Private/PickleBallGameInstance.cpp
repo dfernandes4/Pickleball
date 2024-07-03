@@ -27,7 +27,6 @@ void UPickleBallGameInstance::Init()
 	Super::Init();
 
 	LoadGameData();
-    TestSerialization(UPickleballSaveGame::StaticClass());
 }
 
 void UPickleBallGameInstance::Shutdown()
@@ -45,25 +44,11 @@ void UPickleBallGameInstance::LoadGameData()
         {
             if(Data.IsEmpty())
             {
-                /*
-                ISaveGameSystem* SaveSystem = IPlatformFeaturesModule::Get().GetSaveGameSystem();
-                if (SaveSystem)
-                {
-                    FIOSSaveGameSystem* IOSSaveSystem = Cast<FIOSSaveGameSystem*>(SaveSystem);
-                    if (IOSSaveSystem != nullptr && IOSSaveSystem->OnUpdateLocalSaveFileFromCloud.IsBound())
-                    {
-                        IOSSaveSystem->OnUpdateLocalSaveFileFromCloud.BindUObject(this, &UPickleBallGameInstance::OnCloudLoadCompleted);
-                    }
-                }
-                */
-                
                 FTimerHandle CloudLoadTimerHandle;
                 GetWorld()->GetTimerManager().SetTimer(CloudLoadTimerHandle, [this]()
                 {
                     OnCloudLoadCompleted(FString(FString::Printf(TEXT("%s""SaveGames/%s.sav"), *FPaths::ProjectSavedDir(), TEXT("file"))));
                 }, 15.f, false);
-                
-                
             }
             else
             {
@@ -77,27 +62,6 @@ void UPickleBallGameInstance::LoadGameData()
         }
         
         bIsFirstTimePlayingEver = false;
-        
-        //Sync Reg
-        
-        /*
-        SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
-        if(SaveGame != nullptr)
-        {
-            bIsGameLoaded = true;
-            LoadFinished.Broadcast();
-        }
-         */
-        
-        // Async Implementation
-        
-        /*
-        FAsyncLoadGameFromSlotDelegate LoadedDelegate;
-        LoadedDelegate.BindUObject(this, &UPickleBallGameInstance::OnLoadFinished);
-
-        // Initiate the async load for the save game
-        UGameplayStatics::AsyncLoadGameFromSlot(SlotName, 0, LoadedDelegate);
-         */
     }
     else
     {
@@ -108,43 +72,6 @@ void UPickleBallGameInstance::LoadGameData()
         LoadFinished.Broadcast();
     }
     bIsFirstTimePlayingInSession = true;
-}
-
-bool UPickleBallGameInstance::TestSerialization(UClass* TestClass)
-{
-    if (TestClass && TestClass->IsChildOf(USaveGame::StaticClass()))
-    {
-        // Create a dummy instance of the class
-        USaveGame* TestObject = NewObject<USaveGame>(GetTransientPackage(), TestClass);
-        if (auto MySaveGame = Cast<UPickleballSaveGame>(TestObject))
-        {
-            // Initialize the test object with some data
-            MySaveGame->PlayerData.PlayerHighScore = 12345;  // Example data
-
-            // Perform serialization
-            TArray<uint8> SerializedData;
-            if (UGameplayStatics::SaveGameToMemory(MySaveGame, SerializedData))
-            {
-                // Perform deserialization
-                USaveGame* DeserializedObject = UGameplayStatics::LoadGameFromMemory(SerializedData);
-                if (auto DeserializedSaveGame = Cast<UPickleballSaveGame>(DeserializedObject))
-                {
-                    // Compare the original and deserialized objects
-                    if (MySaveGame->PlayerData.PlayerHighScore == DeserializedSaveGame->PlayerData.PlayerHighScore)
-                    {
-                        UE_LOG(LogTemp, Log, TEXT("Serialization test passed for class: %s"), *TestClass->GetName());
-                        return true;
-                    }
-                    else
-                    {
-                        UE_LOG(LogTemp, Error, TEXT("Serialization test failed: Data mismatch for class: %s"), *TestClass->GetName());
-                    }
-                }
-            }
-        }
-    }
-    UE_LOG(LogTemp, Error, TEXT("Serialization test failed for class: %s"), TestClass ? *TestClass->GetName() : TEXT("Invalid Class"));
-    return false;
 }
 
 bool UPickleBallGameInstance::OnCloudLoadCompleted(const FString& FileName)
@@ -252,53 +179,4 @@ int32 UPickleBallGameInstance::GetSaveGameEnemyRow()
 bool UPickleBallGameInstance::GetShouldLaunchStarterScreen() const
 {
 	return bShouldLaunchStarterScreen;
-}
-
-void UPickleBallGameInstance::OnLoadFinished(const FString& SlotNameIn, const int32 UserIndex, USaveGame* LoadedGame)
-{
-    if (LoadedGame)
-    {
-        // Reset retry count
-        RetryCount = 0;
-
-        // Store the loaded save game
-        SaveGame = Cast<UPickleballSaveGame>(LoadedGame);
-        if (SaveGame)
-        {
-            UE_LOG(LogTemp, Log, TEXT("SaveGame loaded successfully"));
-            SaveGameData();
-            bIsGameLoaded = true;
-            LoadFinished.Broadcast();
-        }
-        else
-        {
-            UE_LOG(LogTemp, Error, TEXT("Failed to cast LoadedGame to UPickleballSaveGame"));
-        }
-    }
-    
-    if(LoadedGame == nullptr || SaveGame == nullptr)
-    {
-        // Handle load failure and retry if needed
-        if (RetryCount < MaxRetries)
-        {
-            RetryCount++;
-            UE_LOG(LogTemp, Warning, TEXT("Retrying load SaveGame: Attempt %d"), RetryCount);
-            GetWorld()->GetTimerManager().SetTimerForNextTick(this, &UPickleBallGameInstance::RetryLoad);
-        }
-        else
-        {
-            UE_LOG(LogTemp, Error, TEXT("Failed to load SaveGame from slot: %s after %d attempts"), *SlotName, RetryCount);
-            RetryCount = 0; // Reset retry count for future attempts
-        }
-    }
-}
-
-void UPickleBallGameInstance::RetryLoad()
-{
-    FTimerHandle RetryTimerHandle;
-    GetWorld()->GetTimerManager().SetTimer(
-        RetryTimerHandle,[this]() { LoadGameData(); },
-        RetryDelay, 
-        false
-    );
 }

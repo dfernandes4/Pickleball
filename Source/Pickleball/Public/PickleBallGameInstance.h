@@ -36,8 +36,6 @@ public:
 	bool GetIsFirstTimePlaying() const;
 	UFUNCTION()
 	bool GetShouldLaunchStarterScreen() const;
-	void OnLoadFinished(const FString& SlotNameIn, int32 UserIndex, USaveGame* LoadedGame);
-	void RetryLoad();
 	UFUNCTION()
 	void SetShouldLaunchStarterScreen(bool bIShouldLaunchStarterScreenIn);
 
@@ -52,10 +50,7 @@ public:
     
 	UFUNCTION()
 	int32 GetSaveGameEnemyRow();
-    UFUNCTION()
-    bool TestSerialization(UClass* TestClass);
 	
-
 	UPROPERTY()
 	FLoadFinishedDelegate LoadFinished;
 	
