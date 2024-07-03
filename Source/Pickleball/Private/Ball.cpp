@@ -128,7 +128,7 @@ void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPr
 		}
         
         FVector BallLandingLocation = BallPositionSymbol->GetActorLocation();
-        if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -304 && BallLandingLocation.Y < 304))
+        if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -304 && BallLandingLocation.Y < 304) && EnemyPaddle->GetIsEnemiesTurn())
         {
             Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetBallLandingLocation(BallLandingLocation);
             Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(BallLandingLocation);

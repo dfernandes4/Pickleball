@@ -51,7 +51,17 @@ void AEnemyPaddle::BeginPlay()
 	}
 
 	PickleBallGameInstance = Cast<UPickleBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	PickleBallGameInstance->LoadFinished.AddDynamic(this, &AEnemyPaddle::OnGameLoaded);
+    if(PickleBallGameInstance != nullptr)
+    {
+        if(PickleBallGameInstance->GetIsGameLoaded())
+        {
+            OnGameLoaded();
+        }
+        else
+        {
+            PickleBallGameInstance->LoadFinished.AddDynamic(this, &AEnemyPaddle::OnGameLoaded);
+        }
+    }
 }
 
 void AEnemyPaddle::OnGameLoaded()
@@ -97,8 +107,8 @@ void AEnemyPaddle::HitBall()
 		const float PercentageOfXDistanceFromFarthestHittingLocation = FMath::Clamp(GetActorLocation().X / FarthestHittingLocation, 0,1);
 		
 		// Based on position from center
-		constexpr float MinYVal = -25.f;
-		constexpr float MaxYVal = 25.f;
+		constexpr float MinYVal = -20.f;
+		constexpr float MaxYVal = 20.f;
 		RandomForce.Y = FMath::RandRange(MinYVal * (.5 + PercentageOfYDistanceFromCenter), MaxYVal * (.5 - PercentageOfYDistanceFromCenter));
 		
 		if(RandNum != 1)
@@ -194,7 +204,6 @@ void AEnemyPaddle::SetRandomEnemyAttributes()
 		}
 		else
 			CurrentRow = 16;
-		
 	} 
 		
 	FName CurrentRandomRowName = FName(*FString::Printf(TEXT("%d"), CurrentRow)); // Convert index to FName
@@ -222,6 +231,11 @@ void AEnemyPaddle::SetRandomEnemyAttributes()
 void AEnemyPaddle::SetIsEnemiesTurn(bool bIsTurn)
 {
 	bIsEnemiesTurn = bIsTurn;
+}
+
+bool AEnemyPaddle::GetIsEnemiesTurn() const
+{
+    return bIsEnemiesTurn;
 }
 
 void AEnemyPaddle::SetCurrentRow(int32 Row)

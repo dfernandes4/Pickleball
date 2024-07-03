@@ -46,6 +46,9 @@ public:
 
 	UFUNCTION()
 	int32 GetCurrentRow() const;
+    
+    UFUNCTION()
+    bool GetIsEnemiesTurn() const;
 
 	virtual void OnPaddleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 	

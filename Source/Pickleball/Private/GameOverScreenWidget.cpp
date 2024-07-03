@@ -74,8 +74,8 @@ void UGameOverScreenWidget::OnHomeButtonClicked()
         UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
         if (GameInstance)
         {
-            GameInstance->SaveCurrentEnemyRow(0);
             GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
+            GameInstance->SaveCurrentEnemyRow(0);
             GameInstance->SetShouldLaunchStarterScreen(true);
         }
     }

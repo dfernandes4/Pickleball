@@ -104,7 +104,6 @@ void AMainGamemode::OnGameLoaded()
 	}
 	else
 	{
-		WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
 		UHomeScreenWidget* HomeScreenWidget = Cast<UHomeScreenWidget>(WidgetLoader->LoadWidget(FName("HomeScreen"), GetWorld()));
 		HomeScreenWidget->CollectionWidget	= Cast<UCollectionWidget>(WidgetLoader->LoadWidget(FName("CollectionScreen"), GetWorld()));
 		HomeScreenWidget->DisplayBasePaddles();

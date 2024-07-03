@@ -41,7 +41,7 @@ void UPaddleToBuyScreenWidget::OnBuyButtonClicked()
 	if(!PlayerPaddle->OnPaddleBought(PaddleToBuyImage->GetBrush().GetResourceName()))
 	{
 		UWidgetLoader* WidgetLoader = NewObject<UWidgetLoader>(this);
-		WidgetLoader->LoadWidget(FName("CoinShopScreen"), GetWorld(), 5);
+		WidgetLoader->LoadWidget(FName("CoinShopScreen"), GetWorld(), 15);
 		// Play UI Error Sound and display a message that the player does not have enough coins
 		RemoveFromParent();
 	}

@@ -38,6 +38,8 @@ void UPickleBallGameInstance::LoadGameData()
 {
     if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))
     {
+        bIsFirstTimePlayingEver = false;
+        
         TArray<uint8> Data;
         // Binary Load
         if (UGameplayStatics::LoadDataFromSlot(Data, SlotName, 0))
@@ -48,7 +50,7 @@ void UPickleBallGameInstance::LoadGameData()
                 GetWorld()->GetTimerManager().SetTimer(CloudLoadTimerHandle, [this]()
                 {
                     OnCloudLoadCompleted(FString(FString::Printf(TEXT("%s""SaveGames/%s.sav"), *FPaths::ProjectSavedDir(), TEXT("file"))));
-                }, 15.f, false);
+                }, 1.f, false);
             }
             else
             {
@@ -60,8 +62,6 @@ void UPickleBallGameInstance::LoadGameData()
                 }
             }
         }
-        
-        bIsFirstTimePlayingEver = false;
     }
     else
     {

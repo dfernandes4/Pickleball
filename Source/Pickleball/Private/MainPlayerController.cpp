@@ -49,7 +49,8 @@ void AMainPlayerController::PlayerTick(float DeltaTime)
         if (DeprojectScreenPositionToWorld(TouchLocation.X, TouchLocation.Y, WorldLocation, WorldDirection))
         {
             NewPaddleLocation = WorldLocation + TouchOffset;
-            NewPaddleLocation.X = FMath::Clamp(NewPaddleLocation.X, -1500,-88.f);
+            NewPaddleLocation.X = FMath::Clamp(NewPaddleLocation.X, -844, -88.f);
+            NewPaddleLocation.Y = FMath::Clamp(NewPaddleLocation.Y, -412, 412.f);
             FHitResult HitResult;
             GetPawn()->SetActorLocation(NewPaddleLocation, true, &HitResult, ETeleportType::TeleportPhysics);
             PaddleVelocity = (NewPaddleLocation - PaddleStartLocation) / DeltaTime;
