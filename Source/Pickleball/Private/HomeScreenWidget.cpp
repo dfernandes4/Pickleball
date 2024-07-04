@@ -141,7 +141,7 @@ void UHomeScreenWidget::DisplayPaddles(UPaddleToCollectWidget* PaddleSelected, U
 	{
 		PaddleLeft->SetVisibility(ESlateVisibility::Visible);
 		
-        TTuple<UObject*, FVector2D> PaddleBeforeImageInfo = PaddleSelected->GetPaddleImageInfo();
+        TTuple<UObject*, FVector2D> PaddleBeforeImageInfo = PaddleBefore->GetPaddleImageInfo();
 		PaddleLeft->SetBrushFromTexture(Cast<UTexture2D>(PaddleBeforeImageInfo.Key));
 		PaddleLeft->SetDesiredSizeOverride(PaddleBeforeImageInfo.Value * .75);
 
@@ -158,7 +158,7 @@ void UHomeScreenWidget::DisplayPaddles(UPaddleToCollectWidget* PaddleSelected, U
 		PaddleRight->SetVisibility(ESlateVisibility::Visible);
 		RightArrowButton->SetVisibility(ESlateVisibility::Visible);
 		
-        TTuple<UObject*, FVector2D> PaddleAfterImageInfo = PaddleSelected->GetPaddleImageInfo();
+        TTuple<UObject*, FVector2D> PaddleAfterImageInfo = PaddleAfter->GetPaddleImageInfo();
 		PaddleRight->SetBrushFromTexture(Cast<UTexture2D>(PaddleAfterImageInfo.Key));
 		PaddleRight->SetDesiredSizeOverride(PaddleAfterImageInfo.Value * .75);
 	}
@@ -205,8 +205,7 @@ void UHomeScreenWidget::OnRightArrowClicked()
 
 void UHomeScreenWidget::OnLeaderboardButtonClicked()
 {
-	//Change category tag accordingly
-	//Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0))->ShowLeaderboard(FName("HS"));
+	Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0))->ShowLeaderboard(FName("HS"));
 }
 
 void UHomeScreenWidget::HandleChildClosed()

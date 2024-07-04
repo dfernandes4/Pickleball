@@ -151,6 +151,10 @@ void AMainPlayerController::HandlePurchaseCompletion(bool bWasSuccessful, const 
         {
             CoinsAmount = 1500;
         }
+        else if(OfferId == "")
+        {
+            // Set Removable ads to complete and save
+        }
         else
         {
             UE_LOG(LogTemp, Warning, TEXT("Offer Id is not valid."));
