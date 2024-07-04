@@ -26,7 +26,7 @@ public:
 	UFUNCTION()
 	void SetPaddleAttributes(bool bIsPaddleUnlocked);
 	
-	TTuple<UObject*, const FVector2D&> GetPaddleImageInfo();
+	TTuple<UObject*, FVector2D> GetPaddleImageInfo();
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Image", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UImage> CheckImage;

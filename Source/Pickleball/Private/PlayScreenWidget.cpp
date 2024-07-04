@@ -19,6 +19,8 @@ void UPlayScreenWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+    PauseButton->SetIsEnabled(false);
+    
 	MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
 
 	if(MainGamemode)
@@ -37,6 +39,12 @@ void UPlayScreenWidget::NativeConstruct()
 		if(PlayerPaddle != nullptr)
 		{
 			ScoreText->SetText(FText::FromString(FString::FromInt(PlayerPaddle->GetCurrentScore())));
+            PlayerPaddle->SetCurrentScore(0);
+            UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
+            if (GameInstance)
+            {
+                GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
+            }
 		}
 	}
 	UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
@@ -45,7 +53,14 @@ void UPlayScreenWidget::NativeConstruct()
 		SetRandomEnemyAttributes();
 	}
 	
-	PlayAnimation(HUDSlideInAnimation);	
+    PlayAnimation(HUDSlideInAnimation);
+    const float HUDAnimDuration = HUDSlideInAnimation->GetEndTime();
+    FTimerHandle HUDAnimTimerHandle;
+    
+    GetWorld()->GetTimerManager().SetTimer(HUDAnimTimerHandle, [this]()
+    {
+        PauseButton->SetIsEnabled(true);
+    }, HUDAnimDuration, false);
 }
 
 void UPlayScreenWidget::UpdateScore(int NewScore)

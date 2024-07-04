@@ -14,6 +14,9 @@
 #include "Engine/StaticMeshActor.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/StreamableManager.h"
+#include "Engine/AssetManager.h"
+#include "BackgroundFloor.h"
 
 
 // Sets default values
@@ -194,38 +197,65 @@ void AEnemyPaddle::IncrementForceMultiplier(int NewScore)
 
 void AEnemyPaddle::SetRandomEnemyAttributes()
 {
-	int32 RandomNumber = FMath::RandRange(1,10000);
-	
-	if(CurrentRow == 0)
-	{
-		if(RandomNumber != 10000)
-		{
-			CurrentRow = FMath::RandRange(1,15);
-		}
-		else
-			CurrentRow = 16;
-	} 
-		
-	FName CurrentRandomRowName = FName(*FString::Printf(TEXT("%d"), CurrentRow)); // Convert index to FName
+    int32 RandomNumber = FMath::RandRange(1, 10000);
 
-	if (EnemyAttributes != nullptr)
-	{
-		CurrentEnemyAttributes =  EnemyAttributes->FindRow<FEnemyAttributes>(CurrentRandomRowName, TEXT("LookupEnemyAttributes"));
-		if (CurrentEnemyAttributes)
-		{
-	
-			PaddleSprite->SetSprite(CurrentEnemyAttributes->PaddleSprite);
-			PaddleSoundEffect = CurrentEnemyAttributes->PaddleSoundEffect;
-		
-			TArray<AActor*> FoundActors;
-			UGameplayStatics::GetAllActorsOfClassWithTag(GetWorld(), AStaticMeshActor::StaticClass(), FName("Background"), FoundActors);
-			if(FoundActors.Num() > 0)
-			{
-				Cast<AStaticMeshActor>(FoundActors[0])->GetStaticMeshComponent()->SetMaterial(0, CurrentEnemyAttributes->BackgroundMaterial);
-			}
-		}
-	}
-	
+    if (CurrentRow == 0)
+    {
+        if (RandomNumber != 10000)
+        {
+            CurrentRow = FMath::RandRange(1, 15);
+        }
+        else
+        {
+            CurrentRow = 16;
+        }
+    }
+
+    FName CurrentRowName = FName(*FString::Printf(TEXT("%d"), CurrentRow)); // Convert index to FName
+
+    if (EnemyAttributesDataTable != nullptr)
+    {
+        CurrentEnemyAttributes = EnemyAttributesDataTable->FindRow<FEnemyAttributes>(CurrentRowName, TEXT("LookupEnemyAttributes"));
+        if (CurrentEnemyAttributes)
+        {
+            // Set sprite and sound effect
+            PaddleSprite->SetSprite(CurrentEnemyAttributes->PaddleSprite);
+            PaddleSoundEffect = CurrentEnemyAttributes->PaddleSoundEffect;
+
+            // Load material asynchronously
+            if (CurrentEnemyAttributes->BackgroundMaterial)
+            {
+                FSoftObjectPath MaterialPath = CurrentEnemyAttributes->BackgroundMaterial->GetPathName();
+                if (MaterialPath.IsValid())
+                {
+                    FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
+                    Streamable.RequestAsyncLoad(MaterialPath, FStreamableDelegate::CreateUObject(this, &AEnemyPaddle::OnMaterialLoaded, CurrentRowName));
+                }
+            }
+        }
+    }
+}
+
+void AEnemyPaddle::OnMaterialLoaded(FName RowName)
+{
+    UE_LOG(LogTemp, Warning, TEXT("Material Has Been Loaded"));
+    CurrentEnemyAttributes = EnemyAttributesDataTable->FindRow<FEnemyAttributes>(RowName, TEXT("OnMaterialLoaded"));
+    if (CurrentEnemyAttributes && CurrentEnemyAttributes->BackgroundMaterial)
+    {
+        UMaterial* LoadedMaterial = CurrentEnemyAttributes->BackgroundMaterial;
+        
+        TArray<AActor*> FoundActors;
+        UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Background"), FoundActors);
+
+        if (FoundActors.Num() > 0)
+        {
+            BackgroundFloor = Cast<ABackgroundFloor>(FoundActors[0]);
+            if(BackgroundFloor != nullptr)
+            {
+                BackgroundFloor->SetNewMaterial(LoadedMaterial);
+            }
+        }
+    }
 }
 
 void AEnemyPaddle::SetIsEnemiesTurn(bool bIsTurn)

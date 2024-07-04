@@ -34,8 +34,6 @@ ABall::ABall()
 
 	Speed = 100;
 
-	
-
 	CurrentBounceCount = 0;
 }
 
@@ -112,11 +110,11 @@ void ABall::ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor)
 void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
-	if(OtherActor->ActorHasTag("Court") || OtherActor->ActorHasTag("Background"))
+	if(OtherActor->ActorHasTag("Court") || OtherActor->ActorHasTag("Background") || OtherActor->ActorHasTag("Dark"))
 	{
 		CurrentBounceCount++;
 		// Each Bounce + 2 to the count ...?
-		if(CurrentBounceCount == 3)
+		if(CurrentBounceCount > 1)
 		{
 			MainGamemode->OnGameOver.Broadcast();
 		}

@@ -128,7 +128,7 @@ void UHomeScreenWidget::DisplayPaddles(UPaddleToCollectWidget* PaddleSelected, U
 	{
 		PaddleMiddle->SetVisibility(ESlateVisibility::Visible);
 		
-		TTuple<UObject*, const FVector2D&> PaddleSelectedImageInfo = PaddleSelected->GetPaddleImageInfo();
+		TTuple<UObject*, FVector2D> PaddleSelectedImageInfo = PaddleSelected->GetPaddleImageInfo();
 		PaddleMiddle->SetBrushFromTexture(Cast<UTexture2D>(PaddleSelectedImageInfo.Key));
 		PaddleMiddle->SetDesiredSizeOverride(PaddleSelectedImageInfo.Value * 2);
 	}
@@ -141,7 +141,7 @@ void UHomeScreenWidget::DisplayPaddles(UPaddleToCollectWidget* PaddleSelected, U
 	{
 		PaddleLeft->SetVisibility(ESlateVisibility::Visible);
 		
-		TTuple<UObject*, const FVector2D&> PaddleBeforeImageInfo = PaddleBefore->GetPaddleImageInfo();
+        TTuple<UObject*, FVector2D> PaddleBeforeImageInfo = PaddleSelected->GetPaddleImageInfo();
 		PaddleLeft->SetBrushFromTexture(Cast<UTexture2D>(PaddleBeforeImageInfo.Key));
 		PaddleLeft->SetDesiredSizeOverride(PaddleBeforeImageInfo.Value * .75);
 
@@ -158,7 +158,7 @@ void UHomeScreenWidget::DisplayPaddles(UPaddleToCollectWidget* PaddleSelected, U
 		PaddleRight->SetVisibility(ESlateVisibility::Visible);
 		RightArrowButton->SetVisibility(ESlateVisibility::Visible);
 		
-		TTuple<UObject*, const FVector2D&> PaddleAfterImageInfo = PaddleAfter->GetPaddleImageInfo();
+        TTuple<UObject*, FVector2D> PaddleAfterImageInfo = PaddleSelected->GetPaddleImageInfo();
 		PaddleRight->SetBrushFromTexture(Cast<UTexture2D>(PaddleAfterImageInfo.Key));
 		PaddleRight->SetDesiredSizeOverride(PaddleAfterImageInfo.Value * .75);
 	}

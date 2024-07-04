@@ -20,12 +20,12 @@ struct FPlayerData
             {FName("Red"), false},
             {FName("Yellow"), false},
             {FName("Blue"), false},
-            {FName("Polka"), false},
             {FName("Pride"), false},
             // Rare
             {FName("Webbed"), false},
             {FName("Camo"), false},
-            {FName("Lightning"), false},
+            {FName("Smiley"), false},
+            {FName("Grumpy"), false},
             {FName("The_Patriot"), false},
             {FName("Pizza"), false},
             // Epic

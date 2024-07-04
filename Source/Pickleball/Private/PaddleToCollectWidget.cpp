@@ -57,12 +57,12 @@ void UPaddleToCollectWidget::SetPaddleAttributes(bool bIsPaddleUnlocked)
 	}
 }
 
-TTuple<UObject*, const FVector2D&> UPaddleToCollectWidget::GetPaddleImageInfo()
+TTuple<UObject*, FVector2D> UPaddleToCollectWidget::GetPaddleImageInfo()
 {
 	FButtonStyle ButtonStyle = PaddleToCollectBtn->GetStyle();
 	FVector2D ImageSize = ButtonStyle.Normal.GetImageSize();
 	UObject* ResourceObject = ButtonStyle.Normal.GetResourceObject();
 	
-	return TTuple<UObject*, const FVector2D&>(ResourceObject, ImageSize);
+	return TTuple<UObject*, FVector2D>(ResourceObject, ImageSize);
 }
 

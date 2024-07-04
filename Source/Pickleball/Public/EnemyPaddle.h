@@ -56,6 +56,9 @@ public:
 
 	UFUNCTION()
 	void AdjustEnemySpeed(const FVector& BallVelocity, const FVector& HittingLocation);
+    
+    UFUNCTION()
+    void OnMaterialLoaded(FName RowName);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	UFloatingPawnMovement* MovementComponent;
@@ -66,8 +69,8 @@ public:
 	FEnemyAttributes* CurrentEnemyAttributes;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
-	UDataTable* EnemyAttributes;
-	
+	UDataTable* EnemyAttributesDataTable;
+
 private:
 
 	// With current equations max is 5.5x
@@ -85,4 +88,9 @@ private:
 
 	UPROPERTY()
 	UPickleBallGameInstance* PickleBallGameInstance;
+    
+    TArray<UMaterial*> CachedMaterials;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scene", meta = (AllowPrivateAccess = "true"))
+    ABackgroundFloor* BackgroundFloor;
 };

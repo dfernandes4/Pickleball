@@ -10,8 +10,20 @@
  * 
  */
 UCLASS()
-class PICKLEBALL_API ABackgroundFloor : public AStaticMeshActor
+class PICKLEBALL_API ABackgroundFloor : public AActor
 {
 	GENERATED_BODY()
 	
+public:
+    
+    ABackgroundFloor();
+    
+    UFUNCTION()
+    void SetNewMaterial(UMaterial* NewMaterial);
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+    USceneComponent* SceneComponent;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
+    UStaticMeshComponent* StaticMeshComponent;
 };
