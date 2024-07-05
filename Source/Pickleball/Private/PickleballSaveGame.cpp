@@ -6,4 +6,5 @@
 UPickleballSaveGame::UPickleballSaveGame() : PlayerData()
 {
 	EnemyLastRow = 10;
+    bAreAdsEnabled = true;
 }

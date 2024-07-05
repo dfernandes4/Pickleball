@@ -24,4 +24,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SaveData)
 	int32 EnemyLastRow;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SaveData)
+    bool bAreAdsEnabled;
 };

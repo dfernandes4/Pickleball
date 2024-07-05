@@ -20,6 +20,7 @@ UPickleBallGameInstance::UPickleBallGameInstance()
     RetryCount = 0;
     MaxRetries = 3;
     RetryDelay = .2f;
+    CurrentGameCount = 0;
 }
 
 void UPickleBallGameInstance::Init()
@@ -57,6 +58,7 @@ void UPickleBallGameInstance::LoadGameData()
                 SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
                 if(SaveGame)
                 {
+                    SaveGame->PlayerData.PlayersLastScore = 0;
                     bIsGameLoaded = true;
                     LoadFinished.Broadcast();
                 }
@@ -98,6 +100,7 @@ void UPickleBallGameInstance::SaveGameData()
     TArray<uint8> SaveData;
     if (UGameplayStatics::SaveGameToMemory(SaveGame, SaveData))
     {
+        UGameplayStatics::SaveDataToSlot(SaveData, SlotName, 0);
         // Save the byte array to a local file
         FString LocalSavePath = FString::Printf(TEXT("%sSaveGames/%s.sav"), *FPaths::ProjectSavedDir(), TEXT("file"));
         if (FFileHelper::SaveArrayToFile(SaveData, *LocalSavePath))
@@ -131,6 +134,11 @@ FPlayerData UPickleBallGameInstance::GetSaveGamePlayerData()
     }
 }
 
+void UPickleBallGameInstance::RewardFinishedComplete() const
+{
+    RewardFinished.Broadcast();
+}
+
 void UPickleBallGameInstance::SavePlayerData(FPlayerData PlayerData)
 {
 	SaveGame->PlayerData = PlayerData;
@@ -141,6 +149,16 @@ void UPickleBallGameInstance::SaveCurrentEnemyRow(int32 EnemyRow)
 {
 	SaveGame->EnemyLastRow = EnemyRow;
 	SaveGameData();
+}
+
+int32 UPickleBallGameInstance::GetCurrentGameCount() const
+{
+    return CurrentGameCount;
+}
+
+void UPickleBallGameInstance::IncrementCurrentGameCount()
+{
+    CurrentGameCount++;
 }
 
 bool UPickleBallGameInstance::GetIsFirstTimePlaying() const
@@ -179,4 +197,17 @@ int32 UPickleBallGameInstance::GetSaveGameEnemyRow()
 bool UPickleBallGameInstance::GetShouldLaunchStarterScreen() const
 {
 	return bShouldLaunchStarterScreen;
+}
+
+void UPickleBallGameInstance::RemoveAds()
+{
+    SaveGame->bAreAdsEnabled = false;
+    SaveGameData();
+
+    AdsRemoved.Broadcast();
+}
+
+bool UPickleBallGameInstance::AreAdsEnabled() const
+{
+    return SaveGame->bAreAdsEnabled;
 }

@@ -194,6 +194,7 @@ void UHomeScreenWidget::OnLeftArrowClicked()
 	CollectionWidget->SelectNewPaddle(CollectionWidget->CollectedPaddles[CollectionWidget->CollectedPaddles.Find(CollectionWidget->CurrentPaddleToCollectWidgetSelected) - 1]);
 	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	PlayerPaddle->OnPaddleSelected(*CollectionWidget->CurrentPaddleToCollectWidgetSelected->GetName());
+    UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 }
 
 void UHomeScreenWidget::OnRightArrowClicked()
@@ -201,6 +202,7 @@ void UHomeScreenWidget::OnRightArrowClicked()
 	CollectionWidget->SelectNewPaddle(CollectionWidget->CollectedPaddles[CollectionWidget->CollectedPaddles.Find(CollectionWidget->CurrentPaddleToCollectWidgetSelected) + 1]);
 	APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	PlayerPaddle->OnPaddleSelected(*CollectionWidget->CurrentPaddleToCollectWidgetSelected->GetName());
+    UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
 }
 
 void UHomeScreenWidget::OnLeaderboardButtonClicked()

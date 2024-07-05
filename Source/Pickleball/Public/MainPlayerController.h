@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "Interfaces/OnlineStoreInterfaceV2.h"
+#include "Interfaces/OnlinePurchaseInterface.h"
 #include "MainPlayerController.generated.h"
 
 
@@ -28,9 +29,10 @@ public:
 	UFUNCTION()
 	FVector GetPaddleVelocity() const;
 
-	UFUNCTION()
-	void InitiatePurchaseRequest(const FString& ProductId);
-	void HandlePurchaseCompletion(bool bWasSuccessful, const TArray<FUniqueOfferId>& Offers, const FString& ErrorMsg);
+    // Function to initiate a purchase request
+    UFUNCTION(BlueprintCallable, Category = "In-App Purchases")
+    void InitiatePurchaseRequest(const FString& ProductId);
+    
 	UFUNCTION()
 	void LoginToGameCenter();
 	void OnLoginComplete(int32 LocalUserNum, bool bWasSuccessful, const FUniqueNetId& UserId, const FString& Error);
@@ -41,7 +43,7 @@ public:
 
 	UFUNCTION()
 	void OnGameOver();
-	
+
 	FOnPurchaseCompletedDelegate  OnPurchaseCompleted;
 	FOnFirstTouchDelegate OnFirstTouch;
 	FDelegateHandle DelegateHandle;
@@ -57,6 +59,16 @@ protected:
 	void OnTouchMoved(const ETouchIndex::Type FingerIndex, const FVector Location);
 
 private:
+    
+    // Callback for when the offer query is complete
+    void OnQueryOffersComplete(bool bWasSuccessful, const TArray<FUniqueOfferId>& Offers, const FString& ErrorMsg);
+
+    // Function to initiate the purchase of an offer
+    void PurchaseOffer(FOnlineStoreOfferRef Offer);
+
+    // Callback for when the purchase is complete
+    void HandlePurchaseCompletion(const FOnlineError& Result, const TArray<FPurchaseReceipt>& Receipts);
+    
 	bool bIsTouching = false;
 	FVector2D InitialTouchLocation;
 	FVector2D TouchLocation;

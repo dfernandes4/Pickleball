@@ -27,6 +27,7 @@ APlayerPaddle::APlayerPaddle()
 	CoinsEarnedFromLastMatch = 0;
 	HighScore = 0;
 	CurrentScore = 0;
+    LastScore = 0;
 	PaddleUnlockStatuses = {
 		// Common
 		{FName("Green"), true},
@@ -183,11 +184,14 @@ void APlayerPaddle::OnGameOver()
 	{
 		HighScore = CurrentScore;
 	}
-
+    
+    int32 LastHundredsCount = FMath::FloorToInt(LastScore / 100.f);
+    int32 LastThousandsCount = FMath::FloorToInt(LastScore / 1000.f);
+    
 	int32 HundredsCount = FMath::FloorToInt(CurrentScore / 100.f);
 	int32 ThousandsCount = FMath::FloorToInt(CurrentScore / 1000.f);
 	
-	CoinsEarnedFromLastMatch = CoinMultiplier * (FMath::Floor(CurrentScore / 2) + (HundredsCount * 10) + (ThousandsCount * 150));
+	CoinsEarnedFromLastMatch = CoinMultiplier * (FMath::Floor((CurrentScore-LastScore) / 4) + ((HundredsCount-LastHundredsCount) * 10) + ((ThousandsCount-LastThousandsCount) * 100));
 	CurrentCoinCount += CoinsEarnedFromLastMatch;
 	
 	SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
@@ -315,7 +319,8 @@ void APlayerPaddle::OnGameLoaded()
     {
         FPlayerData PlayerData = SaveGameInterface->GetSaveGamePlayerData();
 
-        CurrentScore = PlayerData.PlayersLastScore;
+        LastScore = PlayerData.PlayersLastScore;
+        CurrentScore += LastScore;
         CurrentCoinCount = PlayerData.PlayerCoins;
         HighScore = PlayerData.PlayerHighScore;
         PaddleUnlockStatuses = PlayerData.PaddleUnlockStatuses;
@@ -383,6 +388,8 @@ void APlayerPaddle::AddCoins(int32 CoinsToAdd)
 {
 	CurrentCoinCount += CoinsToAdd;
 	SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+    
+    MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 }
 
 int32 APlayerPaddle::GetCurrentScore() const

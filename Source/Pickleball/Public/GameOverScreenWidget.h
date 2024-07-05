@@ -34,6 +34,9 @@ virtual void NativeConstruct() override;
 
 	UFUNCTION()
 	void DisplayPlayerValues();
+    
+    UFUNCTION(BlueprintCallable)
+    void OnUserFinishedRewardAd();
 
 private:
 
@@ -80,5 +83,7 @@ private:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class AEnemyPaddle* EnemyPaddle;
 
+    UPROPERTY()
+    bool bIs2xAd;
 	
 };

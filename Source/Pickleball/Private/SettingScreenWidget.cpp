@@ -59,6 +59,17 @@ void USettingScreenWidget::NativeConstruct()
 	// if home is active or not in game then this button is active if not then it is disabled
 	AMainGamemode* MainGamemode = Cast<AMainGamemode>(UGameplayStatics::GetGameMode(GetWorld()));
 	MainGamemode->bIsGameActive ? HowToPlayButton->SetIsEnabled(false) : HowToPlayButton->SetIsEnabled(true);
+    
+    UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
+    if(PickleBallGameInstance != nullptr)
+    {
+        if(!PickleBallGameInstance->AreAdsEnabled())
+        {
+            RemoveAdsButton->SetIsEnabled(false);
+            RestorePurchasesButton->SetIsEnabled(false);
+        }
+        PickleBallGameInstance->AdsRemoved.AddDynamic(this, &USettingScreenWidget::OnAdsRemoved);
+    }
 }
 	
 void USettingScreenWidget::OnHowToPlayButtonClicked()
@@ -71,8 +82,7 @@ void USettingScreenWidget::OnHowToPlayButtonClicked()
 
 void USettingScreenWidget::OnRemoveAdsButtonClicked()
 {
-	RemoveAdsButton->SetIsEnabled(false);
-	Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0))->InitiatePurchaseRequest("");
+	Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0))->InitiatePurchaseRequest("RemoveAds");
 }
 
 void USettingScreenWidget::OnBackButtonClicked()
@@ -104,4 +114,9 @@ void USettingScreenWidget::OnMusicVolumeChanged(float NewVolume)
 	{
 		MusicSoundClass->Properties.Volume = NewVolume;
 	}
+}
+
+void USettingScreenWidget::OnAdsRemoved()
+{
+    RemoveAdsButton->SetIsEnabled(false);
 }

@@ -8,7 +8,7 @@ public class Pickleball : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "Paper2D", "AIModule", "UMG", "AudioMixer", "OnlineSubsystem", "Niagara", "Slate", "SlateCore", "AssetRegistry"});
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "Paper2D", "AIModule", "UMG", "AudioMixer", "OnlineSubsystem", "Niagara", "Slate", "SlateCore", "AssetRegistry", "OnlineSubsystemUtils"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 		
@@ -17,7 +17,7 @@ public class Pickleball : ModuleRules
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 		
-        PrivateDependencyModuleNames.Add("OnlineSubsystem");
+        PrivateDependencyModuleNames.Add("OnlineSubsystemUtils");
 
 		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
 	}

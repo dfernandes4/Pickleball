@@ -6,6 +6,7 @@
 #include "Interfaces/OnlineExternalUIInterface.h"
 #include "OnlineSubsystem.h"
 #include "GameFramework/Pawn.h"
+#include "OnlineError.h" 
 
 
 
@@ -95,7 +96,7 @@ FVector AMainPlayerController::GetPaddleVelocity() const
     return PaddleVelocity;
 }
 
- void AMainPlayerController::InitiatePurchaseRequest(const FString& ProductId)
+void AMainPlayerController::InitiatePurchaseRequest(const FString& ProductId)
 {
     IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
     if (OnlineSub)
@@ -121,50 +122,103 @@ FVector AMainPlayerController::GetPaddleVelocity() const
 
             TArray<FUniqueOfferId> OfferIds;
             OfferIds.Add(FUniqueOfferId(ProductId));
-            FOnQueryOnlineStoreOffersComplete OnQueryCompleteDelegate = FOnQueryOnlineStoreOffersComplete::CreateUObject(this, &AMainPlayerController::HandlePurchaseCompletion);
-            // Trigger the purchase
+            FOnQueryOnlineStoreOffersComplete OnQueryCompleteDelegate = FOnQueryOnlineStoreOffersComplete::CreateUObject(this, &AMainPlayerController::OnQueryOffersComplete);
+            // Trigger the offer query
             StoreInterface->QueryOffersById(*UserId, OfferIds, OnQueryCompleteDelegate);
         }
     }
 }
 
-void AMainPlayerController::HandlePurchaseCompletion(bool bWasSuccessful, const TArray<FUniqueOfferId>& Offers, const FString& ErrorMsg)
+void AMainPlayerController::OnQueryOffersComplete(bool bWasSuccessful, const TArray<FUniqueOfferId>& Offers, const FString& ErrorMsg)
 {
     if (bWasSuccessful && Offers.Num() > 0)
     {
-        // Reward the player for that purchase
-        const FString& OfferId = Offers[0];
-        int32 CoinsAmount = 0;
-        if(OfferId == "")
-        {
-            CoinsAmount = 200;
-        }
-        else if(OfferId == "")
-        {
-            CoinsAmount = 400;
-        }
-        else if(OfferId == "")
-        {
-            CoinsAmount = 650;
-        }
-        else if(OfferId == "")
-        {
-            CoinsAmount = 1500;
-        }
-        else if(OfferId == "")
-        {
-            // Set Removable ads to complete and save
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("Offer Id is not valid."));
-            return;
-        }
-        OnPurchaseCompleted.Broadcast(CoinsAmount);
+        UE_LOG(LogTemp, Log, TEXT("Successfully retrieved offers."));
+        
+
+        // Assuming we want to purchase the first offer
+        //PurchaseOffer(Offers[0]);
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("Purchase failed: %s"), *ErrorMsg);
+        UE_LOG(LogTemp, Error, TEXT("Failed to retrieve offers or no offers available."));
+    }
+}
+
+void AMainPlayerController::PurchaseOffer(FOnlineStoreOfferRef Offer)
+{
+    IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
+    if (OnlineSub)
+    {
+        IOnlinePurchasePtr PurchaseInterface = OnlineSub->GetPurchaseInterface();
+        if (PurchaseInterface.IsValid())
+        {
+            // Get the identity interface to obtain the user ID
+            IOnlineIdentityPtr IdentityInterface = OnlineSub->GetIdentityInterface();
+            if (!IdentityInterface.IsValid())
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Identity interface not available"));
+                return;
+            }
+
+            // Obtain the user ID
+            FUniqueNetIdPtr UserId = IdentityInterface->GetUniquePlayerId(0); // Assuming the first local player
+            if (!UserId.IsValid())
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Failed to get valid user ID"));
+                return;
+            }
+
+            FPurchaseCheckoutRequest CheckoutRequest;
+            CheckoutRequest.AddPurchaseOffer(Offer->OfferId, FString("1"), 0);
+
+            //FOnPurchaseCheckoutComplete OnPurchaseCompleteDelegate = FOnPurchaseCheckoutComplete::CreateUObject(this, &AMainPlayerController::HandlePurchaseCompletion);
+            // Trigger the purchase
+            //PurchaseInterface->Checkout(*UserId, CheckoutRequest, OnPurchaseCompleteDelegate);
+        }
+    }
+}
+
+void AMainPlayerController::HandlePurchaseCompletion(const FOnlineError& Result, const TArray<FPurchaseReceipt>& Receipts)
+{
+    if (Result.WasSuccessful() && Receipts.Num() > 0)
+    {
+        UE_LOG(LogTemp, Log, TEXT("Purchase successful. Product ID: %s"), *Receipts[0].TransactionId);
+
+        const FString& ProductId = Receipts[0].TransactionId;
+        int32 CoinsAmount = 0;
+
+        if(ProductId == "SomeGold")
+        {
+            CoinsAmount = 200;
+        }
+        else if(ProductId == "FistoGold")
+        {
+            CoinsAmount = 400;
+        }
+        else if(ProductId == "LotsoGold")
+        {
+            CoinsAmount = 650;
+        }
+        else if(ProductId == "PilesoGold")
+        {
+            CoinsAmount = 1500;
+        }
+        else if(ProductId == "RemoveAds")
+        {
+            UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
+            if(PickleBallGameInstance != nullptr)
+            {
+                PickleBallGameInstance->RemoveAds();
+            }
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Product Id is not valid."));
+            return;
+        }
+
+        OnPurchaseCompleted.Broadcast(CoinsAmount);
     }
 }
 

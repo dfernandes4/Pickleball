@@ -39,12 +39,6 @@ void UPlayScreenWidget::NativeConstruct()
 		if(PlayerPaddle != nullptr)
 		{
 			ScoreText->SetText(FText::FromString(FString::FromInt(PlayerPaddle->GetCurrentScore())));
-            PlayerPaddle->SetCurrentScore(0);
-            UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
-            if (GameInstance)
-            {
-                GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
-            }
 		}
 	}
 	UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));

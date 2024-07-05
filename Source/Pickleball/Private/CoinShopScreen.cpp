@@ -31,7 +31,6 @@ void UCoinShopScreen::NativeConstruct()
 	{
 		LotsOGoldButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnLotsOGoldButtonPressed);
 	}
-
 	if(PilesOGoldButton != nullptr)
 	{
 		PilesOGoldButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnPilesOGoldButtonPressed);
@@ -42,7 +41,6 @@ void UCoinShopScreen::NativeConstruct()
 	{
 		MainPlayerController->OnPurchaseCompleted.AddDynamic(this, &UCoinShopScreen::OnPuchaseCompleted);
 	}
-	
 }
 
 
@@ -55,29 +53,25 @@ void UCoinShopScreen::OnBackButtonPressed()
 
 void UCoinShopScreen::OnSomeGoldButtonPressed()
 {
-	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("");
+	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("SomeGold");
 }
 
 void UCoinShopScreen::OnFistOGoldButtonPressed()
 {
-	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("");
+	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("FistoGold");
 }
 
 void UCoinShopScreen::OnLotsOGoldButtonPressed()
 {
-	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("");
+	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("LotsoGold");
 }
 
 void UCoinShopScreen::OnPilesOGoldButtonPressed()
 {
-	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("");
+	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("PilesoGold");
 }
 
 void UCoinShopScreen::OnPuchaseCompleted(int32 CoinsAmount)
 {
 	UGameplayStatics::PlaySound2D(GetWorld(),CoinPurchasedSound);
 }
-
-
-
-

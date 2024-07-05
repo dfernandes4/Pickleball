@@ -41,6 +41,15 @@ void UGameOverScreenWidget::NativeConstruct()
 	EnemyPaddle = Cast<AEnemyPaddle>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyPaddle::StaticClass()));
 	PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	DisplayPlayerValues();
+    
+    bIs2xAd = false;
+    
+    UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
+    if(GameInstance)
+    {
+        GameInstance->RewardFinished.AddDynamic(this, &UGameOverScreenWidget::OnUserFinishedRewardAd);
+    }
+    
 }
 
 void UGameOverScreenWidget::OnReplayButtonClicked()
@@ -64,6 +73,8 @@ void UGameOverScreenWidget::OnReplayButtonClicked()
 
 void UGameOverScreenWidget::OnHomeButtonClicked()
 {
+    UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+    
     // Ensure player paddle and enemy paddle data are valid before accessing them
     if (PlayerPaddle && EnemyPaddle)
     {
@@ -91,26 +102,24 @@ void UGameOverScreenWidget::OnHomeButtonClicked()
 
 void UGameOverScreenWidget::OnWatchAdd2xCoinsButtonClicked()
 {
-	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
-
-	// Create Timer, after ad then do this
-	PlayerPaddle->AddCoins(PlayerPaddle->GetCoinsEarnedFromLastMatch());
-	UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
-	GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
-	
-	// Need to make this a one time use per match, turn grey after used
+    bIs2xAd = true;
+    UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+    UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
+    if(GameInstance)
+    {
+        GameInstance->OnAdButtonPressed.Broadcast();
+    }
 }
 
 void UGameOverScreenWidget::OnWatchAddContinueButtonClicked()
 {
-	// Create Timer, after ad then do all this
-	
-	ISaveGameInterface* SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
-	SaveGameInterface->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
-	
-	UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
-	
-	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+    bIs2xAd = false;
+    UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
+    UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
+    if(GameInstance)
+    {
+        GameInstance->OnAdButtonPressed.Broadcast();
+    }
 }
 
 void UGameOverScreenWidget::HandleChildClosed()
@@ -139,5 +148,18 @@ void UGameOverScreenWidget::DisplayPlayerValues()
 	}
 }
 
-
+void UGameOverScreenWidget::OnUserFinishedRewardAd()
+{
+    UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
+    if(bIs2xAd)
+    {
+        PlayerPaddle->AddCoins(PlayerPaddle->GetCoinsEarnedFromLastMatch());
+        GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
+    }
+    else
+    {
+        GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
+    }
+    UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+}
 

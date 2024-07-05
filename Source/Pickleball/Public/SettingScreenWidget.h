@@ -30,6 +30,9 @@ public:
 	
 	UFUNCTION()
 	void OnBackButtonClicked();
+    
+    UFUNCTION()
+    void OnAdsRemoved();
 
 	UPROPERTY()
 	FOnSettingsClosedDelegate OnSettingsClosed;
@@ -73,6 +76,9 @@ private:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UButton> RemoveAdsButton;
+    
+    UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UButton> RestorePurchasesButton;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UBackgroundBlur> BackgroundBlur;

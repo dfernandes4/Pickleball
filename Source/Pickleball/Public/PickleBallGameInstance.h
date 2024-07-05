@@ -9,6 +9,9 @@
 #include "PickleBallGameInstance.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLoadFinishedDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAdsRemovedDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAdButtonPressed);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRewardFinished);
 
 class UHomeScreenWidget;
 /**
@@ -31,8 +34,12 @@ public:
 	virtual FPlayerData GetSaveGamePlayerData() override;
 	virtual void SavePlayerData(FPlayerData PlayerData) override;
 	virtual void SaveCurrentEnemyRow(int32 EnemyRow) override;
+    UFUNCTION(BlueprintCallable)
+    int32 GetCurrentGameCount() const;
+    UFUNCTION(BlueprintCallable)
+    void IncrementCurrentGameCount();
 	
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	bool GetIsFirstTimePlaying() const;
 	UFUNCTION()
 	bool GetShouldLaunchStarterScreen() const;
@@ -47,12 +54,29 @@ public:
 	void SetIsFirstTimePlayingInSession(bool bIsFirstTimePlayingInSessionIn);
     UFUNCTION()
     bool GetIsGameLoaded() const;
+    UFUNCTION(BlueprintCallable)
+    void RewardFinishedComplete() const;
     
 	UFUNCTION()
 	int32 GetSaveGameEnemyRow();
+    
+    UFUNCTION(BlueprintCallable)
+    void RemoveAds();
+    
+    UFUNCTION(BlueprintCallable)
+    bool AreAdsEnabled() const;
 	
 	UPROPERTY()
 	FLoadFinishedDelegate LoadFinished;
+    
+    UPROPERTY(BlueprintAssignable, Category = "Events")
+    FOnAdsRemovedDelegate AdsRemoved;
+    
+    UPROPERTY(BlueprintAssignable, Category = "Events")
+    FOnAdButtonPressed OnAdButtonPressed;
+    
+    UPROPERTY(BlueprintAssignable, Category = "Events")
+    FOnRewardFinished RewardFinished;
 	
 private:
 
@@ -77,4 +101,6 @@ private:
 	int32 RetryCount;
 	int32 MaxRetries;
 	float RetryDelay;
+    
+    int32 CurrentGameCount;
 };
