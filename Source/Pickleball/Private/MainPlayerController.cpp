@@ -7,7 +7,7 @@
 #include "OnlineSubsystem.h"
 #include "GameFramework/Pawn.h"
 #include "OnlineError.h" 
-
+#include "PickleBallGameInstance.h"
 
 
 AMainPlayerController::AMainPlayerController()
@@ -135,13 +135,26 @@ void AMainPlayerController::OnQueryOffersComplete(bool bWasSuccessful, const TAr
     {
         UE_LOG(LogTemp, Log, TEXT("Successfully retrieved offers."));
         
-
-        // Assuming we want to purchase the first offer
-        //PurchaseOffer(Offers[0]);
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to retrieve offers or no offers available."));
+        IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
+        if (OnlineSub)
+        {
+            IOnlineStoreV2Ptr StoreInterface = OnlineSub->GetStoreV2Interface();
+            if (StoreInterface.IsValid())
+            {
+                TSharedPtr<FOnlineStoreOffer> OfferPtr = StoreInterface->GetOffer(Offers[0]);
+                // Check if OfferPtr is valid
+                if (OfferPtr.IsValid())
+                {
+                    // Convert TSharedPtr to TSharedRef
+                    TSharedRef<FOnlineStoreOffer> OfferRef = OfferPtr.ToSharedRef();
+                    PurchaseOffer(OfferRef);
+                }
+            }
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("Failed to retrieve offers or no offers available."));
+        }
     }
 }
 
@@ -172,20 +185,18 @@ void AMainPlayerController::PurchaseOffer(FOnlineStoreOfferRef Offer)
             FPurchaseCheckoutRequest CheckoutRequest;
             CheckoutRequest.AddPurchaseOffer(Offer->OfferId, FString("1"), 0);
 
-            //FOnPurchaseCheckoutComplete OnPurchaseCompleteDelegate = FOnPurchaseCheckoutComplete::CreateUObject(this, &AMainPlayerController::HandlePurchaseCompletion);
+            FOnPurchaseCheckoutComplete OnPurchaseCompleteDelegate = FOnPurchaseCheckoutComplete::CreateUObject(this, &AMainPlayerController::HandlePurchaseCompletion);
             // Trigger the purchase
-            //PurchaseInterface->Checkout(*UserId, CheckoutRequest, OnPurchaseCompleteDelegate);
+            PurchaseInterface->Checkout(*UserId, CheckoutRequest, OnPurchaseCompleteDelegate);
         }
     }
 }
 
-void AMainPlayerController::HandlePurchaseCompletion(const FOnlineError& Result, const TArray<FPurchaseReceipt>& Receipts)
+void AMainPlayerController::HandlePurchaseCompletion(const FOnlineError& Result, const TSharedRef<FPurchaseReceipt>& PurchaseReceipt)
 {
-    if (Result.WasSuccessful() && Receipts.Num() > 0)
+    if (Result.WasSuccessful())
     {
-        UE_LOG(LogTemp, Log, TEXT("Purchase successful. Product ID: %s"), *Receipts[0].TransactionId);
-
-        const FString& ProductId = Receipts[0].TransactionId;
+        const FString& ProductId = PurchaseReceipt.Get().TransactionId;
         int32 CoinsAmount = 0;
 
         if(ProductId == "SomeGold")

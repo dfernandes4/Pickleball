@@ -62,12 +62,12 @@ private:
     
     // Callback for when the offer query is complete
     void OnQueryOffersComplete(bool bWasSuccessful, const TArray<FUniqueOfferId>& Offers, const FString& ErrorMsg);
-
+	
     // Function to initiate the purchase of an offer
     void PurchaseOffer(FOnlineStoreOfferRef Offer);
 
     // Callback for when the purchase is complete
-    void HandlePurchaseCompletion(const FOnlineError& Result, const TArray<FPurchaseReceipt>& Receipts);
+    void HandlePurchaseCompletion(const FOnlineError& Result, const TSharedRef<FPurchaseReceipt>& PurchaseReceipt);
     
 	bool bIsTouching = false;
 	FVector2D InitialTouchLocation;
