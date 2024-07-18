@@ -92,5 +92,5 @@ private:
     TArray<UMaterial*> CachedMaterials;
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scene", meta = (AllowPrivateAccess = "true"))
-    ABackgroundFloor* BackgroundFloor;
+    class ABackgroundFloor* BackgroundFloor;
 };

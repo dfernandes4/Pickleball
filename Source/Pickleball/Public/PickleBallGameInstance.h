@@ -41,7 +41,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	bool GetIsFirstTimePlaying() const;
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	bool GetShouldLaunchStarterScreen() const;
 	UFUNCTION()
 	void SetShouldLaunchStarterScreen(bool bIShouldLaunchStarterScreenIn);

@@ -11,6 +11,7 @@
 #include "Components/TextBlock.h"
 #include "TimerManager.h"
 #include "Sound/SoundBase.h"
+#include "UserWidgetLoader.h"
 
 void UGameOverScreenWidget::NativeConstruct()
 {
@@ -153,13 +154,33 @@ void UGameOverScreenWidget::OnUserFinishedRewardAd()
     UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
     if(bIs2xAd)
     {
-        PlayerPaddle->AddCoins(PlayerPaddle->GetCoinsEarnedFromLastMatch());
-        GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
+        if (PlayerPaddle && EnemyPaddle)
+        {
+            PlayerPaddle->AddCoins(PlayerPaddle->GetCoinsEarnedFromLastMatch());
+            PlayerPaddle->SetCurrentScore(0);
+            EnemyPaddle->SetCurrentRow(0);
+            
+            // Save player and enemy data
+            if (GameInstance)
+            {
+                GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
+                GameInstance->SaveCurrentEnemyRow(0);
+                GameInstance->SetShouldLaunchStarterScreen(true);
+                UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+            }
+        }
     }
     else
     {
+        const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+        
+        WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
         GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
+        FTimerHandle LoadDelayHandle;
+        GetWorld()->GetTimerManager().SetTimer(LoadDelayHandle, [this]()
+        {
+            UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+        }, 1.4f, false);
     }
-    UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
 }
 
