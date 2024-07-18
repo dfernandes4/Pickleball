@@ -317,6 +317,40 @@ void AMainPlayerController::ShowLeaderboard(FName CategoryName)
     }
 }
 
+void AMainPlayerController::SubmitHighscore(int32 Score, FName CategoryName)
+{
+    if (IsLoggedInToGameCenter())
+    {
+        IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get();
+        if (OnlineSub)
+        {
+            IOnlineLeaderboardsPtr LeaderboardsInterface = OnlineSub->GetLeaderboardsInterface();
+            if (LeaderboardsInterface.IsValid())
+            {
+                // Create a leaderboard score object
+                FOnlineLeaderboardWrite WriteObject;
+                WriteObject.LeaderboardName = CategoryName.ToString();
+                WriteObject.SetIntStat(TEXT("Score"), Score);
+                
+                // Submit the score to the leaderboard
+                LeaderboardsInterface->WriteLeaderboardIntegerData(CategoryName, WriteObject, WriteCompleteDelegate);
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Leaderboards interface is not valid"));
+            }
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("OnlineSubsystem is not available"));
+        }
+    }
+    else
+    {
+        LoginToGameCenter(); // Ensure the player is logged in before submitting scores
+    }
+}
+
 bool AMainPlayerController::IsLoggedInToGameCenter()
 {
     IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
