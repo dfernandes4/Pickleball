@@ -182,8 +182,14 @@ void AMainPlayerController::PurchaseOffer(FOnlineStoreOfferRef Offer)
                 return;
             }
 
+            bool bIsConsumable = false;
+            if (Offer->DynamicFields.Contains("isConsumable"))
+            {
+                bIsConsumable = Offer->DynamicFields["isConsumable"].ToBool();
+            }
+            
             FPurchaseCheckoutRequest CheckoutRequest;
-            CheckoutRequest.AddPurchaseOffer(Offer->OfferId, FString("1"), 0);
+            CheckoutRequest.AddPurchaseOffer("", Offer->OfferId, 1, bIsConsumable);
 
             FOnPurchaseCheckoutComplete OnPurchaseCompleteDelegate = FOnPurchaseCheckoutComplete::CreateUObject(this, &AMainPlayerController::HandlePurchaseCompletion);
             // Trigger the purchase
