@@ -5,9 +5,12 @@
 #include "Interfaces/OnlineIdentityInterface.h"
 #include "Interfaces/OnlineExternalUIInterface.h"
 #include "OnlineSubsystem.h"
+#include "Interfaces/OnlineLeaderboardInterface.h"
+#include "OnlineStats.h"
 #include "GameFramework/Pawn.h"
 #include "OnlineError.h" 
 #include "PickleBallGameInstance.h"
+#include "GameFramework/PlayerState.h"
 
 
 AMainPlayerController::AMainPlayerController()
@@ -319,35 +322,52 @@ void AMainPlayerController::ShowLeaderboard(FName CategoryName)
 
 void AMainPlayerController::SubmitHighscore(int32 Score, FName CategoryName)
 {
-    if (IsLoggedInToGameCenter())
+    if (PlayerState != nullptr)
     {
-        IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get();
-        if (OnlineSub)
+        FUniqueNetIdRepl UserId = PlayerState->GetUniqueId();
+        if (UserId.IsValid())
         {
-            IOnlineLeaderboardsPtr LeaderboardsInterface = OnlineSub->GetLeaderboardsInterface();
-            if (LeaderboardsInterface.IsValid())
+            IOnlineSubsystem* const OnlineSub = IOnlineSubsystem::Get();
+            if (OnlineSub != nullptr)
             {
-                // Create a leaderboard score object
-                FOnlineLeaderboardWrite WriteObject;
-                WriteObject.LeaderboardName = CategoryName.ToString();
-                WriteObject.SetIntStat(TEXT("Score"), Score);
-                
-                // Submit the score to the leaderboard
-                LeaderboardsInterface->WriteLeaderboardIntegerData(CategoryName, WriteObject, WriteCompleteDelegate);
+                IOnlineLeaderboardsPtr Leaderboards = OnlineSub->GetLeaderboardsInterface();
+                if (Leaderboards.IsValid())
+                {
+                    // Create a leaderboard write object
+                    FOnlineLeaderboardWrite WriteObject;
+                    WriteObject.LeaderboardNames.Add(CategoryName); // Correct way to set leaderboard names
+                    WriteObject.RatedStat = TEXT("Score");
+                    WriteObject.SetIntStat(TEXT("Score"), Score);
+                    
+                    // Optionally set properties for the leaderboard write
+                    WriteObject.SortMethod = ELeaderboardSort::Descending;
+                    WriteObject.UpdateMethod = ELeaderboardUpdateMethod::KeepBest;
+
+                    // Write the leaderboard data
+                    Leaderboards->WriteLeaderboards(PlayerState->SessionName, *UserId, WriteObject);
+
+                    // Flush the leaderboard data immediately
+                    Leaderboards->FlushLeaderboards(PlayerState->SessionName);
+                    
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("WriteLeaderboardObject - Leaderboards not supported by Online Subsystem"));
+                }
             }
             else
             {
-                UE_LOG(LogTemp, Warning, TEXT("Leaderboards interface is not valid"));
+                UE_LOG(LogTemp, Warning, TEXT("WriteLeaderboardObject - Invalid or uninitialized OnlineSubsystem"));
             }
         }
         else
         {
-            UE_LOG(LogTemp, Warning, TEXT("OnlineSubsystem is not available"));
+            UE_LOG(LogTemp, Warning, TEXT("WriteLeaderboardObject - Cannot map local player to unique net ID"));
         }
     }
     else
     {
-        LoginToGameCenter(); // Ensure the player is logged in before submitting scores
+        UE_LOG(LogTemp, Warning, TEXT("WriteLeaderboardObject - Invalid player state"));
     }
 }
 
