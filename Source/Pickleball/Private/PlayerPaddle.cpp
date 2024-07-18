@@ -183,6 +183,11 @@ void APlayerPaddle::OnGameOver()
 	if(CurrentScore > HighScore)
 	{
 		HighScore = CurrentScore;
+		AMainPlayerController* PlayerController = Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController());
+		if (PlayerController)
+		{
+			PlayerController->SubmitHighscore(HighScore, FName("HS"));
+		}
 	}
     
     int32 LastHundredsCount = FMath::FloorToInt(LastScore / 100.f);
