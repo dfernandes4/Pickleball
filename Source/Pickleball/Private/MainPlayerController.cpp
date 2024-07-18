@@ -202,7 +202,9 @@ void AMainPlayerController::HandlePurchaseCompletion(const FOnlineError& Result,
 {
     if (Result.WasSuccessful())
     {
-        const FString& ProductId = PurchaseReceipt.Get().TransactionId;
+        const FString& ProductId = PurchaseReceipt.Get().ReceiptOffers[0].OfferId;
+        UE_LOG(LogTemp, Log, TEXT("%s"), *ProductId);
+        
         int32 CoinsAmount = 0;
 
         if(ProductId == "SomeGold")

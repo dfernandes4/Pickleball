@@ -110,12 +110,14 @@ void AEnemyPaddle::HitBall()
 		const float PercentageOfXDistanceFromFarthestHittingLocation = FMath::Clamp(GetActorLocation().X / FarthestHittingLocation, 0,1);
 		
 		// Based on position from center
-		constexpr float MinYVal = -20.f;
-		constexpr float MaxYVal = 20.f;
-		RandomForce.Y = FMath::RandRange(MinYVal * (.5 + PercentageOfYDistanceFromCenter), MaxYVal * (.5 - PercentageOfYDistanceFromCenter));
+        float MinYVal = 0;
+		float MaxYVal = 0;
 		
 		if(RandNum != 1)
 		{
+            MinYVal = -20.f;
+            MaxYVal = 20.f;
+            
 			// Max -176 Min -48
 			RandomForce.X = (-32 * ForceMultiplier);
 			
@@ -134,11 +136,16 @@ void AEnemyPaddle::HitBall()
 		}
 		else
 		{
+            MinYVal = -5.f;
+            MaxYVal = 5.f;
+            
 			//Occasional kitchen hits
 			RandomForce.X = -12 + (-25 * PercentageOfXDistanceFromFarthestHittingLocation);
 			RandomForce.Z = 26 + (13 * PercentageOfXDistanceFromFarthestHittingLocation);
 		}
-
+        
+        RandomForce.Y = FMath::RandRange(MinYVal * (.5 + PercentageOfYDistanceFromCenter), MaxYVal * (.5 - PercentageOfYDistanceFromCenter));
+        
 		// Apply force
 		BallInScene->ApplySwipeForce(RandomForce, this);
 	}
