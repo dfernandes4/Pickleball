@@ -240,6 +240,34 @@ void AMainPlayerController::HandlePurchaseCompletion(const FOnlineError& Result,
             return;
         }
 
+        // Get the purchase interface
+        IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
+        if (OnlineSub)
+        {
+            IOnlinePurchasePtr PurchaseInterface = OnlineSub->GetPurchaseInterface();
+            if (PurchaseInterface.IsValid())
+            {
+                // Get the identity interface to obtain the user ID
+                IOnlineIdentityPtr IdentityInterface = OnlineSub->GetIdentityInterface();
+                if (!IdentityInterface.IsValid())
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("Identity interface not available"));
+                    return;
+                }
+
+                // Obtain the user ID
+                FUniqueNetIdPtr UserId = IdentityInterface->GetUniquePlayerId(0);
+                if (!UserId.IsValid())
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("Failed to get valid user ID"));
+                    return;
+                }
+                
+                // Finish the transaction
+                PurchaseInterface->FinalizePurchase(*UserId, ProductId);
+            }
+        }
+
         OnPurchaseCompleted.Broadcast(CoinsAmount);
     }
 }
