@@ -53,22 +53,22 @@ void UCoinShopScreen::OnBackButtonPressed()
 
 void UCoinShopScreen::OnSomeGoldButtonPressed()
 {
-	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("SomeGold");
+	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("Some_Gold");
 }
 
 void UCoinShopScreen::OnFistOGoldButtonPressed()
 {
-	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("FistoGold");
+	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("FistOGold");
 }
 
 void UCoinShopScreen::OnLotsOGoldButtonPressed()
 {
-	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("LotsoGold");
+	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("LotsOGold");
 }
 
 void UCoinShopScreen::OnPilesOGoldButtonPressed()
 {
-	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("PilesoGold");
+	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("PilesOGold");
 }
 
 void UCoinShopScreen::OnPuchaseCompleted(int32 CoinsAmount)

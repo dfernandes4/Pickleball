@@ -210,19 +210,19 @@ void AMainPlayerController::HandlePurchaseCompletion(const FOnlineError& Result,
         
         int32 CoinsAmount = 0;
 
-        if(ProductId == "SomeGold")
+        if(ProductId == "Some_Gold")
         {
             CoinsAmount = 200;
         }
-        else if(ProductId == "FistoGold")
+        else if(ProductId == "FistOGold")
         {
             CoinsAmount = 400;
         }
-        else if(ProductId == "LotsoGold")
+        else if(ProductId == "LotsOGold")
         {
             CoinsAmount = 650;
         }
-        else if(ProductId == "PilesoGold")
+        else if(ProductId == "PilesOGold")
         {
             CoinsAmount = 1500;
         }
