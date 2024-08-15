@@ -185,10 +185,10 @@ void AMainPlayerController::PurchaseOffer(FOnlineStoreOfferRef Offer)
                 return;
             }
 
-            bool bIsConsumable = false;
-            if (Offer->DynamicFields.Contains("isConsumable"))
+            bool bIsConsumable = true;
+            if (Offer->OfferId == "RemoveAds")
             {
-                bIsConsumable = Offer->DynamicFields["isConsumable"].ToBool();
+                bIsConsumable = false;
             }
             
             FPurchaseCheckoutRequest CheckoutRequest;
@@ -210,19 +210,19 @@ void AMainPlayerController::HandlePurchaseCompletion(const FOnlineError& Result,
         
         int32 CoinsAmount = 0;
 
-        if(ProductId == "Some_Gold")
+        if(ProductId == "Some_Gold_")
         {
             CoinsAmount = 200;
         }
-        else if(ProductId == "FistOGold")
+        else if(ProductId == "Fist_O_Gold_")
         {
             CoinsAmount = 400;
         }
-        else if(ProductId == "LotsOGold")
+        else if(ProductId == "Lots_O_Gold_")
         {
             CoinsAmount = 650;
         }
-        else if(ProductId == "PilesOGold")
+        else if(ProductId == "Piles_O_Gold_")
         {
             CoinsAmount = 1500;
         }
