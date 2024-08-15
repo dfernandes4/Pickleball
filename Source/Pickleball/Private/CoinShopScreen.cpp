@@ -4,6 +4,7 @@
 #include "CoinShopScreen.h"
 
 #include "MainPlayerController.h"
+#include "PickleBallGameInstance.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -11,6 +12,7 @@ void UCoinShopScreen::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	/*
 	if(BackButton != nullptr)
 	{
 		BackButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnBackButtonPressed);
@@ -36,13 +38,14 @@ void UCoinShopScreen::NativeConstruct()
 		PilesOGoldButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnPilesOGoldButtonPressed);
 	}
 	AMainPlayerController* MainPlayerController =Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController());
-	
 	if(MainPlayerController!= nullptr)
 	{
 		MainPlayerController->OnPurchaseCompleted.AddDynamic(this, &UCoinShopScreen::OnPuchaseCompleted);
 	}
+	*/
 }
 
+/*
 
 void UCoinShopScreen::OnBackButtonPressed()
 {
@@ -70,8 +73,34 @@ void UCoinShopScreen::OnPilesOGoldButtonPressed()
 {
 	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("Piles_O_Gold_");
 }
+*/
 
-void UCoinShopScreen::OnPuchaseCompleted(int32 CoinsAmount)
+void UCoinShopScreen::OnPurchaseCompleted(const FString& ProductId)
 {
+	int32 CoinsAmount = 0;
+
+	if(ProductId == "Some_Gold_")
+	{
+		CoinsAmount = 200;
+	}
+	else if(ProductId == "Fist_O_Gold_")
+	{
+		CoinsAmount = 400;
+	}
+	else if(ProductId == "Lots_O_Gold_")
+	{
+		CoinsAmount = 650;
+	}
+	else if(ProductId == "Piles_O_Gold_")
+	{
+		CoinsAmount = 1500;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Product Id is not valid."));
+		return;
+	}
+	
 	UGameplayStatics::PlaySound2D(GetWorld(),CoinPurchasedSound);
+	OnPurchaseCompletedDelegate.Broadcast(CoinsAmount);
 }

@@ -4,7 +4,8 @@
 #include "SettingScreenWidget.h"
 
 #include "MainGamemode.h"
-#include "MainPlayerController.h"
+//#include "MainPlayerController.h"
+#include "PickleBallGameInstance.h"
 #include "UserWidgetLoader.h"
 #include "Sound/SoundClass.h"
 #include "Components/Button.h"
@@ -51,11 +52,12 @@ void USettingScreenWidget::NativeConstruct()
 	{
 		HowToPlayButton->OnClicked.AddDynamic(this, &USettingScreenWidget::OnHowToPlayButtonClicked);
 	}
+	/*
 	if(RemoveAdsButton != nullptr)
 	{
 		RemoveAdsButton->OnClicked.AddDynamic(this, &USettingScreenWidget::OnRemoveAdsButtonClicked);
 	}
-	
+	*/
 	// if home is active or not in game then this button is active if not then it is disabled
 	AMainGamemode* MainGamemode = Cast<AMainGamemode>(UGameplayStatics::GetGameMode(GetWorld()));
 	MainGamemode->bIsGameActive ? HowToPlayButton->SetIsEnabled(false) : HowToPlayButton->SetIsEnabled(true);
@@ -80,11 +82,12 @@ void USettingScreenWidget::OnHowToPlayButtonClicked()
 	WidgetLoader->LoadWidget(FName("TutorialScreen"), GetWorld());	
 }
 
+/*
 void USettingScreenWidget::OnRemoveAdsButtonClicked()
 {
 	Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0))->InitiatePurchaseRequest("RemoveAds");
 }
-
+*/
 void USettingScreenWidget::OnBackButtonClicked()
 {
 	RemoveFromParent();
