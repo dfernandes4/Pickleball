@@ -12,12 +12,13 @@ void UCoinShopScreen::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	/*
+	
 	if(BackButton != nullptr)
 	{
 		BackButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnBackButtonPressed);
 	}
 
+	/*
 	if(SomeGoldButton != nullptr)
 	{
 		SomeGoldButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnSomeGoldButtonPressed);
@@ -45,7 +46,7 @@ void UCoinShopScreen::NativeConstruct()
 	*/
 }
 
-/*
+
 
 void UCoinShopScreen::OnBackButtonPressed()
 {
@@ -54,6 +55,7 @@ void UCoinShopScreen::OnBackButtonPressed()
 	UGameplayStatics::PlaySound2D(GetWorld(), BackSoundEffect);
 }
 
+/*
 void UCoinShopScreen::OnSomeGoldButtonPressed()
 {
 	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("Some_Gold_");

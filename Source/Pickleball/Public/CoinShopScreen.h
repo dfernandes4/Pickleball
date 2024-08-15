@@ -20,11 +20,11 @@ class PICKLEBALL_API UCoinShopScreen : public UUserWidget
 public:
 	
 	virtual void NativeConstruct() override;
-
-	/*
+	
 	UFUNCTION()
 	void OnBackButtonPressed();
 
+	/*
 	UFUNCTION()
 	void OnSomeGoldButtonPressed();
 
