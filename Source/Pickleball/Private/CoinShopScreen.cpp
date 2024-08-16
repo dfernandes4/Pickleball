@@ -18,7 +18,7 @@ void UCoinShopScreen::NativeConstruct()
 		BackButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnBackButtonPressed);
 	}
 
-	/*
+	
 	if(SomeGoldButton != nullptr)
 	{
 		SomeGoldButton->OnPressed.AddDynamic(this, &UCoinShopScreen::OnSomeGoldButtonPressed);
@@ -41,12 +41,9 @@ void UCoinShopScreen::NativeConstruct()
 	AMainPlayerController* MainPlayerController =Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController());
 	if(MainPlayerController!= nullptr)
 	{
-		MainPlayerController->OnPurchaseCompleted.AddDynamic(this, &UCoinShopScreen::OnPuchaseCompleted);
+		MainPlayerController->OnPurchaseCompleted.AddDynamic(this, &UCoinShopScreen::OnPurchaseCompleted);
 	}
-	*/
 }
-
-
 
 void UCoinShopScreen::OnBackButtonPressed()
 {
@@ -55,7 +52,6 @@ void UCoinShopScreen::OnBackButtonPressed()
 	UGameplayStatics::PlaySound2D(GetWorld(), BackSoundEffect);
 }
 
-/*
 void UCoinShopScreen::OnSomeGoldButtonPressed()
 {
 	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("Some_Gold_");
@@ -75,10 +71,11 @@ void UCoinShopScreen::OnPilesOGoldButtonPressed()
 {
 	Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController())->InitiatePurchaseRequest("Piles_O_Gold_");
 }
-*/
 
-void UCoinShopScreen::OnPurchaseCompleted(const FString& ProductId)
+
+void UCoinShopScreen::OnPurchaseCompleted(int32 CoinAmount)
 {
+	/*
 	int32 CoinsAmount = 0;
 
 	if(ProductId == "Some_Gold_")
@@ -102,7 +99,8 @@ void UCoinShopScreen::OnPurchaseCompleted(const FString& ProductId)
 		UE_LOG(LogTemp, Warning, TEXT("Product Id is not valid."));
 		return;
 	}
-	
-	UGameplayStatics::PlaySound2D(GetWorld(),CoinPurchasedSound);
 	OnPurchaseCompletedDelegate.Broadcast(CoinsAmount);
+	*/
+	UGameplayStatics::PlaySound2D(GetWorld(),CoinPurchasedSound);
+	
 }

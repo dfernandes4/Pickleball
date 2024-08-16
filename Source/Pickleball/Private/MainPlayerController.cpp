@@ -1,15 +1,15 @@
 #include "MainPlayerController.h"
 
 #include "MainGamemode.h"
-//#include "Interfaces/OnlineStoreInterfaceV2.h"
+#include "Interfaces/OnlineStoreInterfaceV2.h"
 #include "Interfaces/OnlineIdentityInterface.h"
 #include "Interfaces/OnlineExternalUIInterface.h"
 #include "OnlineSubsystem.h"
 #include "Interfaces/OnlineLeaderboardInterface.h"
 #include "OnlineStats.h"
 #include "GameFramework/Pawn.h"
-//#include "OnlineError.h" 
-//#include "PickleBallGameInstance.h"
+#include "OnlineError.h" 
+#include "PickleBallGameInstance.h"
 #include "GameFramework/PlayerState.h"
 
 
@@ -99,7 +99,6 @@ FVector AMainPlayerController::GetPaddleVelocity() const
     return PaddleVelocity;
 }
 
-/*
 void AMainPlayerController::InitiatePurchaseRequest(const FString& ProductId)
 {
     IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
@@ -265,14 +264,13 @@ void AMainPlayerController::HandlePurchaseCompletion(const FOnlineError& Result,
                 }
                 
                 // Finish the transaction
-                PurchaseInterface->FinalizePurchase(*UserId, ProductId);
+                PurchaseInterface->FinalizePurchase(*UserId, PurchaseReceipt->TransactionId, PurchaseReceipt->ReceiptOffers[0].LineItems[0].ValidationInfo);
             }
         }
 
         OnPurchaseCompleted.Broadcast(CoinsAmount);
     }
-}
-*/
+} 
 
 void AMainPlayerController::LoginToGameCenter()
 {

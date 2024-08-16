@@ -71,14 +71,13 @@ void APlayerPaddle::BeginPlay()
 	Super::BeginPlay();
 
 	MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
-
-	/*
+	
 	AMainPlayerController* PlayerController = Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController());
 	if (PlayerController)
 	{
 		PlayerController->OnPurchaseCompleted.AddDynamic(this, &APlayerPaddle::AddCoins);
 	}
-	*/
+	
 	
 	if (MainGamemode != nullptr)
 	{

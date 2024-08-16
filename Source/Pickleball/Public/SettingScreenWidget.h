@@ -23,10 +23,9 @@ public:
 	
 	UFUNCTION()
 	void OnHowToPlayButtonClicked();
-/*
 	UFUNCTION()
 	void OnRemoveAdsButtonClicked();
-	*/
+	
 	virtual void NativeConstruct() override;
 	
 	UFUNCTION()

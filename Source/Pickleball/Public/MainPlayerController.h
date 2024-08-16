@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-/*
+
 #include "Interfaces/OnlineStoreInterfaceV2.h"
 #include "Interfaces/OnlinePurchaseInterface.h"
-*/
+
 #include "MainPlayerController.generated.h"
 
 
 /**
  * 
  */
-// DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPurchaseCompletedDelegate, int32, CoinsAmount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPurchaseCompletedDelegate, int32, CoinsAmount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFirstTouchDelegate);
 
 UCLASS()
@@ -31,12 +31,11 @@ public:
 	UFUNCTION()
 	FVector GetPaddleVelocity() const;
 
-	/*
+
     // Function to initiate a purchase request
     UFUNCTION(BlueprintCallable, Category = "In-App Purchases")
     void InitiatePurchaseRequest(const FString& ProductId);
-    */
-    
+
 	UFUNCTION()
 	void LoginToGameCenter();
 	void OnLoginComplete(int32 LocalUserNum, bool bWasSuccessful, const FUniqueNetId& UserId, const FString& Error);
@@ -50,7 +49,7 @@ public:
 	UFUNCTION()
 	void OnGameOver();
 
-	//FOnPurchaseCompletedDelegate  OnPurchaseCompleted;
+	FOnPurchaseCompletedDelegate  OnPurchaseCompleted;
 	FOnFirstTouchDelegate OnFirstTouch;
 	FDelegateHandle DelegateHandle;
 
@@ -66,7 +65,7 @@ protected:
 
 private:
 
-	/*
+
     // Callback for when the offer query is complete
     void OnQueryOffersComplete(bool bWasSuccessful, const TArray<FUniqueOfferId>& Offers, const FString& ErrorMsg);
 	
@@ -75,7 +74,7 @@ private:
 
     // Callback for when the purchase is complete
     void HandlePurchaseCompletion(const FOnlineError& Result, const TSharedRef<FPurchaseReceipt>& PurchaseReceipt);
-    */
+
 	
 	bool bIsTouching = false;
 	FVector2D InitialTouchLocation;

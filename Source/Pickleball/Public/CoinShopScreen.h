@@ -10,7 +10,7 @@
  * 
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCoinShopClosedDelegate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPurchaseCompletedDelegate, int32, CoinsAmount);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPurchaseCompletedDelegate, int32, CoinsAmount);
 
 UCLASS()
 class PICKLEBALL_API UCoinShopScreen : public UUserWidget
@@ -24,7 +24,7 @@ public:
 	UFUNCTION()
 	void OnBackButtonPressed();
 
-	/*
+	
 	UFUNCTION()
 	void OnSomeGoldButtonPressed();
 
@@ -36,13 +36,13 @@ public:
 	
 	UFUNCTION()
 	void OnPilesOGoldButtonPressed();
-	*/
+	
 	
 	FOnCoinShopClosedDelegate OnCoinShopClosed;
-	FOnPurchaseCompletedDelegate OnPurchaseCompletedDelegate;
+	//FOnPurchaseCompletedDelegate OnPurchaseCompletedDelegate;
 
 	UFUNCTION(BlueprintCallable)
-	void OnPurchaseCompleted(const FString& ProductId);
+	void OnPurchaseCompleted(int32 CoinAmount);
 	
 
 private:
