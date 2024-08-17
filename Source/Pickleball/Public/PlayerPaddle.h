@@ -135,8 +135,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ClassVariables, meta = (AllowPrivateAccess))
 	bool bIsPlayersTurn;
-	
-	ISaveGameInterface* SaveGameInterface;
+
+	UPROPERTY()
+	class UPickleBallGameInstance* PickleBallGameInstance;
 
 	UPROPERTY()
 	FName CurrrentPaddleName;

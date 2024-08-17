@@ -7,11 +7,9 @@
 #include "MainGamemode.h"
 #include "MainPlayerController.h"
 #include "PaddleInfo.h"
-#include "PaddleToCollectWidget.h"
 #include "PaperSpriteComponent.h"
 #include "PickleBallGameInstance.h"
 #include "PickleballSaveGame.h"
-#include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -85,7 +83,7 @@ void APlayerPaddle::BeginPlay()
 	}
     
     
-    UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
+    PickleBallGameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
     if(PickleBallGameInstance->GetIsGameLoaded())
     {
         OnGameLoaded();
@@ -200,7 +198,7 @@ void APlayerPaddle::OnGameOver()
 	CoinsEarnedFromLastMatch = CoinMultiplier * (FMath::Floor((CurrentScore-LastScore) / 4) + ((HundredsCount-LastHundredsCount) * 10) + ((ThousandsCount-LastThousandsCount) * 100));
 	CurrentCoinCount += CoinsEarnedFromLastMatch;
 	
-	SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+	PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
 
 	// Could Play Sound
 }
@@ -220,7 +218,7 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 					CurrentCoinCount -= 200;
 					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
-					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+					PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
 					
 					return true;
 				}
@@ -231,7 +229,7 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 					CurrentCoinCount -= 400;
 					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
-					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+					PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
 					return true;
 				}
 				break;
@@ -241,7 +239,7 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 					CurrentCoinCount -= 800;
 					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
-					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+					PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
 					return true;
 				}
 				break;
@@ -251,7 +249,7 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 					CurrentCoinCount -= 1500;
 					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
-					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+					PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
 					return true;
 				}
 				break;
@@ -261,7 +259,7 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 					CurrentCoinCount -= 2000;
 					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
-					SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+					PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
 					return true;
 				}
 				break;
@@ -320,10 +318,9 @@ void APlayerPaddle::SetIsPlayersTurn(bool bIsPlayersTurnIn)
 void APlayerPaddle::OnGameLoaded()
 {
     // Load Player Data
-    SaveGameInterface = Cast<ISaveGameInterface>(UGameplayStatics::GetGameInstance(GetWorld()));
-    if (SaveGameInterface)
+    if (PickleBallGameInstance)
     {
-        FPlayerData PlayerData = SaveGameInterface->GetSaveGamePlayerData();
+        FPlayerData PlayerData = PickleBallGameInstance->GetSaveGamePlayerData();
 
         LastScore = PlayerData.PlayersLastScore;
         CurrentScore += LastScore;
@@ -393,7 +390,7 @@ TMap<FName, bool> APlayerPaddle::GetPaddleUnlockStatuses() const
 void APlayerPaddle::AddCoins(int32 CoinsToAdd)
 {
 	CurrentCoinCount += CoinsToAdd;
-	SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+	PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
     
     MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 }
@@ -411,9 +408,9 @@ void APlayerPaddle::SetCurrentScore(int32 ScoreToSet)
 void APlayerPaddle::SetCurrentPaddle(FName CurrrentPaddleNameIn)
 {
 	CurrrentPaddleName = CurrrentPaddleNameIn;
-	if(SaveGameInterface != nullptr)
+	if(PickleBallGameInstance != nullptr)
 	{
-		SaveGameInterface->SavePlayerData(GetCurrentPlayerData());
+		PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
 	}
 }
 

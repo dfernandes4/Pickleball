@@ -51,6 +51,7 @@ void APaddle::BeginPlay()
 void APaddle::OnAnyPaddleGameOver()
 {
 	BoxCollider->Activate(false);
+	bIsInHittingZone = false;
 	BoxCollider->OnComponentBeginOverlap.RemoveDynamic(this, &APaddle::OnPaddleBeginOverlap);
 	BoxCollider->OnComponentEndOverlap.RemoveDynamic(this, &APaddle::OnPaddleEndOverlap);
 }
