@@ -76,14 +76,13 @@ void APlayerPaddle::BeginPlay()
 		PlayerController->OnPurchaseCompleted.AddDynamic(this, &APlayerPaddle::AddCoins);
 	}
 	
-	
 	if (MainGamemode != nullptr)
 	{
 		MainGamemode->OnGameOver.AddDynamic(this, &APlayerPaddle::OnGameOver);
 	}
     
     
-    PickleBallGameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
+    PickleBallGameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
     if(PickleBallGameInstance->GetIsGameLoaded())
     {
         OnGameLoaded();

@@ -10,6 +10,7 @@
 #include "PlayerPaddle.h"
 #include "SettingScreenWidget.h"
 #include "UserWidgetLoader.h"
+#include "Animation/WidgetAnimation.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"

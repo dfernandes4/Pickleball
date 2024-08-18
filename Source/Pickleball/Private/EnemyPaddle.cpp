@@ -101,7 +101,7 @@ void AEnemyPaddle::HitBall()
 	else
 	{
 		FVector RandomForce;
-		const int32 RandNum = FMath::RandRange(1, 5);
+		const int32 RandNum = FMath::RandRange(1, 10);
 		
 		constexpr float YOuterBounds = 372.f;
 		constexpr float FarthestHittingLocation = 895.0f;
