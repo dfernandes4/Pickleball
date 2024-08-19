@@ -72,8 +72,10 @@ void UCollectionWidget::SetupPaddleWidgets()
 					if(WidgetName == PaddleNameSelected)
 					{
 						NewSelectedPaddle = PaddleCollectWidget;
+                        /*
 						APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 						PlayerPaddle->OnPaddleSelected(*WidgetName);
+                         */
 					}
 				}
 			}
@@ -92,8 +94,10 @@ void UCollectionWidget::SetupPaddleWidgets()
 					if(WidgetName == PaddleNameSelected)
 					{
 						NewSelectedPaddle = PaddleCollectWidget;
+                        /*
 						APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 						PlayerPaddle->OnPaddleSelected(*WidgetName);
+                         */
 					}
 				}
 			}
@@ -112,8 +116,10 @@ void UCollectionWidget::SetupPaddleWidgets()
 					if(WidgetName == PaddleNameSelected)
 					{
 						NewSelectedPaddle = PaddleCollectWidget;
+                        /*
 						APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 						PlayerPaddle->OnPaddleSelected(*WidgetName);
+                         */
 					}
 				}
 			}
@@ -132,8 +138,10 @@ void UCollectionWidget::SetupPaddleWidgets()
 					if(WidgetName == PaddleNameSelected)
 					{
 						NewSelectedPaddle = PaddleCollectWidget;
+                        /*
 						APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 						PlayerPaddle->OnPaddleSelected(*WidgetName);
+                         */
 					}
 				}
 			}
@@ -152,8 +160,10 @@ void UCollectionWidget::SetupPaddleWidgets()
 					if(WidgetName == PaddleNameSelected)
 					{
 						NewSelectedPaddle = PaddleCollectWidget;
+                        /*
 						APlayerPaddle* PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 						PlayerPaddle->OnPaddleSelected(*WidgetName);
+                         */
 					}
 				}
 			}

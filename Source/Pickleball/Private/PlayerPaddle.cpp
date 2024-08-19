@@ -197,8 +197,11 @@ void APlayerPaddle::OnGameOver()
 	CoinsEarnedFromLastMatch = CoinMultiplier * (FMath::Floor((CurrentScore-LastScore) / 4) + ((HundredsCount-LastHundredsCount) * 10) + ((ThousandsCount-LastThousandsCount) * 100));
 	CurrentCoinCount += CoinsEarnedFromLastMatch;
 	
-	PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
-
+    for (int i = 0; i < 3; i++)
+    {
+        PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+    }
+	
 	// Could Play Sound
 }
 
@@ -217,7 +220,10 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 					CurrentCoinCount -= 200;
 					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
-					PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+                    for (int i = 0; i < 3; i++)
+                    {
+                        PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+                    }
 					
 					return true;
 				}
@@ -228,7 +234,10 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 					CurrentCoinCount -= 400;
 					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
-					PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+                    for (int i = 0; i < 3; i++)
+                    {
+                        PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+                    }
 					return true;
 				}
 				break;
@@ -238,7 +247,10 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 					CurrentCoinCount -= 800;
 					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
-					PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+                    for (int i = 0; i < 3; i++)
+                    {
+                        PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+                    }
 					return true;
 				}
 				break;
@@ -248,7 +260,10 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 					CurrentCoinCount -= 1500;
 					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
-					PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+                    for (int i = 0; i < 3; i++)
+                    {
+                        PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+                    }
 					return true;
 				}
 				break;
@@ -258,7 +273,10 @@ bool APlayerPaddle::OnPaddleBought(FName PaddleName)
 					CurrentCoinCount -= 2000;
 					MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 					PaddleUnlockStatuses[PaddleName] = true;
-					PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+                    for (int i = 0; i < 3; i++)
+                    {
+                        PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+                    }
 					return true;
 				}
 				break;
@@ -389,7 +407,10 @@ TMap<FName, bool> APlayerPaddle::GetPaddleUnlockStatuses() const
 void APlayerPaddle::AddCoins(int32 CoinsToAdd)
 {
 	CurrentCoinCount += CoinsToAdd;
-	PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+    for (int i = 0; i < 3; i++)
+    {
+        PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+    }
     
     MainGamemode->OnCoinAmountChanged.Broadcast(CurrentCoinCount);
 }
@@ -409,7 +430,10 @@ void APlayerPaddle::SetCurrentPaddle(FName CurrrentPaddleNameIn)
 	CurrrentPaddleName = CurrrentPaddleNameIn;
 	if(PickleBallGameInstance != nullptr)
 	{
-		PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+        for (int i = 0; i < 3; i++)
+        {
+            PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
+        }
 	}
 }
 
