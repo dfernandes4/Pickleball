@@ -60,7 +60,6 @@ void UGameOverScreenWidget::OnReplayButtonClicked()
     if(World)
     {
         UGameplayStatics::PlaySound2D(GetWorld(), MenuSoundEffect);
-        PlayerPaddle->SetCurrentScore(0);
         EnemyPaddle->SetCurrentRow(0);
 
         UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
@@ -79,7 +78,6 @@ void UGameOverScreenWidget::OnHomeButtonClicked()
     // Ensure player paddle and enemy paddle data are valid before accessing them
     if (PlayerPaddle && EnemyPaddle)
     {
-        PlayerPaddle->SetCurrentScore(0);
         EnemyPaddle->SetCurrentRow(0);
         
         // Save player and enemy data
@@ -139,7 +137,7 @@ void UGameOverScreenWidget::DisplayPlayerValues()
 
 		if(ScoreAmountTextBlock != nullptr)
 		{
-			ScoreAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerPaddle->GetScore())));
+			ScoreAmountTextBlock->SetText(FText::FromString(FString::FromInt(PlayerPaddle->GetLastScore())));
 		}
 		
 		if(CoinsEarnedAmountTextBlock != nullptr)
@@ -157,7 +155,6 @@ void UGameOverScreenWidget::OnUserFinishedRewardAd()
         if (PlayerPaddle && EnemyPaddle)
         {
             PlayerPaddle->AddCoins(PlayerPaddle->GetCoinsEarnedFromLastMatch());
-            PlayerPaddle->SetCurrentScore(0);
             EnemyPaddle->SetCurrentRow(0);
             
             // Save player and enemy data
@@ -175,6 +172,7 @@ void UGameOverScreenWidget::OnUserFinishedRewardAd()
         const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
         
         WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
+    	PlayerPaddle->SaveLastScore();
         GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
         FTimerHandle LoadDelayHandle;
         GetWorld()->GetTimerManager().SetTimer(LoadDelayHandle, [this]()

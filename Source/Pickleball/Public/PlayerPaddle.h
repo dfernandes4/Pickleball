@@ -26,9 +26,6 @@ public:
 
 	UFUNCTION()
 	void StartSwing(const FVector& BallCurrentLocation);
-	
-	UFUNCTION()
-	float GetScore() const;
 
 	UFUNCTION()
 	void OnGameOver();
@@ -75,9 +72,12 @@ public:
 	int32 GetCurrentScore() const;
 
 	UFUNCTION()
-	void SetCurrentScore(int32 ScoreToSet);
+	int32 GetLastScore() const;
+	
 	UFUNCTION()
 	void SetCurrentPaddle(FName CurrrentPaddleNameIn);
+	UFUNCTION()
+	void SaveLastScore();
 
 #pragma endregion Save/Load
 	

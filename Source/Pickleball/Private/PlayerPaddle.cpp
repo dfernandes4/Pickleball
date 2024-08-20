@@ -171,11 +171,6 @@ void APlayerPaddle::StartSwing(const FVector& BallCurrentLocation)
 	}
 }
 
-float APlayerPaddle::GetScore() const
-{
-	return CurrentScore;
-}
-
 void APlayerPaddle::OnGameOver()
 {
 	if(CurrentScore > HighScore)
@@ -196,7 +191,9 @@ void APlayerPaddle::OnGameOver()
 	
 	CoinsEarnedFromLastMatch = CoinMultiplier * (FMath::Floor((CurrentScore-LastScore) / 4) + ((HundredsCount-LastHundredsCount) * 10) + ((ThousandsCount-LastThousandsCount) * 100));
 	CurrentCoinCount += CoinsEarnedFromLastMatch;
-	
+
+	LastScore = CurrentScore;
+	CurrentScore = 0;
     for (int i = 0; i < 3; i++)
     {
         PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
@@ -340,7 +337,7 @@ void APlayerPaddle::OnGameLoaded()
         FPlayerData PlayerData = PickleBallGameInstance->GetSaveGamePlayerData();
 
         LastScore = PlayerData.PlayersLastScore;
-        CurrentScore += LastScore;
+        CurrentScore = LastScore;
         CurrentCoinCount = PlayerData.PlayerCoins;
         HighScore = PlayerData.PlayerHighScore;
         PaddleUnlockStatuses = PlayerData.PaddleUnlockStatuses;
@@ -384,12 +381,12 @@ FPlayerData APlayerPaddle::GetCurrentPlayerData()
 	return FPlayerData(CurrentCoinCount, HighScore, CurrentScore, PaddleUnlockStatuses, CurrrentPaddleName);
 }
 
-int APlayerPaddle::GetHighScore() const
+int32 APlayerPaddle::GetHighScore() const
 {
 	return HighScore;
 }
 
-int APlayerPaddle::GetPlayerCoins() const
+int32 APlayerPaddle::GetPlayerCoins() const
 {
 	return CurrentCoinCount;
 }
@@ -420,9 +417,9 @@ int32 APlayerPaddle::GetCurrentScore() const
 	return CurrentScore;
 }
 
-void APlayerPaddle::SetCurrentScore(int32 ScoreToSet)
+int32 APlayerPaddle::GetLastScore() const
 {
-	CurrentScore = ScoreToSet;
+	return LastScore;
 }
 
 void APlayerPaddle::SetCurrentPaddle(FName CurrrentPaddleNameIn)
@@ -434,6 +431,14 @@ void APlayerPaddle::SetCurrentPaddle(FName CurrrentPaddleNameIn)
         {
             PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
         }
+	}
+}
+
+void APlayerPaddle::SaveLastScore()
+{
+	if(PickleBallGameInstance != nullptr)
+	{
+		PickleBallGameInstance->SavePlayerData(FPlayerData(CurrentCoinCount, HighScore, LastScore, PaddleUnlockStatuses, CurrrentPaddleName));
 	}
 }
 
