@@ -101,6 +101,21 @@ void AMainGamemode::OnGameLoaded()
 		HomeScreenWidget->SetUpShopDelegates();
 	}
 
+	TArray<float> Volumes = PickleBallGameInstance->GetSaveGameVolumes();
+	if(MasterSoundClass != nullptr)
+	{
+		MasterSoundClass->Properties.Volume = Volumes[0];
+	}
+	if(MusicSoundClass != nullptr)
+	{
+		MusicSoundClass->Properties.Volume = Volumes[1];
+	}
+	if(SFXSoundClass != nullptr)
+	{
+		SFXSoundClass->Properties.Volume = Volumes[2];
+	}
+	
+	
 	PickleBallGameInstance->SetShouldLaunchStarterScreen(false);
 	PickleBallGameInstance->SetIsFirstTimePlayingInSession(false);
 	PickleBallGameInstance->LoadFinished.RemoveDynamic(this, &AMainGamemode::OnGameLoaded);

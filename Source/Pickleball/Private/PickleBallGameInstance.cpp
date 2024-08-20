@@ -219,9 +219,9 @@ bool UPickleBallGameInstance::AreAdsEnabled() const
 
 void UPickleBallGameInstance::SaveVolumes(float MasterVolume, float MusicVolume, float SFXVolume)
 {
-    SaveGame->Volumes[0] = FMath::Floor(MasterVolume);
-    SaveGame->Volumes[1] = FMath::Floor(MusicVolume);
-    SaveGame->Volumes[2] = FMath::Floor(SFXVolume);
+    SaveGame->Volumes[0] = MasterVolume;
+    SaveGame->Volumes[1] = MusicVolume;
+    SaveGame->Volumes[2] = SFXVolume;
 
     for (int i = 0; i < 3; i++)
     {

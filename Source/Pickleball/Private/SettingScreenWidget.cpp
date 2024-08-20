@@ -94,8 +94,8 @@ void USettingScreenWidget::SetupVolumes()
 	{
 		TArray<float> Volumes = PickleBallGameInstance->GetSaveGameVolumes();
 		MasterSlider->SetValue(Volumes[0]);
-		SfxSlider->SetValue(Volumes[1]);
-		MusicSlider->SetValue(Volumes[2]);
+		MusicSlider->SetValue(Volumes[1]);
+		SfxSlider->SetValue(Volumes[2]);
 	}
 }
 
