@@ -69,7 +69,4 @@ struct FPlayerData
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerItems")
     FName CurrentPaddleName;
-// Volume Settings
-#pragma region Settings
-#pragma endregion Settings
 };

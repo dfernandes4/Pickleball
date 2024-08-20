@@ -139,6 +139,11 @@ void UPickleBallGameInstance::RewardFinishedComplete() const
     RewardFinished.Broadcast();
 }
 
+TArray<int32> UPickleBallGameInstance::GetSaveGameVolumes()
+{
+    return SaveGame->Volumes;
+}
+
 void UPickleBallGameInstance::SavePlayerData(FPlayerData PlayerData)
 {
 	SaveGame->PlayerData = PlayerData;
@@ -210,4 +215,16 @@ void UPickleBallGameInstance::RemoveAds()
 bool UPickleBallGameInstance::AreAdsEnabled() const
 {
     return SaveGame->bAreAdsEnabled;
+}
+
+void UPickleBallGameInstance::SaveVolumes(float MasterVolume, float MusicVolume, float SFXVolume)
+{
+    SaveGame->Volumes[0] = FMath::Floor(MasterVolume);
+    SaveGame->Volumes[1] = FMath::Floor(MusicVolume);
+    SaveGame->Volumes[2] = FMath::Floor(SFXVolume);
+
+    for (int i = 0; i < 3; i++)
+    {
+        SaveGameData();
+    }
 }

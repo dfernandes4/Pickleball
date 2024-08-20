@@ -16,18 +16,6 @@
 
 AMainGamemode::AMainGamemode()
 {
-	if(MasterSoundClass != nullptr)
-	{
-		MasterSoundClass->Properties.Volume = .8;
-	}
-	if(SFXSoundClass != nullptr)
-	{
-		SFXSoundClass->Properties.Volume = .8;
-	}
-	if(MusicSoundClass != nullptr)
-	{
-		MusicSoundClass->Properties.Volume = .8;
-	}
 	OnGameOver.AddDynamic(this, &AMainGamemode::GameOver);
 	OnCountdownKickoffFinished.AddDynamic(this, &AMainGamemode::OnGameStart);
 
@@ -55,6 +43,7 @@ void AMainGamemode::BeginPlay()
 	{
 		if(!PickleBallGameInstance->GetIsFirstTimePlayingInSession())
 		{
+			// 2nd+ time playing in session
 			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 			
 			WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
@@ -68,6 +57,7 @@ void AMainGamemode::BeginPlay()
 		}
 		else
 		{
+			// First time playing in session
             const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
             WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
             if(PickleBallGameInstance->GetIsGameLoaded())
@@ -78,14 +68,13 @@ void AMainGamemode::BeginPlay()
             {
                 PickleBallGameInstance->LoadFinished.AddDynamic(this, &AMainGamemode::OnGameLoaded);
             }
-			
-			
 		}
 		
 		PlayerController->DisableInput(PlayerController);
 	}
 	else
 	{
+		// 2nd+ time playing in session
 		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 		ULoadingScreenWidget* LoadingScreen = Cast<ULoadingScreenWidget>(WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10));
 		LoadingScreen->LoadingScreenFinished.AddDynamic(this, &AMainGamemode::OnLoadingScreenFinished);

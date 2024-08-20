@@ -30,8 +30,10 @@ public:
 	
 	UFUNCTION()
 	void OnBackButtonClicked();
-    
-    UFUNCTION()
+	UFUNCTION()
+	void SetupVolumes();
+
+	UFUNCTION()
     void OnAdsRemoved();
 
 	UPROPERTY()
@@ -83,6 +85,8 @@ private:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "SettingsHud", meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UBackgroundBlur> BackgroundBlur;
 
+	UPROPERTY()
+	class UPickleBallGameInstance* PickleBallGameInstance;
 
 	UFUNCTION(meta = (AllowPrivateAccess = "true"))
 	void OnMasterVolumeChanged(float NewVolume);
@@ -92,14 +96,5 @@ private:
 
 	UFUNCTION(meta = (AllowPrivateAccess = "true"))
 	void OnMusicVolumeChanged(float NewVolume);
-	
-	
-	
-	
-	
-
-
-
-
 	
 };

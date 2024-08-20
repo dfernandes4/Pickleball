@@ -15,19 +15,6 @@
 void USettingScreenWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-
-	if(MasterSoundClass != nullptr)
-	{
-		MasterSlider->SetValue(MasterSoundClass->Properties.Volume);
-	}
-	if(SFXSoundClass != nullptr)
-	{
-		SfxSlider->SetValue(SFXSoundClass->Properties.Volume);
-	}
-	if(MusicSoundClass != nullptr)
-	{
-		MusicSlider->SetValue(MusicSoundClass->Properties.Volume);
-	}
 	
 	if(BackButton != nullptr)
 	{
@@ -62,7 +49,7 @@ void USettingScreenWidget::NativeConstruct()
 	AMainGamemode* MainGamemode = Cast<AMainGamemode>(UGameplayStatics::GetGameMode(GetWorld()));
 	MainGamemode->bIsGameActive ? HowToPlayButton->SetIsEnabled(false) : HowToPlayButton->SetIsEnabled(true);
     
-    UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
+    PickleBallGameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
     if(PickleBallGameInstance != nullptr)
     {
         if(!PickleBallGameInstance->AreAdsEnabled())
@@ -72,6 +59,7 @@ void USettingScreenWidget::NativeConstruct()
         }
         PickleBallGameInstance->AdsRemoved.AddDynamic(this, &USettingScreenWidget::OnAdsRemoved);
     }
+	SetupVolumes();
 }
 	
 void USettingScreenWidget::OnHowToPlayButtonClicked()
@@ -92,7 +80,28 @@ void USettingScreenWidget::OnBackButtonClicked()
 {
 	RemoveFromParent();
 	OnSettingsClosed.Broadcast();
+	
+	if(PickleBallGameInstance != nullptr)
+	{
+		PickleBallGameInstance->SaveVolumes(MasterSlider->GetValue(), SfxSlider->GetValue(), MusicSlider->GetValue());
+	}
 	UGameplayStatics::PlaySound2D(GetWorld(), BackSoundEffect);
+}
+
+void USettingScreenWidget::SetupVolumes()
+{
+	if(PickleBallGameInstance != nullptr)
+	{
+		TArray<int32> Volumes = PickleBallGameInstance->GetSaveGameVolumes();
+		MasterSlider->SetValue(Volumes[0]);
+		OnMasterVolumeChanged(Volumes[0]);
+		
+		SfxSlider->SetValue(Volumes[1]);
+		OnSFXVolumeChanged(Volumes[1]);
+		
+		MusicSlider->SetValue(Volumes[2]);
+		OnMusicVolumeChanged(Volumes[2]);
+	}
 }
 
 void USettingScreenWidget::OnMasterVolumeChanged(float NewVolume)

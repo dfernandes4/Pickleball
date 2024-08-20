@@ -44,15 +44,6 @@ public:
 	UFUNCTION()
 	void OnLoadingScreenFinished();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
-	USoundClass* MasterSoundClass;
-		
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
-	USoundClass* SFXSoundClass;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
-	USoundClass* MusicSoundClass;
-
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
     USceneComponent* Scene;
     

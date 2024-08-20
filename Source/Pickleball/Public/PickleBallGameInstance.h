@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "SaveGameInterface.h"
+#include "SettingScreenWidget.h"
 #include "Engine/GameInstance.h"
 #include "GameFramework/SaveGame.h"
 #include "PickleBallGameInstance.generated.h"
@@ -56,6 +57,9 @@ public:
     bool GetIsGameLoaded() const;
     UFUNCTION(BlueprintCallable)
     void RewardFinishedComplete() const;
+
+	UFUNCTION()
+	TArray<int32> GetSaveGameVolumes();
     
 	UFUNCTION()
 	int32 GetSaveGameEnemyRow();
@@ -65,7 +69,8 @@ public:
     
     UFUNCTION(BlueprintCallable)
     bool AreAdsEnabled() const;
-	
+	void SaveVolumes(float MasterVolume, float MusicVolume, float SFXVolume);
+
 	UPROPERTY()
 	FLoadFinishedDelegate LoadFinished;
     
