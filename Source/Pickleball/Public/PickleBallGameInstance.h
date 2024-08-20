@@ -59,7 +59,7 @@ public:
     void RewardFinishedComplete() const;
 
 	UFUNCTION()
-	TArray<int32> GetSaveGameVolumes();
+	TArray<float> GetSaveGameVolumes();
     
 	UFUNCTION()
 	int32 GetSaveGameEnemyRow();

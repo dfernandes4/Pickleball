@@ -7,5 +7,5 @@ UPickleballSaveGame::UPickleballSaveGame() : PlayerData()
 {
 	EnemyLastRow = 10;
     bAreAdsEnabled = true;
-	Volumes.Init(100, 3);
+	Volumes.Init(1.0f, 3);
 }

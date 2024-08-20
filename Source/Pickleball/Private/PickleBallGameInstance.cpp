@@ -139,7 +139,7 @@ void UPickleBallGameInstance::RewardFinishedComplete() const
     RewardFinished.Broadcast();
 }
 
-TArray<int32> UPickleBallGameInstance::GetSaveGameVolumes()
+TArray<float> UPickleBallGameInstance::GetSaveGameVolumes()
 {
     return SaveGame->Volumes;
 }

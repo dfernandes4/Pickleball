@@ -83,7 +83,7 @@ void USettingScreenWidget::OnBackButtonClicked()
 	
 	if(PickleBallGameInstance != nullptr)
 	{
-		PickleBallGameInstance->SaveVolumes(MasterSlider->GetValue(), SfxSlider->GetValue(), MusicSlider->GetValue());
+		PickleBallGameInstance->SaveVolumes(MasterSlider->GetValue(), MusicSlider->GetValue(), SfxSlider->GetValue());
 	}
 	UGameplayStatics::PlaySound2D(GetWorld(), BackSoundEffect);
 }
@@ -92,15 +92,10 @@ void USettingScreenWidget::SetupVolumes()
 {
 	if(PickleBallGameInstance != nullptr)
 	{
-		TArray<int32> Volumes = PickleBallGameInstance->GetSaveGameVolumes();
+		TArray<float> Volumes = PickleBallGameInstance->GetSaveGameVolumes();
 		MasterSlider->SetValue(Volumes[0]);
-		OnMasterVolumeChanged(Volumes[0]);
-		
 		SfxSlider->SetValue(Volumes[1]);
-		OnSFXVolumeChanged(Volumes[1]);
-		
 		MusicSlider->SetValue(Volumes[2]);
-		OnMusicVolumeChanged(Volumes[2]);
 	}
 }
 

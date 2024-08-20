@@ -30,5 +30,5 @@ public:
 
 	// 0 = Master, 1 = Music, 2 = SFX
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SaveData)
-	TArray<int32> Volumes;
+	TArray<float> Volumes;
 };
