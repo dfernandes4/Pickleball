@@ -233,6 +233,6 @@ void ABall::OnGameOver()
 bool ABall::CanBallHitInKitchen() const
 {
 	FVector BallLocation = BallMesh->GetComponentLocation();
-	bool bLastLocationInKitchen =  (BallLocation.X > -208 && BallLocation.Y > -304 && BallLocation.Y < 304);
+	bool bLastLocationInKitchen =  (BallLocation.X > -190.0f && BallLocation.Y > -260.0f && BallLocation.Y < 260.0f);
 	return !(bLastLocationInKitchen && CurrentBounceCount == 0);
 }
