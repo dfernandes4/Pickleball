@@ -194,10 +194,6 @@ void APlayerPaddle::OnGameOver()
 
 	LastScore = CurrentScore;
 	CurrentScore = 0;
-    for (int i = 0; i < 3; i++)
-    {
-        PickleBallGameInstance->SavePlayerData(GetCurrentPlayerData());
-    }
 	
 	// Could Play Sound
 }

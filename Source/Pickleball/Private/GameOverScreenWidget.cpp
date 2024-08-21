@@ -50,6 +50,11 @@ void UGameOverScreenWidget::NativeConstruct()
     {
         GameInstance->RewardFinished.AddDynamic(this, &UGameOverScreenWidget::OnUserFinishedRewardAd);
     }
+
+	for (int i = 0; i < 3; i++)
+	{
+		GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
+	}
     
 }
 
@@ -160,7 +165,6 @@ void UGameOverScreenWidget::OnUserFinishedRewardAd()
             // Save player and enemy data
             if (GameInstance)
             {
-                GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
                 GameInstance->SaveCurrentEnemyRow(0);
                 GameInstance->SetShouldLaunchStarterScreen(true);
                 UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);

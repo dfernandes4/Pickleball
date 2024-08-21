@@ -34,7 +34,7 @@
 		},
 		{
 			"Name": "GoogleAdmobBlueprint",
-			"Enabled": false,
+			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/c67d7774d421479f8efed663f477d6ec"
 		},
 		{

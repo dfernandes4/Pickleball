@@ -4,7 +4,6 @@
 #include "PickleBallGameInstance.h"
 
 #include "PickleballSaveGame.h"
-#include "PlatformFeatures.h"
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Misc/FileHelper.h"
@@ -96,6 +95,12 @@ bool UPickleBallGameInstance::OnCloudLoadCompleted(const FString& FileName)
 
 void UPickleBallGameInstance::SaveGameData()
 {
+    if (!SaveGame)
+    {
+        UE_LOG(LogTemp, Error, TEXT("SaveGame object is null, cannot save data."));
+        return;
+    }
+    
     // Serialize the SaveGame object to a byte array
     TArray<uint8> SaveData;
     if (UGameplayStatics::SaveGameToMemory(SaveGame, SaveData))
