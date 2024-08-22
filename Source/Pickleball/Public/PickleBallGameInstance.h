@@ -91,7 +91,7 @@ public:
     FOnAdsRemovedDelegate AdsRemoved;
 	
     UPROPERTY(BlueprintAssignable, Category = "Events")
-    FOnAdButtonPressed OnAdButtonPress;
+    FOnAdButtonPressed OnAdButtonPressed;
 	
     UPROPERTY(BlueprintAssignable, Category = "Events")
     FOnRewardFinished RewardFinished;

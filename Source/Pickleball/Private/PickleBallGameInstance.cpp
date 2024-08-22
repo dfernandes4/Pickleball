@@ -116,6 +116,10 @@ void UPickleBallGameInstance::LoadGameData()
                 SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
                 if(SaveGame)
                 {
+                    if(SaveGame->PlayerId.IsEmpty())
+                    {
+                        SaveGame->PlayerId = CurrentUserId;
+                    }
                     SaveGame->PlayerData.PlayersLastScore = 0;
                     bIsGameLoaded = true;
                     LoadFinished.Broadcast();
@@ -126,6 +130,7 @@ void UPickleBallGameInstance::LoadGameData()
         {
             //No save file exists so create a new one
             SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
+            SaveGame->PlayerId = CurrentUserId;
             SaveGameData();
             bIsFirstTimePlayingEver = true;
             bIsGameLoaded = true;
@@ -147,6 +152,7 @@ void UPickleBallGameInstance::LoadGameData()
         {
             //No save file exists so create a new one
             SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
+            SaveGame->PlayerId = CurrentUserId;
             SaveGameData();
             bIsFirstTimePlayingEver = true;
             bIsGameLoaded = true;
@@ -187,6 +193,10 @@ bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool b
         else
         {
             SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
+            if(SaveGame->PlayerId.IsEmpty())
+            {
+                SaveGame->PlayerId = CurrentUserId;
+            }
             return true;
         }
     }
