@@ -36,9 +36,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "In-App Purchases")
     void InitiatePurchaseRequest(const FString& ProductId);
 
-	UFUNCTION()
-	void LoginToGameCenter();
-	void OnLoginComplete(int32 LocalUserNum, bool bWasSuccessful, const FUniqueNetId& UserId, const FString& Error);
+	
 	UFUNCTION()
 	void ShowLeaderboard(FName CategoryName);
 	UFUNCTION()
@@ -51,7 +49,6 @@ public:
 
 	FOnPurchaseCompletedDelegate  OnPurchaseCompleted;
 	FOnFirstTouchDelegate OnFirstTouch;
-	FDelegateHandle DelegateHandle;
 
 protected:
 	

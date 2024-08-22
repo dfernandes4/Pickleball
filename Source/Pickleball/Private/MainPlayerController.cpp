@@ -40,7 +40,6 @@ void AMainPlayerController::BeginPlay()
     {
         MainGamemode->OnGameOver.AddDynamic(this, &AMainPlayerController::OnGameOver);
     }
-    LoginToGameCenter();
 }
 
 void AMainPlayerController::PlayerTick(float DeltaTime)
@@ -272,54 +271,6 @@ void AMainPlayerController::HandlePurchaseCompletion(const FOnlineError& Result,
     }
 } 
 
-void AMainPlayerController::LoginToGameCenter()
-{
-    IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
-    if (OnlineSub)
-    {
-        IOnlineIdentityPtr Identity = OnlineSub->GetIdentityInterface();
-        if (Identity.IsValid())
-        {
-            FOnLoginCompleteDelegate Delegate = FOnLoginCompleteDelegate::CreateUObject(this, &AMainPlayerController::OnLoginComplete);
-            Identity->AddOnLoginCompleteDelegate_Handle(0, Delegate);
-
-            FOnlineAccountCredentials AccountCredentials;
-            Identity->Login(0, AccountCredentials);
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("Identity interface is not valid"));
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("OnlineSubsystem IOS is not available"));
-    }
-}
-
-void AMainPlayerController::OnLoginComplete(int32 LocalUserNum, bool bWasSuccessful, const FUniqueNetId& UserId, const FString& Error)
-{
-    IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
-    if (OnlineSub)
-    {
-        IOnlineIdentityPtr Identity = OnlineSub->GetIdentityInterface();
-        if (Identity.IsValid())
-        {
-            Identity->ClearOnLoginCompleteDelegate_Handle(LocalUserNum, DelegateHandle);
-
-            if (bWasSuccessful)
-            {
-                
-            }
-            else
-            {
-                UE_LOG(LogTemp, Warning, TEXT("Login to Game Center failed: %s"), *Error);
-                // Handle login failure
-            }
-        }
-    }
-}
-
 void AMainPlayerController::ShowLeaderboard(FName CategoryName)
 {
     if(IsLoggedInToGameCenter())
@@ -344,7 +295,8 @@ void AMainPlayerController::ShowLeaderboard(FName CategoryName)
     }
     else
     {
-        LoginToGameCenter();
+        UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
+         PickleBallGameInstance->LoginToGameCenter();
     }
 }
 

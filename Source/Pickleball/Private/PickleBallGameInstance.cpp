@@ -3,11 +3,12 @@
 
 #include "PickleBallGameInstance.h"
 
+#include "OnlineSubsystem.h"
 #include "PickleballSaveGame.h"
 #include "TimerManager.h"
+#include "Interfaces/OnlineIdentityInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Misc/FileHelper.h"
-
 
 UPickleBallGameInstance::UPickleBallGameInstance()
 {
@@ -16,17 +17,14 @@ UPickleBallGameInstance::UPickleBallGameInstance()
     bIsFirstTimePlayingInSession = true;
     bShouldLaunchStarterScreen = true;
     bIsGameLoaded = false;
-    RetryCount = 0;
-    MaxRetries = 3;
-    RetryDelay = .2f;
     CurrentGameCount = 0;
 }
 
 void UPickleBallGameInstance::Init()
 {
 	Super::Init();
-
-	LoadGameData();
+    
+    LoginToGameCenter();
 }
 
 void UPickleBallGameInstance::Shutdown()
@@ -34,22 +32,83 @@ void UPickleBallGameInstance::Shutdown()
 	Super::Shutdown();
 }
 
+void UPickleBallGameInstance::LoginToGameCenter()
+{
+    IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
+    if (OnlineSub)
+    {
+        IOnlineIdentityPtr Identity = OnlineSub->GetIdentityInterface();
+        if (Identity.IsValid())
+        {
+            OnLoginCompleteDelegate = FOnLoginCompleteDelegate::CreateUObject(this, &UPickleBallGameInstance::OnLoginComplete);
+            Identity->AddOnLoginCompleteDelegate_Handle(0, OnLoginCompleteDelegate);
+
+            FOnlineAccountCredentials AccountCredentials;
+            Identity->Login(0, AccountCredentials);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Identity interface is not valid"));
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("OnlineSubsystem IOS is not available"));
+    }
+}
+
+void UPickleBallGameInstance::OnLoginComplete(int32 LocalUserNum, bool bWasSuccessful, const FUniqueNetId& UserId,
+    const FString& Error)
+{
+    OnLoginCompleteDelegate.Unbind();
+    IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
+    if (OnlineSub)
+    {
+        IOnlineIdentityPtr Identity = OnlineSub->GetIdentityInterface();
+        if (Identity.IsValid())
+        {
+            if (bWasSuccessful)
+            {
+                CurrentUserId = UserId.ToString();
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Login to Game Center failed: %s"), *Error);
+            }
+        }
+    }
+
+    bIsLoggedIn = bWasSuccessful;
+    LoadGameData();
+}
+
 void UPickleBallGameInstance::LoadGameData()
 {
-    if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))
+    if(bIsLoggedIn)
     {
-        bIsFirstTimePlayingEver = false;
+        // Try to load the save game from the cloud
         
+        FString FileName = FString(FString::Printf(TEXT("%s""SaveGames/%s.sav"), *FPaths::ProjectSavedDir(), TEXT("file")));
+        // Check if a save FILE exists and if so sets save game to local save
+        if(UGameplayStatics::DoesSaveGameExist(SlotName, 0))
+        {
+            SetupValidSaveGame(FileName, false);
+        }
+    
         TArray<uint8> Data;
-        // Binary Load
+        // Updates local save file from icloud or just sets Data with local file data,
+        // returns true if cloud load is successful or if local file load is successful
+        // returns false if neither are successful
         if (UGameplayStatics::LoadDataFromSlot(Data, SlotName, 0))
         {
+            bIsFirstTimePlayingEver = false;
+            //Cloud save successful
             if(Data.IsEmpty())
             {
                 FTimerHandle CloudLoadTimerHandle;
-                GetWorld()->GetTimerManager().SetTimer(CloudLoadTimerHandle, [this]()
+                GetWorld()->GetTimerManager().SetTimer(CloudLoadTimerHandle, [this, FileName]()
                 {
-                    OnCloudLoadCompleted(FString(FString::Printf(TEXT("%s""SaveGames/%s.sav"), *FPaths::ProjectSavedDir(), TEXT("file"))));
+                    SetupValidSaveGame(FileName, true);
                 }, 1.f, false);
             }
             else
@@ -63,34 +122,100 @@ void UPickleBallGameInstance::LoadGameData()
                 }
             }
         }
+        else
+        {
+            //No save file exists so create a new one
+            SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
+            SaveGameData();
+            bIsFirstTimePlayingEver = true;
+            bIsGameLoaded = true;
+            LoadFinished.Broadcast();
+        }
     }
     else
     {
-        SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
-        SaveGameData();
-        bIsFirstTimePlayingEver = true;
-        bIsGameLoaded = true;
-        LoadFinished.Broadcast();
+        // No Account so just use local save system
+        
+        FString FileName = FString(FString::Printf(TEXT("%s""SaveGames/%s.sav"), *FPaths::ProjectSavedDir(), TEXT("file")));
+
+        // Check if a save FILE exists and if so sets save game to local save
+        if(UGameplayStatics::DoesSaveGameExist(SlotName, 0))
+        {
+            SetupValidSaveGame(FileName, false);
+        }
+        else
+        {
+            //No save file exists so create a new one
+            SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
+            SaveGameData();
+            bIsFirstTimePlayingEver = true;
+            bIsGameLoaded = true;
+            LoadFinished.Broadcast();
+        }
     }
+    
     bIsFirstTimePlayingInSession = true;
 }
 
-bool UPickleBallGameInstance::OnCloudLoadCompleted(const FString& FileName)
+bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool bIsLoadingCloudSave)
 {
     TArray<uint8> Data;
     FFileHelper::LoadFileToArray(Data, *FileName);
     if(!Data.IsEmpty())
     {
-        SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
-        if(SaveGame)
+        if(bIsLoadingCloudSave)
         {
-            UE_LOG(LogTemp, Log, TEXT("Loaded save High Score: %d"), SaveGame->PlayerData.PlayerHighScore);
-            bIsGameLoaded = true;
-            LoadFinished.Broadcast();
-            return true; // Operation was successful
+            UPickleballSaveGame* CloudSaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
+            if(CloudSaveGame != nullptr && SaveGame != nullptr)
+            {
+                // If cloud save is up-to-date or current user is different than last time
+                // then update local save with cloud save
+                
+                /* !!Could be potential issue if cloud save is ahead, double check this!! */
+                const bool bIsCloudSaveUpToDate = ShouldiCloudOverride(SaveGame, CloudSaveGame);
+                if(bIsCloudSaveUpToDate || (CurrentUserId != SaveGame->PlayerId))
+                {
+                    SaveGame = CloudSaveGame;
+                }
+                
+                SaveGameData();
+                bIsGameLoaded = true;
+                LoadFinished.Broadcast();
+                    
+                UE_LOG(LogTemp, Log, TEXT("Loaded save High Score: %d"), SaveGame->PlayerData.PlayerHighScore);
+                return true;
+            }
+        }
+        else
+        {
+            SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
+            return true;
         }
     }
-    return false; // Operation was not successful
+    return false;
+}
+
+bool UPickleBallGameInstance::ShouldiCloudOverride(const UPickleballSaveGame* LocalSaveGame,
+    const UPickleballSaveGame* CloudSaveGame) const
+{
+    // Check if all paddles are up-to-date
+    for (auto Paddle : LocalSaveGame->PlayerData.PaddleUnlockStatuses)
+    {
+        if (CloudSaveGame->PlayerData.PaddleUnlockStatuses[Paddle.Key] != Paddle.Value)
+        {
+            // Check which has the paddle unlocked if its cloud then override other wise dont
+            return CloudSaveGame->PlayerData.PaddleUnlockStatuses[Paddle.Key];
+        }
+    }
+
+    /* Check this */
+    // Check everything else
+    if(LocalSaveGame->PlayerData.PlayerCoins != CloudSaveGame->PlayerData.PlayerCoins)
+    {
+        return LocalSaveGame->PlayerData.PlayerCoins <= CloudSaveGame->PlayerData.PlayerCoins;
+    }
+
+    return LocalSaveGame->PlayerData.PlayerHighScore <= CloudSaveGame->PlayerData.PlayerHighScore;
 }
 
 void UPickleBallGameInstance::SaveGameData()
