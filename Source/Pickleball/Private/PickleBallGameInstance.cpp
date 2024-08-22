@@ -152,7 +152,7 @@ void UPickleBallGameInstance::LoadGameData()
         
         FString FileName = FString(FString::Printf(TEXT("%s""SaveGames/%s.sav"), *FPaths::ProjectSavedDir(), TEXT("file")));
 
-        // Check if a save FILE exists and if so sets save game to local save
+        // Check if a save FILE exists and if so sets save game to local save.
         if(UGameplayStatics::DoesSaveGameExist(SlotName, 0))
         {
             SetupValidSaveGame(FileName, false);
