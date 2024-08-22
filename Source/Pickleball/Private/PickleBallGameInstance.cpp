@@ -84,89 +84,47 @@ void UPickleBallGameInstance::OnLoginComplete(int32 LocalUserNum, bool bWasSucce
 
 void UPickleBallGameInstance::LoadGameData()
 {
+    FString FileName = FString(FString::Printf(TEXT("%s""SaveGames/%s.sav"), *FPaths::ProjectSavedDir(), TEXT("file")));
+    // Check if a save FILE exists and if so sets save game to local save
+    if(UGameplayStatics::DoesSaveGameExist(SlotName, 0))
+    {
+        SetupValidSaveGame(FileName, false);
+    }
+    else
+    {
+        //No save file exists so create a new one
+        SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
+        SaveGame->PlayerId = CurrentUserId;
+        bIsFirstTimePlayingEver = true;
+        SaveGameData();
+    }
+    
     if(bIsLoggedIn)
     {
-        // Try to load the save game from the cloud
+        // Attempt to Override local save with cloud save if appropriate
         
-        FString FileName = FString(FString::Printf(TEXT("%s""SaveGames/%s.sav"), *FPaths::ProjectSavedDir(), TEXT("file")));
-        // Check if a save FILE exists and if so sets save game to local save
-        if(UGameplayStatics::DoesSaveGameExist(SlotName, 0))
-        {
-            SetupValidSaveGame(FileName, false);
-        }
-    
         TArray<uint8> Data;
+        
         // Updates local save file from icloud or just sets Data with local file data,
         // returns true if cloud load is successful or if local file load is successful
         // returns false if neither are successful
         if (UGameplayStatics::LoadDataFromSlot(Data, SlotName, 0))
         {
             bIsFirstTimePlayingEver = false;
-            //Cloud save successful
-            if(Data.IsEmpty())
+            if(Data.IsEmpty())  // Cloudkit contains data
             {
                 FTimerHandle CloudLoadTimerHandle;
                 GetWorld()->GetTimerManager().SetTimer(CloudLoadTimerHandle, [this, FileName]()
                 {
-                    bool bIsGameValid = SetupValidSaveGame(FileName, true);
-                    if (!bIsGameValid)
-                    {
-                        SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
-                        SaveGame->PlayerId = CurrentUserId;
-                        SaveGameData();
-                        bIsFirstTimePlayingEver = true;
-                        bIsGameLoaded = true;
-                        LoadFinished.Broadcast();
-                    }
+                    SetupValidSaveGame(FileName, true);
                 }, 1.f, false);
             }
-            else
-            {
-                SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
-                if(SaveGame)
-                {
-                    if(SaveGame->PlayerId.IsEmpty())
-                    {
-                        SaveGame->PlayerId = CurrentUserId;
-                    }
-                    SaveGame->PlayerData.PlayersLastScore = 0;
-                    bIsGameLoaded = true;
-                    LoadFinished.Broadcast();
-                }
-            }
-        }
-        else
-        {
-            //No save file exists so create a new one
-            SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
-            SaveGame->PlayerId = CurrentUserId;
-            SaveGameData();
-            bIsFirstTimePlayingEver = true;
-            bIsGameLoaded = true;
-            LoadFinished.Broadcast();
         }
     }
     else
     {
-        // No Account so just use local save system
-        
-        FString FileName = FString(FString::Printf(TEXT("%s""SaveGames/%s.sav"), *FPaths::ProjectSavedDir(), TEXT("file")));
-
-        // Check if a save FILE exists and if so sets save game to local save.
-        if(UGameplayStatics::DoesSaveGameExist(SlotName, 0))
-        {
-            SetupValidSaveGame(FileName, false);
-        }
-        else
-        {
-            //No save file exists so create a new one
-            SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
-            SaveGame->PlayerId = CurrentUserId;
-            SaveGameData();
-            bIsFirstTimePlayingEver = true;
-            bIsGameLoaded = true;
-            LoadFinished.Broadcast();
-        }
+        bIsGameLoaded = true;
+        LoadFinished.Broadcast();
     }
     
     bIsFirstTimePlayingInSession = true;
@@ -198,12 +156,12 @@ bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool b
                     }
                 }
             }
-                SaveGameData();
-                bIsGameLoaded = true;
-                LoadFinished.Broadcast();
-                    
-                UE_LOG(LogTemp, Log, TEXT("Loaded save High Score: %d"), SaveGame->PlayerData.PlayerHighScore);
-                return true;
+            SaveGameData();
+            bIsGameLoaded = true;
+            LoadFinished.Broadcast();
+                
+            UE_LOG(LogTemp, Log, TEXT("Loaded save High Score: %d"), SaveGame->PlayerData.PlayerHighScore);
+            return true;
         }
         else
         {
@@ -212,6 +170,7 @@ bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool b
             {
                 SaveGame->PlayerId = CurrentUserId;
             }
+            SaveGame->PlayerData.PlayersLastScore = 0;
             return true;
         }
         
