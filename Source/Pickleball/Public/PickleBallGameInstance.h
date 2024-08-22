@@ -84,7 +84,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RewardFinishedComplete() const;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FLoadFinishedDelegate LoadFinished;
 	
     UPROPERTY(BlueprintAssignable, Category = "Events")
