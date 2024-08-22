@@ -168,12 +168,10 @@ bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool b
             UPickleballSaveGame* CloudSaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
             if(CloudSaveGame != nullptr && SaveGame != nullptr)
             {
-                // If cloud save is up-to-date or current user is different than last time
-                // then update local save with cloud save
-                
-                /* !!Could be potential issue if cloud save is ahead, double check this!! */
-                const bool bIsCloudSaveUpToDate = ShouldiCloudOverride(SaveGame, CloudSaveGame);
-                if(bIsCloudSaveUpToDate || (CurrentUserId != SaveGame->PlayerId))
+                // If cloud save is up-to-date or ahead and user is the same
+                // override local save with cloud save
+                const bool bShouldiCloudOverride = ShouldiCloudOverride(SaveGame, CloudSaveGame);
+                if(bShouldiCloudOverride)
                 {
                     SaveGame = CloudSaveGame;
                 }
@@ -198,24 +196,30 @@ bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool b
 bool UPickleBallGameInstance::ShouldiCloudOverride(const UPickleballSaveGame* LocalSaveGame,
     const UPickleballSaveGame* CloudSaveGame) const
 {
-    // Check if all paddles are up-to-date
-    for (auto Paddle : LocalSaveGame->PlayerData.PaddleUnlockStatuses)
+    if (CurrentUserId == SaveGame->PlayerId)
     {
-        if (CloudSaveGame->PlayerData.PaddleUnlockStatuses[Paddle.Key] != Paddle.Value)
+        // Check if all paddles are up-to-date
+        for (auto Paddle : LocalSaveGame->PlayerData.PaddleUnlockStatuses)
         {
-            // Check which has the paddle unlocked if its cloud then override other wise dont
-            return CloudSaveGame->PlayerData.PaddleUnlockStatuses[Paddle.Key];
+            if (CloudSaveGame->PlayerData.PaddleUnlockStatuses[Paddle.Key] != Paddle.Value)
+            {
+                // Check which has the paddle unlocked if its cloud then override otherwise don't
+                return CloudSaveGame->PlayerData.PaddleUnlockStatuses[Paddle.Key];
+            }
         }
+
+        /* Check this */
+        // Check everything else
+        if(LocalSaveGame->PlayerData.PlayerCoins != CloudSaveGame->PlayerData.PlayerCoins)
+        {
+            return LocalSaveGame->PlayerData.PlayerCoins <= CloudSaveGame->PlayerData.PlayerCoins;
+        }
+
+        return LocalSaveGame->PlayerData.PlayerHighScore <= CloudSaveGame->PlayerData.PlayerHighScore;
     }
 
-    /* Check this */
-    // Check everything else
-    if(LocalSaveGame->PlayerData.PlayerCoins != CloudSaveGame->PlayerData.PlayerCoins)
-    {
-        return LocalSaveGame->PlayerData.PlayerCoins <= CloudSaveGame->PlayerData.PlayerCoins;
-    }
-
-    return LocalSaveGame->PlayerData.PlayerHighScore <= CloudSaveGame->PlayerData.PlayerHighScore;
+    // If current user is new user than override
+    return true;
 }
 
 void UPickleBallGameInstance::SaveGameData()
