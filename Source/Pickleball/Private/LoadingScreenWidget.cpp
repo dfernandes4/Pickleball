@@ -6,7 +6,7 @@
 void ULoadingScreenWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	LoadingScreenDuration = 1.25;
+	LoadingScreenDuration = 2.f;
 
 	if(LoadingAnimation != nullptr)
 	{
