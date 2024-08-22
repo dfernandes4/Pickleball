@@ -108,7 +108,16 @@ void UPickleBallGameInstance::LoadGameData()
                 FTimerHandle CloudLoadTimerHandle;
                 GetWorld()->GetTimerManager().SetTimer(CloudLoadTimerHandle, [this, FileName]()
                 {
-                    SetupValidSaveGame(FileName, true);
+                    bool bIsGameValid = SetupValidSaveGame(FileName, true);
+                    if (!bIsGameValid)
+                    {
+                        SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
+                        SaveGame->PlayerId = CurrentUserId;
+                        SaveGameData();
+                        bIsFirstTimePlayingEver = true;
+                        bIsGameLoaded = true;
+                        LoadFinished.Broadcast();
+                    }
                 }, 1.f, false);
             }
             else
@@ -172,23 +181,29 @@ bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool b
         if(bIsLoadingCloudSave)
         {
             UPickleballSaveGame* CloudSaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
-            if(CloudSaveGame != nullptr && SaveGame != nullptr)
+            if(SaveGame == nullptr)
             {
-                // If cloud save is up-to-date or ahead and user is the same
-                // override local save with cloud save
-                const bool bShouldiCloudOverride = ShouldiCloudOverride(SaveGame, CloudSaveGame);
-                if(bShouldiCloudOverride)
+                SaveGame = CloudSaveGame;
+            }
+            else
+            {
+                if(CloudSaveGame != nullptr)
                 {
-                    SaveGame = CloudSaveGame;
+                    // If cloud save is up-to-date or ahead and user is the same
+                    // override local save with cloud save
+                    const bool bShouldiCloudOverride = ShouldiCloudOverride(SaveGame, CloudSaveGame);
+                    if(bShouldiCloudOverride)
+                    {
+                        SaveGame = CloudSaveGame;
+                    }
                 }
-                
+            }
                 SaveGameData();
                 bIsGameLoaded = true;
                 LoadFinished.Broadcast();
                     
                 UE_LOG(LogTemp, Log, TEXT("Loaded save High Score: %d"), SaveGame->PlayerData.PlayerHighScore);
                 return true;
-            }
         }
         else
         {
@@ -199,6 +214,7 @@ bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool b
             }
             return true;
         }
+        
     }
     return false;
 }
