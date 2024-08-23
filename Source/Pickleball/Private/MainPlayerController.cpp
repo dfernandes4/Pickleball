@@ -185,7 +185,7 @@ void AMainPlayerController::PurchaseOffer(FOnlineStoreOfferRef Offer)
             }
 
             bool bIsConsumable = true;
-            if (Offer->OfferId == "RemoveAds")
+            if (Offer->OfferId == "Remove_Ads_")
             {
                 bIsConsumable = false;
             }
@@ -225,7 +225,7 @@ void AMainPlayerController::HandlePurchaseCompletion(const FOnlineError& Result,
         {
             CoinsAmount = 1500;
         }
-        else if(ProductId == "RemoveAds")
+        else if(ProductId == "Remove_Ads_")
         {
             UPickleBallGameInstance* PickleBallGameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
             if(PickleBallGameInstance != nullptr)
