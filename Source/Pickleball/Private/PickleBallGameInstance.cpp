@@ -70,6 +70,7 @@ void UPickleBallGameInstance::OnLoginComplete(int32 LocalUserNum, bool bWasSucce
             if (bWasSuccessful)
             {
                 CurrentUserId = UserId.ToString();
+                UE_LOG(LogTemp, Warning, TEXT( "Current User ID: %s"), *CurrentUserId);
             }
             else
             {
@@ -142,6 +143,8 @@ bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool b
         if(bIsLoadingCloudSave)
         {
             UPickleballSaveGame* CloudSaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
+            UE_LOG(LogTemp, Warning, TEXT( "CloudSave Player ID: %s"), *CloudSaveGame->PlayerId);
+            UE_LOG(LogTemp, Warning, TEXT( "LocalSave Player ID: %s"), *CloudSaveGame->PlayerId);
             if(SaveGame == nullptr)
             {
                 SaveGame = CloudSaveGame;
