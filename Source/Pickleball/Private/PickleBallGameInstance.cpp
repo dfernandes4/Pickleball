@@ -92,9 +92,12 @@ void UPickleBallGameInstance::LoadGameData()
     }
     else
     {
-        //No save file exists so create a new one
+        //No save file exists so create a new one (Could be first time playing ever or coming from iCloud)
         SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
-        SaveGame->PlayerId = CurrentUserId;
+        if(bIsLoggedIn)
+        {
+            SaveGame->PlayerId = CurrentUserId;
+        }
         bIsFirstTimePlayingEver = true;
         SaveGameData();
     }
@@ -166,7 +169,7 @@ bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool b
         else
         {
             SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
-            if(SaveGame->PlayerId.IsEmpty())
+            if(SaveGame->PlayerId.IsEmpty() && bIsLoggedIn)
             {
                 SaveGame->PlayerId = CurrentUserId;
             }
