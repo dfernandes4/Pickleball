@@ -92,6 +92,7 @@ void UPickleBallGameInstance::LoadGameData()
     if(UGameplayStatics::DoesSaveGameExist(SlotName, 0))
     {
         SetupValidSaveGame(FileName, false);
+        bIsFirstTimePlayingEver = false;
     }
     else
     {
