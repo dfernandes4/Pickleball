@@ -160,6 +160,10 @@ bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool b
                     if(bShouldiCloudOverride)
                     {
                         SaveGame = CloudSaveGame;
+                        if(SaveGame->PlayerId.IsEmpty())
+                        {
+                            SaveGame->PlayerId = CurrentUserId;
+                        }
                     }
                 }
             }
