@@ -85,6 +85,8 @@ void UPickleBallGameInstance::OnLoginComplete(int32 LocalUserNum, bool bWasSucce
 
 void UPickleBallGameInstance::LoadGameData()
 {
+    bIsFirstTimePlayingInSession = true;
+    
     FString FileName = FString(FString::Printf(TEXT("%s""SaveGames/%s.sav"), *FPaths::ProjectSavedDir(), TEXT("file")));
     // Check if a save FILE exists and if so sets save game to local save
     if(UGameplayStatics::DoesSaveGameExist(SlotName, 0))
@@ -95,12 +97,7 @@ void UPickleBallGameInstance::LoadGameData()
     {
         //No save file exists so create a new one (Could be first time playing ever or coming from iCloud)
         SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::CreateSaveGameObject(UPickleballSaveGame::StaticClass()));
-        if(bIsLoggedIn)
-        {
-            SaveGame->PlayerId = CurrentUserId;
-        }
         bIsFirstTimePlayingEver = true;
-        SaveGameData();
     }
     
     if(bIsLoggedIn)
@@ -123,15 +120,22 @@ void UPickleBallGameInstance::LoadGameData()
                     SetupValidSaveGame(FileName, true);
                 }, 1.f, false);
             }
+            else
+            {
+                // User is saving to cloud for first time
+                SaveGame->PlayerId = CurrentUserId;
+                SaveGameData();
+                bIsGameLoaded = true;
+                LoadFinished.Broadcast();
+            }
         }
     }
     else
     {
+        SaveGameData();
         bIsGameLoaded = true;
         LoadFinished.Broadcast();
     }
-    
-    bIsFirstTimePlayingInSession = true;
 }
 
 bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool bIsLoadingCloudSave)
@@ -143,44 +147,40 @@ bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool b
         if(bIsLoadingCloudSave)
         {
             UPickleballSaveGame* CloudSaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
-            UE_LOG(LogTemp, Warning, TEXT( "CloudSave Player ID: %s"), *CloudSaveGame->PlayerId);
+            if(CloudSaveGame != nullptr)
+            {
+                CloudSaveGame->PlayerId = CurrentUserId;
             
-            if(SaveGame == nullptr)
-            {
-                SaveGame = CloudSaveGame;
-            }
-            else
-            {
-                UE_LOG(LogTemp, Warning, TEXT( "LocalSave Player ID: %s"), *SaveGame->PlayerId);
-                if(CloudSaveGame != nullptr)
+                UE_LOG(LogTemp, Warning, TEXT( "CloudSave Player ID: %s"), *CloudSaveGame->PlayerId);
+            
+                if(SaveGame == nullptr)
                 {
+                    SaveGame = CloudSaveGame;
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Warning, TEXT( "LocalSave Player ID: %s"), *SaveGame->PlayerId);
+            
                     // If cloud save is up-to-date or ahead and user is the same
                     // override local save with cloud save
                     const bool bShouldiCloudOverride = ShouldiCloudOverride(SaveGame, CloudSaveGame);
                     if(bShouldiCloudOverride)
                     {
                         SaveGame = CloudSaveGame;
-                        if(SaveGame->PlayerId.IsEmpty())
-                        {
-                            SaveGame->PlayerId = CurrentUserId;
-                        }
                     }
                 }
-            }
-            SaveGameData();
-            bIsGameLoaded = true;
-            LoadFinished.Broadcast();
+
+                SaveGameData();
+                bIsGameLoaded = true;
+                LoadFinished.Broadcast();
                 
-            UE_LOG(LogTemp, Log, TEXT("Loaded save High Score: %d"), SaveGame->PlayerData.PlayerHighScore);
-            return true;
+                UE_LOG(LogTemp, Log, TEXT("Loaded save High Score: %d"), SaveGame->PlayerData.PlayerHighScore);
+                return true;
+            }
         }
         else
         {
             SaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
-            if(SaveGame->PlayerId.IsEmpty() && bIsLoggedIn)
-            {
-                SaveGame->PlayerId = CurrentUserId;
-            }
             SaveGame->PlayerData.PlayersLastScore = 0;
             return true;
         }
