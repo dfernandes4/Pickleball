@@ -144,7 +144,7 @@ bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool b
         {
             UPickleballSaveGame* CloudSaveGame = Cast<UPickleballSaveGame>(UGameplayStatics::LoadGameFromMemory(Data));
             UE_LOG(LogTemp, Warning, TEXT( "CloudSave Player ID: %s"), *CloudSaveGame->PlayerId);
-            UE_LOG(LogTemp, Warning, TEXT( "LocalSave Player ID: %s"), *CloudSaveGame->PlayerId);
+            UE_LOG(LogTemp, Warning, TEXT( "LocalSave Player ID: %s"), *SaveGame->PlayerId);
             if(SaveGame == nullptr)
             {
                 SaveGame = CloudSaveGame;
