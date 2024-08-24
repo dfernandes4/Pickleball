@@ -43,7 +43,7 @@ void UGameOverScreenWidget::NativeConstruct()
 	PlayerPaddle = Cast<APlayerPaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	DisplayPlayerValues();
     
-    bIs2xAd = false;
+    bIs2xAd = true;
     
     UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
     if(GameInstance)
