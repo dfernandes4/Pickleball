@@ -97,7 +97,7 @@ public:
     FOnRewardFinished RewardFinished;
 	
 	FOnLoginCompleteDelegate OnLoginCompleteDelegate;
-	
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Save, meta = (AllowPrivateAccess))

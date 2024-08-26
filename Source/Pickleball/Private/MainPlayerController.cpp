@@ -302,52 +302,30 @@ void AMainPlayerController::ShowLeaderboard(FName CategoryName)
 
 void AMainPlayerController::SubmitHighscore(int32 Score, FName CategoryName)
 {
-    if (PlayerState != nullptr)
+    IOnlineSubsystem* const OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
+    if (OnlineSub != nullptr)
     {
-        FUniqueNetIdRepl UserId = PlayerState->GetUniqueId();
-        if (UserId.IsValid())
+        IOnlineIdentityPtr Identity = OnlineSub->GetIdentityInterface();
+        if(Identity.IsValid())
         {
-            IOnlineSubsystem* const OnlineSub = IOnlineSubsystem::Get();
-            if (OnlineSub != nullptr)
+            FUniqueNetIdPtr UserId = Identity->GetUniquePlayerId(0);
+            if(UserId.IsValid())
             {
                 IOnlineLeaderboardsPtr Leaderboards = OnlineSub->GetLeaderboardsInterface();
                 if (Leaderboards.IsValid())
                 {
                     // Create a leaderboard write object
                     FOnlineLeaderboardWrite WriteObject;
-                    WriteObject.LeaderboardNames.Add(CategoryName); // Correct way to set leaderboard names
-                    WriteObject.RatedStat = TEXT("Score");
-                    WriteObject.SetIntStat(TEXT("Score"), Score);
-                    
-                    // Optionally set properties for the leaderboard write
-                    WriteObject.SortMethod = ELeaderboardSort::Descending;
-                    WriteObject.UpdateMethod = ELeaderboardUpdateMethod::KeepBest;
-
+                    WriteObject.SetIntStat(CategoryName, Score);
+            
                     // Write the leaderboard data
                     Leaderboards->WriteLeaderboards(PlayerState->SessionName, *UserId, WriteObject);
 
                     // Flush the leaderboard data immediately
                     Leaderboards->FlushLeaderboards(PlayerState->SessionName);
-                    
-                }
-                else
-                {
-                    UE_LOG(LogTemp, Warning, TEXT("WriteLeaderboardObject - Leaderboards not supported by Online Subsystem"));
                 }
             }
-            else
-            {
-                UE_LOG(LogTemp, Warning, TEXT("WriteLeaderboardObject - Invalid or uninitialized OnlineSubsystem"));
-            }
         }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("WriteLeaderboardObject - Cannot map local player to unique net ID"));
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("WriteLeaderboardObject - Invalid player state"));
     }
 }
 
