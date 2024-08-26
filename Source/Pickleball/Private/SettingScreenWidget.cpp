@@ -73,7 +73,7 @@ void USettingScreenWidget::OnHowToPlayButtonClicked()
 
 void USettingScreenWidget::OnRemoveAdsButtonClicked()
 {
-	Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0))->InitiatePurchaseRequest("RemoveAds");
+	Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0))->InitiatePurchaseRequest("Remove_Ads_");
 }
 
 void USettingScreenWidget::OnBackButtonClicked()
