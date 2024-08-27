@@ -123,8 +123,7 @@ void UPickleBallGameInstance::LoadGameData()
             }
             else
             {
-                // User is saving to cloud for first time
-                bIsFirstTimePlayingEver = true;
+                // User cant save to ICloud for because of no internet connection or full cloud storage
                 SaveGame->PlayerId = CurrentUserId;
                 SaveGameData();
                 bIsGameLoaded = true;
@@ -186,7 +185,16 @@ bool UPickleBallGameInstance::SetupValidSaveGame(const FString& FileName, bool b
             SaveGame->PlayerData.PlayersLastScore = 0;
             return true;
         }
-        
+    }
+    else
+    {
+        // First time loading from cloud no existing file yet / file gets overwritten with crap
+        if(bIsLoadingCloudSave)
+        {
+            SaveGameData();
+            bIsGameLoaded = true;
+            LoadFinished.Broadcast();
+        }
     }
     return false;
 }
