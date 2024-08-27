@@ -112,9 +112,9 @@ void UPickleBallGameInstance::LoadGameData()
         // returns false if neither are successful
         if (UGameplayStatics::LoadDataFromSlot(Data, SlotName, 0))
         {
-            bIsFirstTimePlayingEver = false;
             if(Data.IsEmpty())  // Cloudkit contains data
             {
+                bIsFirstTimePlayingEver = false;
                 FTimerHandle CloudLoadTimerHandle;
                 GetWorld()->GetTimerManager().SetTimer(CloudLoadTimerHandle, [this, FileName]()
                 {
@@ -124,6 +124,7 @@ void UPickleBallGameInstance::LoadGameData()
             else
             {
                 // User is saving to cloud for first time
+                bIsFirstTimePlayingEver = true;
                 SaveGame->PlayerId = CurrentUserId;
                 SaveGameData();
                 bIsGameLoaded = true;
