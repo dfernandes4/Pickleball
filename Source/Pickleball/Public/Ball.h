@@ -45,7 +45,10 @@ public:
 	void OnGameOver();
 	
 	UFUNCTION()
-	bool CanBallHitInKitchen() const;
+	bool CanBallHitInKitchen();
+
+	UFUNCTION()
+	bool GetBallHitInKitchen();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
@@ -103,5 +106,10 @@ private:
 
 	UPROPERTY()
 	AMainGamemode* MainGamemode;
-	
+
+	UPROPERTY()
+	bool bIsGameOver;
+
+	UPROPERTY()
+	bool bBallHitInKitchen;
 };

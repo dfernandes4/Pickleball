@@ -87,7 +87,7 @@ void UPlayScreenWidget::HandleGameOver()
 	
 	if(Ball != nullptr)
 	{
-		if(!Ball->CanBallHitInKitchen())
+		if(!Ball->GetBallHitInKitchen())
 		{
 			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 			WidgetLoader->LoadWidget(FName("KitchenScreen"), GetWorld());

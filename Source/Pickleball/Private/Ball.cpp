@@ -31,7 +31,9 @@ ABall::ABall()
 	Trail = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Trail"));
 	Trail->SetupAttachment(BallMesh);
     
-
+	bIsGameOver = false;
+	bBallHitInKitchen = false;
+	
 	Speed = 100;
 
 	CurrentBounceCount = 0;
@@ -110,29 +112,35 @@ void ABall::ApplySwipeForce(const FVector& Force, const APaddle* PaddleActor)
 void ABall::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
-	if(OtherActor->ActorHasTag("Court") || OtherActor->ActorHasTag("Background") || OtherActor->ActorHasTag("Dark"))
+	if(bIsGameOver)
 	{
-		CurrentBounceCount++;
-		// Each Bounce + 2 to the count ...?
-		if(CurrentBounceCount > 1)
-		{
-			MainGamemode->OnGameOver.Broadcast();
-		}
-
-		if(BounceEffect != nullptr)
-		{
-			UGameplayStatics::PlaySound2D(GetWorld(),BounceSound);
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, BounceEffect, BallMesh->GetComponentLocation());
-		}
-        
-        FVector BallLandingLocation = BallPositionSymbol->GetActorLocation();
-        if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -304 && BallLandingLocation.Y < 304) && EnemyPaddle->GetIsEnemiesTurn())
-        {
-            Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetBallLandingLocation(BallLandingLocation);
-            Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(BallLandingLocation);
-        }
+		MainGamemode->OnGameOver.Broadcast();
 	}
-                
+	else
+	{
+		if(OtherActor->ActorHasTag("Court") || OtherActor->ActorHasTag("Background") || OtherActor->ActorHasTag("Dark"))
+		{
+			CurrentBounceCount++;
+			// Each Bounce + 2 to the count ...?
+			if(CurrentBounceCount > 1)
+			{
+				MainGamemode->OnGameOver.Broadcast();
+			}
+
+			if(BounceEffect != nullptr)
+			{
+				UGameplayStatics::PlaySound2D(GetWorld(),BounceSound);
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, BounceEffect, BallMesh->GetComponentLocation());
+			}
+        
+			FVector BallLandingLocation = BallPositionSymbol->GetActorLocation();
+			if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -304 && BallLandingLocation.Y < 304) && EnemyPaddle->GetIsEnemiesTurn())
+			{
+				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetBallLandingLocation(BallLandingLocation);
+				Cast<AEnemyAIController>(EnemyPaddle->GetController())->SetRespondingState(BallLandingLocation);
+			}
+		}
+	}
 }
 void ABall::PredictProjectileLandingPoint()
 {
@@ -182,17 +190,14 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 		
 		if(CurrentPaddle->IsA(APlayerPaddle::StaticClass()))
 		{
-			// Also check that HitInKictchen is false
+			// Check if landing location is valid 
 			FVector BallLandingLocation = BallPositionSymbol->GetActorLocation();
 			if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -304 && BallLandingLocation.Y < 304))
 			{
+				// Check if they can hit in kitchen
 				if(!CanBallHitInKitchen())
 				{
-					if(MainGamemode)
-					{
-						MainGamemode->OnGameOver.Broadcast();
-						// Play Kitchen Text Animation and then display Game Over Screen
-					}
+					bIsGameOver = true;
 				}
 				else
 				{
@@ -204,11 +209,7 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 			}
 			else
 			{
-				if(MainGamemode)
-				{
-					MainGamemode->OnGameOver.Broadcast();
-					// Only display Game Over Screen
-				}
+				bIsGameOver = true;
 			}
 		}
 		else if(CurrentPaddle->IsA(AEnemyPaddle::StaticClass()))
@@ -230,9 +231,14 @@ void ABall::OnGameOver()
 	//Do something on restart to rebind the hit event
 }
 
-bool ABall::CanBallHitInKitchen() const
+bool ABall::CanBallHitInKitchen()
 {
 	FVector BallLocation = BallMesh->GetComponentLocation();
-	bool bLastLocationInKitchen =  (BallLocation.X > -190.0f && BallLocation.Y > -260.0f && BallLocation.Y < 260.0f);
-	return !(bLastLocationInKitchen && CurrentBounceCount == 0);
+	bBallHitInKitchen =  (BallLocation.X > -190.0f && BallLocation.Y > -260.0f && BallLocation.Y < 260.0f);
+	return !(bBallHitInKitchen && CurrentBounceCount == 0);
+}
+
+bool ABall::GetBallHitInKitchen()
+{
+	return bBallHitInKitchen;
 }
