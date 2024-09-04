@@ -32,7 +32,7 @@ ABall::ABall()
 	Trail->SetupAttachment(BallMesh);
     
 	bIsGameOver = false;
-	bBallHitInKitchen = false;
+	bCanBallHitInKitchen = true;
 	
 	Speed = 100;
 
@@ -195,7 +195,8 @@ void ABall::OnSwipeForceApplied(const FVector& HittingLocation)
 			if(IsValid(EnemyPaddle) && (BallLandingLocation.X > -8 && BallLandingLocation.X < 680 && BallLandingLocation.Y > -304 && BallLandingLocation.Y < 304))
 			{
 				// Check if they can hit in kitchen
-				if(!CanBallHitInKitchen())
+				bCanBallHitInKitchen = CanBallHitInKitchen();
+				if(!bCanBallHitInKitchen)
 				{
 					bIsGameOver = true;
 				}
@@ -234,11 +235,11 @@ void ABall::OnGameOver()
 bool ABall::CanBallHitInKitchen()
 {
 	FVector BallLocation = BallMesh->GetComponentLocation();
-	bBallHitInKitchen =  (BallLocation.X > -190.0f && BallLocation.Y > -260.0f && BallLocation.Y < 260.0f);
-	return !(bBallHitInKitchen && CurrentBounceCount == 0);
+	bool bIsBallInKitchen =  (BallLocation.X > -190.0f && BallLocation.Y > -260.0f && BallLocation.Y < 260.0f);
+	return !(bIsBallInKitchen && CurrentBounceCount == 0);
 }
 
-bool ABall::GetBallHitInKitchen()
+bool ABall::GetCanBallHitInKitchen()
 {
-	return bBallHitInKitchen;
+	return bCanBallHitInKitchen;
 }

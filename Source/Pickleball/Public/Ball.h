@@ -48,7 +48,7 @@ public:
 	bool CanBallHitInKitchen();
 
 	UFUNCTION()
-	bool GetBallHitInKitchen();
+	bool GetCanBallHitInKitchen();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 	USceneComponent* SceneComponent;
@@ -111,5 +111,5 @@ private:
 	bool bIsGameOver;
 
 	UPROPERTY()
-	bool bBallHitInKitchen;
+	bool bCanBallHitInKitchen;
 };
