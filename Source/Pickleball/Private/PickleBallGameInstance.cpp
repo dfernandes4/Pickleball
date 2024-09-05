@@ -354,7 +354,6 @@ void UPickleBallGameInstance::RemoveAds()
 
 bool UPickleBallGameInstance::AreAdsEnabled() const
 {
-    bool fakeVar = true;
     UE_LOG(LogTemp, Warning, TEXT( "Checkpoint for checking if ads are enabled"));
     return SaveGame->bAreAdsEnabled;
 }
