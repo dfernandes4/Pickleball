@@ -173,17 +173,18 @@ void UGameOverScreenWidget::OnUserFinishedRewardAd()
     }
     else
     {
+    /*
         const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-        
-        WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
-    	PlayerPaddle->SaveLastScore();
-        GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
-        /*
-			FTimerHandle LoadDelayHandle;
-			GetWorld()->GetTimerManager().SetTimer(LoadDelayHandle, [this]()
-			{
-				UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
-			}, 1.4f, false);
+                
+                WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
+            	PlayerPaddle->SaveLastScore();
+                GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
+                
+        			FTimerHandle LoadDelayHandle;
+        			GetWorld()->GetTimerManager().SetTimer(LoadDelayHandle, [this]()
+        			{
+        				UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+        			}, 1.4f, false);
         */
          
     }
