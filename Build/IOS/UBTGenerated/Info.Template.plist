@@ -46,7 +46,7 @@
     <key>NSCameraUsageDescription</key>
     <string>The camera is used for AR functionality</string>
     <key>GADApplicationIdentifier</key>
-    <string>ca-app-pub-3940256099942544~1458002511</string>
+    <string>ca-app-pub-1244866865352712~5693497887</string>
     <key>SKAdNetworkItems</key>
     <array>
       <dict>

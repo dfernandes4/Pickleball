@@ -1,4 +1,4 @@
-﻿
+
 #include "EnemyAIController.h"
 
 #include "AIState.h"
@@ -36,7 +36,7 @@ void AEnemyAIController::BeginPlay()
 
 		ATargetPoint* DefaultTargetLocation = Cast<ATargetPoint>(UGameplayStatics::GetActorOfClass(GetWorld(), ATargetPoint::StaticClass()));
 		Blackboard->SetValueAsVector(DefaultTargetLocationKey, DefaultTargetLocation->GetActorLocation());
-		Blackboard->SetValueAsVector(LocationToHitAtKey, (UGameplayStatics::GetActorOfClass(GetWorld(), ABall::StaticClass())->GetActorLocation() + FVector(80.f, 0.f, 0.f)));*/
+		Blackboard->SetValueAsVector(LocationToHitAtKey, (UGameplayStatics::GetActorOfClass(GetWorld(), ABall::StaticClass())->GetActorLocation() + FVector(80.f, 0.f, 0.f)));
 		
 		Blackboard->SetValueAsEnum(AIStateKey, static_cast<uint8>(EAIState::Responding));
 		Blackboard->SetValueAsBool(IsInHittingZoneKey, false);
