@@ -178,12 +178,7 @@ void UGameOverScreenWidget::OnUserFinishedRewardAd()
     	//WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 11);
         PlayerPaddle->SaveLastScore();
         GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
-        	FTimerHandle LoadDelayHandle;
-                GetWorld()->GetTimerManager().SetTimer(LoadDelayHandle, [this]()
-                {
-                	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
-                }, 1.4f, false);
-         
+    	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
     }
 }
 
