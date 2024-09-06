@@ -16,7 +16,6 @@ class AEnemyAIController;
 // Sets default values
 ABall::ABall()
 {
-	/*
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -38,12 +37,10 @@ ABall::ABall()
 	Speed = 100;
 
 	CurrentBounceCount = 0;
-	*/
 }
 
 void ABall::BeginPlay()
 {
-	/*
 	Super::BeginPlay();
 
     BallMesh->SetUseCCD(true);
@@ -69,7 +66,6 @@ void ABall::BeginPlay()
     
     MainGamemode = Cast<AMainGamemode>(GetWorld()->GetAuthGameMode());
     MainGamemode->OnGameOver.AddDynamic(this, &ABall::OnGameOver);
-    */
 
 }
 
