@@ -173,9 +173,9 @@ void UGameOverScreenWidget::OnUserFinishedRewardAd()
     }
     else
     {
-        const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+        //const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
         
-        WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
+        //WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
     	PlayerPaddle->SaveLastScore();
         GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
         FTimerHandle LoadDelayHandle;
