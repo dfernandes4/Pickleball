@@ -154,31 +154,35 @@ void UGameOverScreenWidget::DisplayPlayerValues()
 
 void UGameOverScreenWidget::OnUserFinishedRewardAd()
 {
-    UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
-    if(bIs2xAd)
-    {
-        if (PlayerPaddle && EnemyPaddle)
-        {
-            PlayerPaddle->AddCoins(PlayerPaddle->GetCoinsEarnedFromLastMatch());
-            EnemyPaddle->SetCurrentRow(0);
-            
-            // Save player and enemy data
-            if (GameInstance)
-            {
-                GameInstance->SaveCurrentEnemyRow(0);
-                GameInstance->SetShouldLaunchStarterScreen(true);
-                UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
-            }
-        }
-    }
-    else
-    {
-    	//const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-	            
-    	//WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 11);
-        PlayerPaddle->SaveLastScore();
-        GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
-    	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
-    }
+	// Ensure game logic runs on the game thread to prevent crashes
+	AsyncTask(ENamedThreads::GameThread, [&]()
+	{
+		UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
+
+		if (bIs2xAd)
+		{
+			if (PlayerPaddle && EnemyPaddle)
+			{
+				PlayerPaddle->AddCoins(PlayerPaddle->GetCoinsEarnedFromLastMatch());
+				EnemyPaddle->SetCurrentRow(0);
+
+				// Save player and enemy data
+				if (GameInstance)
+				{
+					GameInstance->SaveCurrentEnemyRow(0);
+					GameInstance->SetShouldLaunchStarterScreen(true);
+					UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+				}
+			}
+		}
+		else
+		{
+			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+			WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 11);
+			PlayerPaddle->SaveLastScore();
+			GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
+			UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+		}
+	});
 }
 
