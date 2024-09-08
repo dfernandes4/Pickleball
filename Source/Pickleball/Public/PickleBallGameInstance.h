@@ -53,7 +53,7 @@ public:
 	bool GetShouldLaunchStarterScreen() const;
 	UFUNCTION()
 	bool GetIsFirstTimePlayingInSession() const;
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	bool GetIsGameLoaded() const;
 	UFUNCTION()
 	TArray<float> GetSaveGameVolumes();

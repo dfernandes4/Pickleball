@@ -53,7 +53,6 @@ void AMainGamemode::BeginPlay()
 			HomeScreenWidget->SetUpCollectionDelegates();
 			HomeScreenWidget->ShopWidget		= Cast<UShopScreenWidget>(WidgetLoader->LoadWidget(FName("PaddleShopScreen"), GetWorld()));
 			HomeScreenWidget->SetUpShopDelegates();
-			PickleBallGameInstance->SetShouldLaunchStarterScreen(false);
 		}
 		else
 		{
@@ -115,8 +114,6 @@ void AMainGamemode::OnGameLoaded()
 		SFXSoundClass->Properties.Volume = Volumes[2];
 	}
 	
-	
-	PickleBallGameInstance->SetShouldLaunchStarterScreen(false);
 	PickleBallGameInstance->SetIsFirstTimePlayingInSession(false);
 	PickleBallGameInstance->LoadFinished.RemoveDynamic(this, &AMainGamemode::OnGameLoaded);
 }

@@ -70,6 +70,7 @@ void UGameOverScreenWidget::OnReplayButtonClicked()
         UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
         GameInstance->SavePlayerData(PlayerPaddle->GetCurrentPlayerData());
         GameInstance->SaveCurrentEnemyRow(0);
+        GameInstance->SetShouldLaunchStarterScreen(false);
         
         FName CurrentWorldName(*World->GetName());
         UGameplayStatics::OpenLevel(this, CurrentWorldName, false);
@@ -154,35 +155,63 @@ void UGameOverScreenWidget::DisplayPlayerValues()
 
 void UGameOverScreenWidget::OnUserFinishedRewardAd()
 {
-	// Ensure game logic runs on the game thread to prevent crashes
-	AsyncTask(ENamedThreads::GameThread, [&]()
-	{
-		UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
+    // Ensure that the following block of code runs on the Game Thread (main thread)
+    AsyncTask(ENamedThreads::GameThread, [&]()
+    {
+        // Now we are guaranteed to be running on the Game Thread
 
-		if (bIs2xAd)
-		{
-			if (PlayerPaddle && EnemyPaddle)
-			{
-				PlayerPaddle->AddCoins(PlayerPaddle->GetCoinsEarnedFromLastMatch());
-				EnemyPaddle->SetCurrentRow(0);
+        UPickleBallGameInstance* GameInstance = Cast<UPickleBallGameInstance>(GetGameInstance());
+        if (!GameInstance)
+        {
+            UE_LOG(LogTemp, Error, TEXT("GameInstance is null!"));
+            return;
+        }
 
-				// Save player and enemy data
-				if (GameInstance)
-				{
-					GameInstance->SaveCurrentEnemyRow(0);
-					GameInstance->SetShouldLaunchStarterScreen(true);
-					UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
-				}
-			}
-		}
-		else
-		{
-			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-			WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 11);
-			PlayerPaddle->SaveLastScore();
-			GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
-			UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
-		}
-	});
+        if (bIs2xAd)
+        {
+            if (PlayerPaddle && EnemyPaddle)
+            {
+                // Safely interact with game objects on the main thread
+                PlayerPaddle->AddCoins(PlayerPaddle->GetCoinsEarnedFromLastMatch());
+                EnemyPaddle->SetCurrentRow(0);
+
+                // Save player and enemy data on the main thread
+                if (GameInstance)
+                {
+                    GameInstance->SaveCurrentEnemyRow(0);
+                    GameInstance->SetShouldLaunchStarterScreen(true);
+
+                    UWorld* World = GetWorld();
+                    if(World)
+                    {
+                        // Open the current level again
+                        FName CurrentWorldName(*World->GetName());
+                        UGameplayStatics::OpenLevel(GetWorld(), CurrentWorldName, false);
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (PlayerPaddle && EnemyPaddle)
+            {
+                //const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+                //WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 11);
+
+                // Safely interact with game objects on the main thread
+                PlayerPaddle->SaveLastScore();
+                GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
+                GameInstance->SetShouldLaunchStarterScreen(false);
+                
+                UWorld* World = GetWorld();
+                if(World)
+                {
+                    // Open the current level again
+                    FName CurrentWorldName(*World->GetName());
+                    UGameplayStatics::OpenLevel(GetWorld(), CurrentWorldName, false);
+                }
+            }
+        }
+    });
 }
 

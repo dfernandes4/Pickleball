@@ -48,7 +48,7 @@ void ABall::BeginPlay()
     BallMesh->SetSimulatePhysics(true);
     BallMesh->SetEnableGravity(false);
     BallMesh->SetMassOverrideInKg(NAME_None, 0.06f, true);
-    //BallMesh->OnComponentHit.AddDynamic(this, &ABall::OnBallHit);
+    BallMesh->OnComponentHit.AddDynamic(this, &ABall::OnBallHit);
     
     BallCollider->SetCollisionProfileName(TEXT("Custom"));
 
