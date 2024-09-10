@@ -19,6 +19,7 @@ UPickleBallGameInstance::UPickleBallGameInstance()
     bIsGameLoaded = false;
     CurrentGameCount = 0;
     bAreAdsInitialized = false;
+    AmountGamesNeededToTriggerInterstitial = 10;
 }
 
 void UPickleBallGameInstance::Init()
@@ -305,6 +306,29 @@ int32 UPickleBallGameInstance::GetCurrentGameCount() const
 bool UPickleBallGameInstance::GetAreAdsInitialized() const
 {
     return bAreAdsInitialized;
+}
+
+bool UPickleBallGameInstance::GetShouldShowInterstitialAd()
+{
+    if(bShouldLaunchStarterScreen)
+    {
+        if(bShouldShowInterstitialAd || CurrentGameCount % AmountGamesNeededToTriggerInterstitial == 0)
+        {
+            bShouldShowInterstitialAd = false;
+            return true;
+        }
+    }
+    else
+    {
+        if(!bShouldShowInterstitialAd)
+        {
+            if(CurrentGameCount % AmountGamesNeededToTriggerInterstitial == 0)
+            {
+                bShouldShowInterstitialAd = true;
+            }
+        }
+    }
+    return false;
 }
 
 void UPickleBallGameInstance::IncrementCurrentGameCount()

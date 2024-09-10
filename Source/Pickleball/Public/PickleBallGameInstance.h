@@ -63,6 +63,8 @@ public:
 	int32 GetCurrentGameCount() const;
 	UFUNCTION(BlueprintCallable)
 	bool GetAreAdsInitialized() const;
+	UFUNCTION(BlueprintCallable)
+	bool GetShouldShowInterstitialAd();
 
 	// Setters
 	UFUNCTION()
@@ -134,4 +136,11 @@ private:
 
 	UPROPERTY()
 	bool bAreAdsInitialized;
+
+	UPROPERTY()
+	bool bShouldShowInterstitialAd;
+
+	UPROPERTY()
+	int32 AmountGamesNeededToTriggerInterstitial;
+	
 };
