@@ -65,6 +65,8 @@ public:
 	bool GetAreAdsInitialized() const;
 	UFUNCTION(BlueprintCallable)
 	bool GetShouldShowInterstitialAd();
+	UFUNCTION()
+	bool GetIsContinueGame() const;
 
 	// Setters
 	UFUNCTION()
@@ -75,6 +77,8 @@ public:
 	void SetIsFirstTimePlayingInSession(bool bIsFirstTimePlayingInSessionIn);
 	UFUNCTION(BlueprintCallable)
 	void SetAreAdsInitialized(bool bAreAdsInitializedIn);
+	UFUNCTION()
+	void SetIsContinueGame(bool bIsContinueGameIn);
 
 	// Ads
     UFUNCTION(BlueprintCallable)
@@ -142,5 +146,8 @@ private:
 
 	UPROPERTY()
 	int32 AmountGamesNeededToTriggerInterstitial;
+
+	UPROPERTY()
+	bool bIsContinueGame;
 	
 };

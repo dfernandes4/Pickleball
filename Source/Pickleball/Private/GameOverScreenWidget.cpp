@@ -195,13 +195,12 @@ void UGameOverScreenWidget::OnUserFinishedRewardAd()
         {
             if (PlayerPaddle && EnemyPaddle)
             {
-                //const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-                //WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 11);
 
                 // Safely interact with game objects on the main thread
                 PlayerPaddle->SaveLastScore();
                 GameInstance->SaveCurrentEnemyRow(EnemyPaddle->GetCurrentRow());
                 GameInstance->SetShouldLaunchStarterScreen(false);
+            	GameInstance->SetIsContinueGame(true);
                 
                 UWorld* World = GetWorld();
                 if(World)

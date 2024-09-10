@@ -331,6 +331,11 @@ bool UPickleBallGameInstance::GetShouldShowInterstitialAd()
     return false;
 }
 
+bool UPickleBallGameInstance::GetIsContinueGame() const
+{
+    return bIsContinueGame;
+}
+
 void UPickleBallGameInstance::IncrementCurrentGameCount()
 {
     CurrentGameCount++;
@@ -363,6 +368,11 @@ void UPickleBallGameInstance::SetIsFirstTimePlayingInSession(bool bIsFirstTimePl
 void UPickleBallGameInstance::SetAreAdsInitialized(bool bAreAdsInitializedIn)
 {
     bAreAdsInitialized = bAreAdsInitializedIn;
+}
+
+void UPickleBallGameInstance::SetIsContinueGame(bool bIsContinueGameIn)
+{
+    bIsContinueGame = bIsContinueGameIn;
 }
 
 bool UPickleBallGameInstance::GetIsGameLoaded() const

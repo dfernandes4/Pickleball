@@ -74,9 +74,18 @@ void AMainGamemode::BeginPlay()
 	else
 	{
 		// 2nd+ time playing in session
-		const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-		ULoadingScreenWidget* LoadingScreen = Cast<ULoadingScreenWidget>(WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10));
-		LoadingScreen->LoadingScreenFinished.AddDynamic(this, &AMainGamemode::OnLoadingScreenFinished);
+		if(PickleBallGameInstance->GetIsContinueGame())
+		{
+			PickleBallGameInstance->SetIsContinueGame(false);
+			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+			WidgetLoader->LoadWidget(FName("PlayButton"), GetWorld(), 10);
+		}
+		else
+		{
+			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+			ULoadingScreenWidget* LoadingScreen = Cast<ULoadingScreenWidget>(WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10));
+			LoadingScreen->LoadingScreenFinished.AddDynamic(this, &AMainGamemode::OnLoadingScreenFinished);
+		}
 	}
 
 	CachedEnemyAIController = Cast<AEnemyAIController>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyAIController::StaticClass()));
