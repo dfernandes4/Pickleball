@@ -18,6 +18,7 @@ UPickleBallGameInstance::UPickleBallGameInstance()
     bShouldLaunchStarterScreen = true;
     bIsGameLoaded = false;
     CurrentGameCount = 0;
+    bAreAdsInitialized = false;
 }
 
 void UPickleBallGameInstance::Init()
@@ -301,6 +302,11 @@ int32 UPickleBallGameInstance::GetCurrentGameCount() const
     return CurrentGameCount;
 }
 
+bool UPickleBallGameInstance::GetAreAdsInitialized() const
+{
+    return bAreAdsInitialized;
+}
+
 void UPickleBallGameInstance::IncrementCurrentGameCount()
 {
     CurrentGameCount++;
@@ -328,6 +334,11 @@ bool UPickleBallGameInstance::GetIsFirstTimePlayingInSession() const
 void UPickleBallGameInstance::SetIsFirstTimePlayingInSession(bool bIsFirstTimePlayingInSessionIn)
 {
     bIsFirstTimePlayingInSession = bIsFirstTimePlayingInSessionIn;
+}
+
+void UPickleBallGameInstance::SetAreAdsInitialized(bool bAreAdsInitializedIn)
+{
+    bAreAdsInitialized = bAreAdsInitializedIn;
 }
 
 bool UPickleBallGameInstance::GetIsGameLoaded() const

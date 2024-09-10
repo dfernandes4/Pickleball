@@ -61,6 +61,8 @@ public:
 	int32 GetSaveGameEnemyRow();
 	UFUNCTION(BlueprintCallable)
 	int32 GetCurrentGameCount() const;
+	UFUNCTION(BlueprintCallable)
+	bool GetAreAdsInitialized() const;
 
 	// Setters
 	UFUNCTION()
@@ -69,6 +71,8 @@ public:
 	void SetIsFirstTimePlayingEver(bool bIsFirstTimePlayingEverIn);
     UFUNCTION()
 	void SetIsFirstTimePlayingInSession(bool bIsFirstTimePlayingInSessionIn);
+	UFUNCTION(BlueprintCallable)
+	void SetAreAdsInitialized(bool bAreAdsInitializedIn);
 
 	// Ads
     UFUNCTION(BlueprintCallable)
@@ -127,4 +131,7 @@ private:
 	bool bIsLoggedIn;
     
     int32 CurrentGameCount;
+
+	UPROPERTY()
+	bool bAreAdsInitialized;
 };
