@@ -78,7 +78,7 @@ void AMainGamemode::BeginPlay()
 		{
 			PickleBallGameInstance->SetIsContinueGame(false);
 			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
-			WidgetLoader->LoadWidget(FName("PlayButton"), GetWorld(), 10);
+			WidgetLoader->LoadWidget(FName("PlayButton"), GetWorld(), 15);
 		}
 		else
 		{
