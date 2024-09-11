@@ -29,6 +29,7 @@ AMainGamemode::AMainGamemode()
     HomeScreenMusic->SetupAttachment(Scene);
 
 	bIsGameActive = false;
+	bKickOffFuncCalled = false;
 }
 
 void AMainGamemode::BeginPlay()
@@ -128,6 +129,31 @@ void AMainGamemode::OnLoadingScreenFinished()
 {
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	WidgetLoader->LoadWidget(FName("Countdown"), GetWorld());
+}
+
+void AMainGamemode::CountdownTimerFinished()
+{
+	UGameplayStatics::PlaySound2D(GetWorld(), CountDownSoundKickoffEffect);
+	float CountDownKickOffEffectDuration = CountDownSoundKickoffEffect->Duration;
+	FTimerHandle KickOffTimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(KickOffTimerHandle, this, &AMainGamemode::KickOffFinished, CountDownKickOffEffectDuration, false);
+	// Need to check if KickOff Isn't called after 1 second of the end of the kickoff duration
+
+	FTimerHandle CheckingTimer;
+	GetWorld()->GetTimerManager().SetTimer(CheckingTimer, this, &AMainGamemode::KickOffFinished, (CountDownKickOffEffectDuration + 1.f), false);
+}
+
+void AMainGamemode::KickOffFinished()
+{
+	if(!bKickOffFuncCalled)
+	{
+		bKickOffFuncCalled = true;
+		if(CachedEnemyAIController != nullptr)
+		{
+			CachedEnemyAIController->StartBehaviorTree();
+		}
+		OnGameStart();
+	}
 }
 
 void AMainGamemode::GameOver()

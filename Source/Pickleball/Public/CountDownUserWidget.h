@@ -24,13 +24,9 @@ public:
 	void PlayCountDownAnimation();
 	UFUNCTION()
 	void CountdownTimerFinished();
-	UFUNCTION()
-	void KickOffFinished();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
     USoundBase* CountDownSoundEffect;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
-    USoundWave* CountDownSoundKickoffEffect;
 	
 private:
 	UPROPERTY(EditAnywhere, Category = Panels, meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
@@ -39,8 +35,6 @@ private:
 	TObjectPtr<class UTextBlock> CountDownTextBlock;
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 	TObjectPtr<UWidgetAnimation> FadeInAnimation;
-
-	UPROPERTY()
-	class AEnemyAIController* EnemyAIController;
+	
 	int CurrentCount;
 };

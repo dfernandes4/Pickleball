@@ -34,8 +34,6 @@ public:
 	
 	AMainGamemode();
 	
-	FOnGameOverDelegate OnGameOver;
-	
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
@@ -44,9 +42,17 @@ public:
 	UFUNCTION()
 	void OnLoadingScreenFinished();
 
+	UFUNCTION()
+	void CountdownTimerFinished();
+	
+	UFUNCTION()
+	void KickOffFinished();
+
+	//BP Setup
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
     USceneComponent* Scene;
-    
+
+	//Sound
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	UAudioComponent* BattleMusic;
     
@@ -61,7 +67,11 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
 	USoundClass* MusicSoundClass;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundBase* CountDownSoundKickoffEffect;
+
+	//Delegates
 	FOnScoreUpdated OnScoreUpdated;
 
 	FOnNewPaddleSelectedDelegate OnPaddleSelected;
@@ -69,9 +79,12 @@ public:
 	FPaddleBoughtDelegate OnPaddleBought;
 	
 	FOnCoinAmountChangedDelegate OnCoinAmountChanged;
-
+	
 	FOnCountdownKickoffFinishedDelegate  OnCountdownKickoffFinished;
+	
+	FOnGameOverDelegate OnGameOver;
 
+	//Class Vars
 	bool bIsGameActive;
 
 	UPROPERTY()
@@ -79,4 +92,6 @@ public:
 
 	UPROPERTY()
 	class UPickleBallGameInstance* PickleBallGameInstance;
+
+	bool bKickOffFuncCalled;
 };
