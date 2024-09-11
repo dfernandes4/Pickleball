@@ -300,6 +300,7 @@ void AMainPlayerController::ShowLeaderboard(FName CategoryName)
     }
 }
 
+/*
 void AMainPlayerController::SubmitHighscore(int32 Score, FName CategoryName)
 {
     IOnlineSubsystem* const OnlineSub = IOnlineSubsystem::Get(FName("IOS"));
@@ -328,6 +329,7 @@ void AMainPlayerController::SubmitHighscore(int32 Score, FName CategoryName)
         }
     }
 }
+*/
 
 bool AMainPlayerController::IsLoggedInToGameCenter()
 {

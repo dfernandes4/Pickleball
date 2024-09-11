@@ -41,7 +41,7 @@ public:
 	void ShowLeaderboard(FName CategoryName);
 	UFUNCTION()
 	bool IsLoggedInToGameCenter();
-    UFUNCTION()
+    UFUNCTION(BlueprintImplementableEvent, Category = "GameCenter")
     void SubmitHighscore(int32 Score, FName CategoryName);
     
 	UFUNCTION()

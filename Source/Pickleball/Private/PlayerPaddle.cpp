@@ -179,7 +179,7 @@ void APlayerPaddle::OnGameOver()
 		AMainPlayerController* PlayerController = Cast<AMainPlayerController>(GetWorld()->GetFirstPlayerController());
 		if (PlayerController)
 		{
-			// PlayerController->SubmitHighscore(HighScore, FName("HS"));
+			PlayerController->SubmitHighscore(HighScore, FName("HS"));
 		}
 	}
     
