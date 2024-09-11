@@ -58,7 +58,8 @@ void AMainGamemode::BeginPlay()
 		}
 		else
 		{
-			// First time playing in session
+
+            // First time playing in session
             WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
             if(PickleBallGameInstance->GetIsGameLoaded())
             {
