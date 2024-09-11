@@ -34,17 +34,20 @@ AMainGamemode::AMainGamemode()
 void AMainGamemode::BeginPlay()
 {
 	Super::BeginPlay();
+
+	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+	WidgetLoader->LoadWidget(FName("PlayButton"), GetWorld(), 15);
 	
 	PickleBallGameInstance = Cast<UPickleBallGameInstance>(GetWorld()->GetGameInstance());
 	
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-
+	
 	if(PickleBallGameInstance->GetShouldLaunchStarterScreen())
 	{
 		if(!PickleBallGameInstance->GetIsFirstTimePlayingInSession())
 		{
 			// 2nd+ time playing in session
-			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+			//const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 			
 			WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
 			UHomeScreenWidget* HomeScreenWidget = Cast<UHomeScreenWidget>(WidgetLoader->LoadWidget(FName("HomeScreen"), GetWorld()));
@@ -57,7 +60,7 @@ void AMainGamemode::BeginPlay()
 		else
 		{
 			// First time playing in session
-            const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+            //const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
             WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10);
             if(PickleBallGameInstance->GetIsGameLoaded())
             {
@@ -77,17 +80,16 @@ void AMainGamemode::BeginPlay()
 		if(PickleBallGameInstance->GetIsContinueGame())
 		{
 			PickleBallGameInstance->SetIsContinueGame(false);
-			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+			//const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 			WidgetLoader->LoadWidget(FName("PlayButton"), GetWorld(), 15);
 		}
 		else
 		{
-			const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
+			//const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 			ULoadingScreenWidget* LoadingScreen = Cast<ULoadingScreenWidget>(WidgetLoader->LoadWidget(FName("LoadingScreen"), GetWorld(), 10));
 			LoadingScreen->LoadingScreenFinished.AddDynamic(this, &AMainGamemode::OnLoadingScreenFinished);
 		}
-	}
-
+	} 
 	CachedEnemyAIController = Cast<AEnemyAIController>(UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyAIController::StaticClass()));
 }
 

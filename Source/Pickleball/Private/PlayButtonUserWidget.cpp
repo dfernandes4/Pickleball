@@ -10,8 +10,7 @@
 void UPlayButtonUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-
-	UGameplayStatics::SetGamePaused(GetWorld(), true);
+	
 	if(PlayButton)
 	{
 		PlayButton->OnClicked.AddDynamic(this, &UPlayButtonUserWidget::PlayButtonClicked);
@@ -20,7 +19,8 @@ void UPlayButtonUserWidget::NativeConstruct()
 
 void UPlayButtonUserWidget::PlayButtonClicked()
 {
-	UGameplayStatics::SetGamePaused(GetWorld(), false);
 	const TObjectPtr<UWidgetLoader> WidgetLoader = NewObject<UWidgetLoader>(this);
 	WidgetLoader->LoadWidget(FName("Countdown"), GetWorld());
+
+	RemoveFromParent();
 }
